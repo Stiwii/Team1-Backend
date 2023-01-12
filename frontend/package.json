@@ -13,7 +13,7 @@
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "cd .. && husky install front/.husky"
   },
   "dependencies": {
     "@next/font": "13.1.1",
