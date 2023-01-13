@@ -3,18 +3,16 @@ import Layout from '../../components/Layout'
 import NestedLayout from '../../components/NestedLayout'
 
 
-export default function detailsPage(){
+export default function brandsPage(){
   return (
-    <p>hello world from Details</p>
+    <p>hello world from Brands</p>
   )  
 }
 
-detailsPage.getLayout = function (page: ReactElement) {
+brandsPage.getLayout = function (page: ReactElement) {
   return (
     <Layout>
       <NestedLayout>{page}</NestedLayout>
     </Layout>
   )
 }
-
-

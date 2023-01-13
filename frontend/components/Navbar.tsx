@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-const Navbar = () => {
+const Navbar = ({}) => {
   return (
     <nav>
         <div className="Logo">
@@ -11,8 +11,8 @@ const Navbar = () => {
        <Link href='/login/Login'>Login </Link> 
        <Link href='/SignUp/SignUp'>Sign Up </Link> 
        <Link href='/Details/Details'>Details </Link> 
-       <Link href='/Marcas/Marcas'>Marcas </Link> 
-       <Link href='/Perfil/Perfil'>Perfil </Link> 
+       <Link href='/Brands/Brands'>Brands </Link> 
+       <Link href='/Profile/Profile'>Profile </Link> 
        <Link href='/Create/Create'>Create </Link> 
     </nav>
   )

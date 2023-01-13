@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
+import Layout from '../../components/Layout'
+import NestedLayout from '../../components/NestedLayout'
 
-const Create = () => {
+
+export default function createPage(){
   return (
-    <div>Create</div>
-  )
+    <p>hello world from Create</p>
+  )  
 }
 
-export default Create
+createPage.getLayout = function (page: ReactElement) {
+  return (
+    <Layout>
+      <NestedLayout>{page}</NestedLayout>
+    </Layout>
+  )
+}
