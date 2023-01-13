@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .my-custom-style {
+
+  }
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -107,6 +113,6 @@ a {
 
 @media (prefers-color-scheme: dark) {
   html {
-    color-scheme: white;
+    color-scheme: dark;
   }
 }
