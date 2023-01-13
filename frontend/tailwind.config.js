@@ -23,6 +23,7 @@ module.exports = {
       'primary-grayLight': '#D9D9D9',
       'primary-grayLighter': '#F8F7FA',
       'secondary-red': '#EF3F47',
+      transparent:'transparent'
     }
   },
   plugins: [],
