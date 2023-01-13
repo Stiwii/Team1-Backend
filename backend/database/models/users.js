@@ -36,17 +36,31 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID, 
       primaryKey: true
     },
-		country_id: {
-		type: DataTypes.UUID,
-		},
+    first_name: { 
+      type: DataTypes.STRING  
+    },
+    last_name: { 
+      type: DataTypes.STRING  
+    },
     email: {
       type: DataTypes.STRING,
-      allowNull: true,
       validate: {
         isEmail: true,
         notEmpty: true,
       }
     },
+    username: {
+      type: DataTypes.STRING  
+    },
+    password: { 
+      type: DataTypes.STRING  
+    },
+    email_verified: { 
+      type: DataTypes.DATE
+    },
+    token: {
+      type: DataTypes.STRING  
+    }
   }, {
     sequelize,
     modelName: 'Users',  // Hacemos la diferencia del modelo
@@ -57,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
-        attributes: ['id','country_id']
+        attributes: ['id','first_name','last_name','email','token']
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}
