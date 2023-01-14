@@ -11,6 +11,7 @@ Page.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
       <NestedLayout>{page}</NestedLayout>
+      
     </Layout>
   )
 }
