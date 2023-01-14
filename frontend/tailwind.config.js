@@ -12,8 +12,6 @@ module.exports = {
       lg: '1200px',
       xl: '1536px',
     },
-    colors: {
-    },
     extend: {
       'primary-blue': '#1B4DB1',
       'primary-yellow': '#F3F243',
