@@ -1,7 +1,7 @@
 import React from 'react'
 import {MdOutlinePersonOutline} from 'react-icons/md'
 
-const Person = () => {
+const PersonIcon = () => {
     return (
         <div className='bg-[#fff0]'>
             <MdOutlinePersonOutline className='w-[23px] h-[23px] text-[#000]'/>
@@ -9,4 +9,4 @@ const Person = () => {
     )
 }
 
-export default Person
+export default PersonIcon

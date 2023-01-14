@@ -5,9 +5,9 @@ import CathegoryOne from '../components/Buttons/CathegoryOne';
 import Like from '../components/Buttons/Like';
 import NextOne from '../components/Buttons/NextOne';
 import NextTwo from '../components/Buttons/NextTwo';
-import Person from '../components/Buttons/Person';
 import InputSearch from '../components/InputSearch';
 import styles from '../styles/Home.module.css';
+import PersonIcon from '../components/PersonIcon';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -50,7 +50,7 @@ export default function Home() {
           <NextTwo/>
           <CathegoryOne/>
           <Like/>
-          <Person/>
+          <PersonIcon/>
         </div>
         <div className={styles.center}>
           <Image
