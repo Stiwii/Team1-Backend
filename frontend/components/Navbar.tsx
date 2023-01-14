@@ -12,6 +12,8 @@ const Navbar = ({}) => {
        <Link href='/SignUp/SignUp'>Sign Up </Link> 
        <Link href='/Details/[event_id]'>Details </Link> 
        <Link href='/Brands'>Brands </Link> 
+       <Link href='/Artists'>Artists </Link> 
+       <Link href='/Tournaments'>Tournaments </Link> 
        <Link href='/Profile'>Profile </Link> 
        <Link href='/Create'>Create </Link> 
     </nav>
