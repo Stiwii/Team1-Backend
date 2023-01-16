@@ -52,7 +52,7 @@ app.get('/', ({ res }) => {
   res.json({
       api: "API Join Momentum",
       state: "Up and Running",
-      version: "1.0.0"
+      version: "1.0.1"
   })
 });
 
@@ -63,5 +63,5 @@ routerModels(app) //Here we can add others
 // errorHandlerRouter(app)
 
 app.listen(PORT, () => {
-  console.log(`Server on HOST: http://localhost:${PORT}`)
+  console.log(`Server : http://localhost:${PORT}`)
 })
