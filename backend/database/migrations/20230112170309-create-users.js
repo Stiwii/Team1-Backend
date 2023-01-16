@@ -32,10 +32,12 @@ module.exports = {
           allowNull: false,
           type: Sequelize.STRING  
         },
-        email_verified: { 
+        email_verified: {
+          defaultValue: null,
           type: Sequelize.DATE  
         },
         token: {
+          defaultValue: null,
           type: Sequelize.STRING  
         },
         createdAt: {
@@ -50,7 +52,6 @@ module.exports = {
           field: 'updated_at'
         }
       }, { transaction })
-
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()

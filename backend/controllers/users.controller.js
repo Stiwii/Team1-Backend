@@ -43,8 +43,8 @@ const getUser = async(request, response, next) => {
 const updateUser = async(request, response, next) => {
     try {
         let { id } = request.params
-        let { body } = request
-        let user = await usersService.updateUser(id,body)
+        let { username,first_name,last_name } = request.body
+        let user = await usersService.updateUser(id,{ username,first_name,last_name })
         return response.json({results: user})
     } catch (error) {
         next(error)

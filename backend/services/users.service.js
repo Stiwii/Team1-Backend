@@ -1,4 +1,5 @@
 const models = require('../database/models');
+const uuid = require('uuid')
 const { Op } = require('sequelize');
 const { CustomError } = require('../utils/custom-error');
 
@@ -30,12 +31,16 @@ class UsersService {
         return users;
     }
 
-    async createUser({ name }) {
+    async createUser({ first_name,last_name,email,username,password }) {
         const transaction = await models.sequelize.transaction();
         try {
             let newUser = await models.Users.create({
-                //id: uuid4() --> aquí se debe usar el uuid maker si es que se usa
-                name,
+                id:uuid.v4(),
+                first_name:first_name,
+                last_name:last_name,
+                email:email,
+                username:username,
+                password:password
             }, { transaction });
 
             await transaction.commit();
@@ -60,15 +65,17 @@ class UsersService {
         return user
     }
 
-    async updateUser(id, { name }) {
+    async updateUser(id, obj) {
         const transaction = await models.sequelize.transaction();
         try {
             let user = await models.Users.findByPk(id);
 
             if (!user) throw new CustomError('Not found user', 404, 'Not Found')
 
-            let updatedUser = await user.update({
-                name
+            let updatedUser = await user.update(obj,{
+                where: {
+                    id: id
+                }
             }, { transaction })
 
             await transaction.commit();
