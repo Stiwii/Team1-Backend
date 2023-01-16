@@ -11,9 +11,10 @@ const PORT = process.env.PORT || 8000
 Cors Settings
 */
 const whitelist = ['http://localhost:8000']
+
 const corsOptions = {
   origin: (origin, callback) => {
-    if (whitelist.includes(origin) ||  !origin) {
+    if (whitelist.includes(origin) || !origin) {
       callback(null, true)
     } else {
       callback(new Error('Denied By CORS'))
@@ -33,11 +34,12 @@ if (process.env.NODE_ENV === 'production') {
   app.use(cors())
 }
 
-/*
+/* 
 Accept Json & form-urlencoded
 */
-// app.use(express.json());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+console.log();
 
 /*
 Routes
@@ -61,5 +63,5 @@ routerModels(app) //Here we can add others
 // errorHandlerRouter(app)
 
 app.listen(PORT, () => {
-  console.log(`Server on PORT: ${PORT}`)
+  console.log(`Server on HOST: http://localhost:${PORT}`)
 })

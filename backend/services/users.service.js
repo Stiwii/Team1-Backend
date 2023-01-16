@@ -1,44 +1,48 @@
 const models = require('../database/models');
+const uuid = require('uuid')
 const { Op } = require('sequelize');
 const { CustomError } = require('../utils/custom-error');
 
 class UsersService {
 
-    constructor(){
-
+    constructor() {
     }
 
     async findAndCount(query) {
         const options = {
             where: {},
         }
-        
+
         const { limit, offset } = query;
-          if (limit && offset) {
-            options.limit =  limit;
-            options.offset =  offset;
-          }
-        
+        if (limit && offset) {
+            options.limit = limit;
+            options.offset = offset;
+        }
+
         const { name } = query;
-          if (name) {
+        if (name) {
             options.where.name = { [Op.iLike]: `%${name}%` };
-          }
+        }
 
         //Necesario para el findAndCountAll de Sequelize
         options.distinct = true
-    
-        const users = await models.Users.findAndCountAll(options);
+
+        const users = await models.Users.scope('public_view').findAndCountAll(options);
         return users;
     }
 
-    async createUser({ name }) {
+    async createUser({ first_name,last_name,email,username,password }) {
         const transaction = await models.sequelize.transaction();
         try {
             let newUser = await models.Users.create({
-	                //id: uuid4() --> aquí se debe usar el uuid maker si es que se usa
-									name,
+                id:uuid.v4(),
+                first_name:first_name,
+                last_name:last_name,
+                email:email,
+                username:username,
+                password:password
             }, { transaction });
-            
+
             await transaction.commit();
             return newUser
         } catch (error) {
@@ -46,35 +50,37 @@ class UsersService {
             throw error
         }
     }
-	//Return Instance if we do not converted to json (or raw:true)
+    //Return Instance if we do not converted to json (or raw:true)
     async getUserOr404(id) {
         let user = await models.Users.findByPk(id);
 
-        if(!user) throw new CustomError('Not found User', 404, 'Not Found');
+        if (!user) throw new CustomError('Not found User', 404, 'Not Found');
 
         return user
     }
 
-	//Return not an Instance raw:true | we also can converted to Json instead
+    //Return not an Instance raw:true | we also can converted to Json instead
     async getUser(id) {
-        let user = await models.Users.findByPk(id, {raw: true})
+        let user = await models.Users.findByPk(id, { raw: true })
         return user
     }
 
-    async updateUser(id, { name } ) {
+    async updateUser(id, obj) {
         const transaction = await models.sequelize.transaction();
         try {
             let user = await models.Users.findByPk(id);
-    
-            if(!user) throw new CustomError('Not found user', 404, 'Not Found')
-    
-            let updatedUser = await user.update({
-                name
+
+            if (!user) throw new CustomError('Not found user', 404, 'Not Found')
+
+            let updatedUser = await user.update(obj,{
+                where: {
+                    id: id
+                }
             }, { transaction })
 
             await transaction.commit();
-    
-           return updatedUser
+
+            return updatedUser
         } catch (error) {
             await transaction.rollback();
             throw error
@@ -85,20 +91,20 @@ class UsersService {
         const transaction = await models.sequelize.transaction();
         try {
             let user = await models.Users.findByPk(id)
-    
-            if(!user) throw new CustomError('Not found user', 404, 'Not Found')
-    
-            await user.destroy({transaction})
+
+            if (!user) throw new CustomError('Not found user', 404, 'Not Found')
+
+            await user.destroy({ transaction })
 
             await transaction.commit();
-    
-           return user
+
+            return user
         } catch (error) {
             await transaction.rollback();
             throw error
         }
     }
 
-  }
-  
-  module.exports = UsersService;
+}
+
+module.exports = UsersService;

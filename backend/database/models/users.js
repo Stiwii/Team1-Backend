@@ -22,8 +22,10 @@ module.exports = (sequelize, DataTypes) => {
 			through: Solo funciona en belongsToMany, especiifica la tabla pivote usando el modelo js
 		*/
       // Users.belongsTo(models.MODELNAME1, {as: 'country', foreignKey: 'country_id'})
-      // Users.hasOne(models.MODELNAME2, {as: 'team', foreignKey: 'user_id'})
-      // Users.hasMany(models.MODELNAME3, {as: 'certificates', foreignKey: 'user_id'})
+
+      // Users.hasOne(models.Profiles, {as: 'profiles', foreignKey: 'user_id'}) <<<<<<<<<
+
+      // Users.hasMany(models.Profiles, {as: 'profiles', foreignKey: 'user_id'})
       // Users.belongsToMany(models.MODELNAME4, {as: 'votes', through: models.Votes, foreignKey: 'user_id'})
 			// Consejo avanzado, esta aquí por si más adelante hay una lección.
 			// Algunas veces, el scope tendrá includes
@@ -33,20 +35,42 @@ module.exports = (sequelize, DataTypes) => {
   };
   Users.init({
     id: {
-      type: DataTypes.UUID, 
+      allowNull: false,
+      type: DataTypes.UUID,
       primaryKey: true
     },
-		country_id: {
-		type: DataTypes.UUID,
-		},
+    first_name: {
+      allowNull: false, 
+      type: DataTypes.STRING  
+    },
+    last_name: {
+      allowNull: false, 
+      type: DataTypes.STRING
+    },
     email: {
+      allowNull: false,
       type: DataTypes.STRING,
-      allowNull: true,
       validate: {
         isEmail: true,
         notEmpty: true,
       }
     },
+    username: {
+      allowNull: false,
+      type: DataTypes.STRING  
+    },
+    password: {
+      allowNull: false, 
+      type: DataTypes.STRING  
+    },
+    email_verified: {
+      defaultValue: null,
+      type: DataTypes.DATE
+    },
+    token: {
+      defaultValue: null,
+      type: DataTypes.STRING  
+    }
   }, {
     sequelize,
     modelName: 'Users',  // Hacemos la diferencia del modelo
@@ -57,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
-        attributes: ['id','country_id']
+        attributes: ['id','first_name','last_name','email','token']
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}
