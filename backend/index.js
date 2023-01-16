@@ -34,11 +34,12 @@ if (process.env.NODE_ENV === 'production') {
   app.use(cors())
 }
 
-/*
+/* 
 Accept Json & form-urlencoded
 */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+console.log();
 
 /*
 Routes
@@ -62,5 +63,5 @@ routerModels(app) //Here we can add others
 // errorHandlerRouter(app)
 
 app.listen(PORT, () => {
-  console.log(`Server on PORT: ${PORT}`)
+  console.log(`Server on HOST: http://localhost:${PORT}`)
 })
