@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   Votes.init({
     publication_id: {
-      type: Sequelize.UUIDV4,
+      type: DataTypes.UUIDV4,
       allowNull: false,
       foreignKey: true,
       references: {
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
     },
     profile_id: {
-      type: Sequelize.UUIDV4,
+      type: DataTypes.UUIDV4,
       allowNull: false,
       foreignKey: true,
       references: {

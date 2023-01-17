@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.BIGINT 
+      type: DataTypes.BIGINT 
     },
     name: {
       allowNull: false,
@@ -46,5 +46,5 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   });
-  return Publications;
+  return Publications_types;
 };
