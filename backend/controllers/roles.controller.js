@@ -63,8 +63,5 @@ const removeRole = async(request, response, next) => {
 
 module.exports = {
     getRoles,
-    addRole,
-    getRole,
-    updateRole,
-    removeRole
+    getRole
 }

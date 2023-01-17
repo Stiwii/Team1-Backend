@@ -65,6 +65,5 @@ module.exports = {
     getVotes,
     addVote,
     getVote,
-    updateVote,
     removeVote
 }

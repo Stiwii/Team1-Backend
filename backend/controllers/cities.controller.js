@@ -1,4 +1,4 @@
-const CitiesService = require('../services/cities.services');
+const CitiesService = require('../services/cities.service');
 const {getPagination, getPagingData} = require('../utils/sequelize-utils');
 
 const citiesService = new CitiesService();
@@ -65,6 +65,5 @@ module.exports = {
     getCities,
     addCity,
     getCity,
-    updateCity,
     removeCity
 }

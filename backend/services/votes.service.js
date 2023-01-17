@@ -30,12 +30,12 @@ class VotesService {
         return votes;
     }
 
-    async createVote({ publicationId, profileId }) {
+    async createVote({ publication_id, profile_id }) {
         const transaction = await models.sequelize.transaction();
         try {
             let newVote = await models.Votes.create({
-                publication_id:publicationId,
-                profile_id:profileId,
+                publication_id:publication_id,
+                profile_id:profile_id,
             }, { transaction });
 
             await transaction.commit();
