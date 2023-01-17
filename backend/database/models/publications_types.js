@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Countries extends Model {
+  class Publications_types extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,39 +11,38 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
 
-
-      // Countries.hasMany(models.Profiles, {as: 'profiles', foreignKey: 'country_id'})
-      // Countries.hasMany(models.City, {as: 'city', foreignKey: 'country_id'}) 
-
-
+      // Publications_types.hasMany(models.Publications,  {as: 'publications', foreignKey: 'publication_id'})
     }
-  };
-  Countries.init({
+  }
+  Publications_types.init({
     id: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
+      type: DataTypes.UUID,
       primaryKey: true
     },
     name: {
-      allowNull: false, 
-      type: DataTypes.STRING  
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    description: {
+      allowNull: false,
+      type: DataTypes.TEXT
     }
   }, {
     sequelize,
-    modelName: 'Countries',  // Hacemos la diferencia del modelo
-    tableName: 'countries',  // y la tabla en la DB para ser explicitos
+    modelName: 'Publications_types',
+    tableName: 'publications_types',  // y la tabla en la DB para ser explicitos
     underscored: true,  
     timestamps: true,
     // Los scopes son útiles para estandarizar dónde se regresa información  
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
-        attributes: ['id', 'name']
+        attributes: ['id','name', 'description']
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}
       },
     },
   });
-  return Countries;
+  return Publications;
 };
