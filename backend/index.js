@@ -39,7 +39,6 @@ Accept Json & form-urlencoded
 */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
-console.log();
 
 /*
 Routes

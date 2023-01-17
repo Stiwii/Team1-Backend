@@ -2,7 +2,7 @@
 const {Model} = require('sequelize');
 const models = require('./')
 module.exports = (sequelize, DataTypes) => {
-  class Votes extends Model {
+  class Countries extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -20,71 +20,43 @@ module.exports = (sequelize, DataTypes) => {
 
 			through: Solo funciona en belongsToMany, especiifica la tabla pivote usando el modelo js
 		*/
-      // Relations - VOTES
+      // Relations - Countries
 
-      // Votes.belongsTo(models.Profiles)
-      // Votes.belongsTo(models.Publications)
+      Countries.hasMany(models.Profiles, {as: 'profiles', foreignKey: 'country_id'})
+      // Countries.hasMany(models.State, {as: 'state', foreignKey: 'state_id'}) 
 
 			// Consejo avanzado, esta aquí por si más adelante hay una lección.
 			// Algunas veces, el scope tendrá includes
       // para evitar errores es usual usarlo así
-      // Votes.addScope('scope_name', {});
+      // Countries.addScope('scope_name', {});
     }
   };
-  Votes.init({
+  Countries.init({
     id: {
+      type: DataTypes.BIGINT,
       allowNull: false,
-      type: DataTypes.UUID,
       primaryKey: true
     },
-    first_name: {
+    name: {
       allowNull: false, 
-      type: DataTypes.STRING  
-    },
-    last_name: {
-      allowNull: false, 
-      type: DataTypes.STRING
-    },
-    email: {
-      allowNull: false,
-      type: DataTypes.STRING,
-      validate: {
-        isEmail: true,
-        notEmpty: true,
-      }
-    },
-    username: {
-      allowNull: false,
-      type: DataTypes.STRING  
-    },
-    password: {
-      allowNull: false, 
-      type: DataTypes.STRING  
-    },
-    email_verified: {
-      defaultValue: null,
-      type: DataTypes.DATE
-    },
-    token: {
-      defaultValue: null,
       type: DataTypes.STRING  
     }
   }, {
     sequelize,
-    modelName: 'Votes',  // Hacemos la diferencia del modelo
-    tableName: 'votes',  // y la tabla en la DB para ser explicitos
+    modelName: 'Countries',  // Hacemos la diferencia del modelo
+    tableName: 'countries',  // y la tabla en la DB para ser explicitos
     underscored: true,  
     timestamps: true,
     // Los scopes son útiles para estandarizar dónde se regresa información  
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
-        attributes: ['id','first_name','last_name','email','token']
+        attributes: []
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}
       },
     },
   });
-  return Votes;
+  return Countries;
 };

@@ -4,7 +4,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.createTable('Roles', {
+      await queryInterface.createTable('roles', {
         id: { // usando Serial
           allowNull: false,
           autoIncrement: true,
@@ -16,13 +16,13 @@ module.exports = {
           unique: true,
           type: Sequelize.STRING
         },
-        createdAt: {
+        created_at: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'created_at' // --> Asegurense de establecer el campo en snake_case aquí
           // o usando created_at en vez de createdAt en el Key
         },
-        updatedAt: {
+        updated_at: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'updated_at'
