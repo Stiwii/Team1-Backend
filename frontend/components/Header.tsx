@@ -9,7 +9,7 @@ import {IoAddSharp} from 'react-icons/io5'
 import {BsHeart, BsCircle} from 'react-icons/bs'
 import { kMaxLength } from 'buffer'
 
-const Encabezado = () => {
+const Header = () => {
 
     const [clickMenu, setClickMenu] = useState(false)
     const handleClickMenu = () => setClickMenu(!clickMenu)
@@ -85,4 +85,4 @@ const Encabezado = () => {
     )
 }
 
-export default Encabezado
+export default Header
