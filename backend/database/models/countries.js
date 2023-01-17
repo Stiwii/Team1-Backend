@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
 
 
-      // Countries.hasMany(models.Profiles, {as: 'profiles', foreignKey: 'country_id'})
-      // Countries.hasMany(models.City, {as: 'city', foreignKey: 'country_id'}) 
+      Countries.hasMany(models.Profiles, {as: 'profiles', foreignKey: 'country_id'})
+      Countries.hasMany(models.States, {as: 'states', foreignKey: 'country_id'})
 
 
     }

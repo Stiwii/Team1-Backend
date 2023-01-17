@@ -10,16 +10,16 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.BIGINT  // Puede ser Integer o BigInt -> BigInt es mejor
         },
-        country_id:{
+        state_id:{
           allowNull: false,
-          type: Sequelize.STRING,
+          type: Sequelize.BIGINT,
           foreignKey: true,
           references: {
-            model: 'Countries',
+            model: 'states',
             key: 'id'
           },
           onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          onDelete: 'RESTRICT'
         },
         name: {
           allowNull: false,

@@ -1,6 +1,5 @@
 'use strict';
 const {Model} = require('sequelize');
-const models = require('./')
 module.exports = (sequelize, DataTypes) => {
   class Votes extends Model {
     /**
@@ -22,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
 		*/
       // Relations - VOTES
 
-      // Votes.belongsTo(models.Profiles)
-      // Votes.belongsTo(models.Publications)
+      Votes.belongsTo(models.Profiles)
+      Votes.belongsTo(models.Publications)
 
 			// Consejo avanzado, esta aquí por si más adelante hay una lección.
 			// Algunas veces, el scope tendrá includes
@@ -32,42 +31,27 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Votes.init({
-    id: {
+    publication_id: {
+      type: Sequelize.UUIDV4,
       allowNull: false,
-      type: DataTypes.UUID,
-      primaryKey: true
+      foreignKey: true,
+      references: {
+        model: 'publications',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
+      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
     },
-    first_name: {
-      allowNull: false, 
-      type: DataTypes.STRING  
-    },
-    last_name: {
-      allowNull: false, 
-      type: DataTypes.STRING
-    },
-    email: {
+    profile_id: {
+      type: Sequelize.UUIDV4,
       allowNull: false,
-      type: DataTypes.STRING,
-      validate: {
-        isEmail: true,
-        notEmpty: true,
-      }
-    },
-    username: {
-      allowNull: false,
-      type: DataTypes.STRING  
-    },
-    password: {
-      allowNull: false, 
-      type: DataTypes.STRING  
-    },
-    email_verified: {
-      defaultValue: null,
-      type: DataTypes.DATE
-    },
-    token: {
-      defaultValue: null,
-      type: DataTypes.STRING  
+      foreignKey: true,
+      references: {
+        model: 'profiles',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
+      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
     }
   }, {
     sequelize,
@@ -79,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
-        attributes: ['id','first_name','last_name','email','token']
+        attributes: ['email','token']
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}

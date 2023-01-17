@@ -6,7 +6,7 @@ module.exports = {
     try {
       await queryInterface.createTable('votes', {
         publication_id: {
-          type: Sequelize.UUIDV4,
+          type: Sequelize.UUID,
           allowNull: false,
           foreignKey: true,
           references: {
@@ -17,7 +17,7 @@ module.exports = {
           onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
         },
         profile_id: {
-          type: Sequelize.UUIDV4,
+          type: Sequelize.UUID,
           allowNull: false,
           foreignKey: true,
           references: {
@@ -49,7 +49,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.dropTable('Votes', { transaction })
+      await queryInterface.dropTable('votes', { transaction })
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()

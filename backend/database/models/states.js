@@ -3,48 +3,54 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Publications_types extends Model {
+  class States extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-
-      Publications_types.hasMany(models.Publications,  {as: 'publications', foreignKey: 'publication_type_id'})
+      // define association here
+      States.hasMany(models.Cities, {as: 'cities', foreignKey: 'state_id'})
+      States.belongsTo(models.Countries)
     }
   }
-  Publications_types.init({
-    id: { // usando UUID
+  States.init({
+    id: { // usando Serial
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.BIGINT 
+      type: DataTypes.BIGINT  // Puede ser Integer o BigInt -> BigInt es mejor
+    },
+    country_id:{
+      allowNull: false,
+      type: DataTypes.BIGINT,
+      foreignKey: true,
+      references: {
+        model: 'countries',
+        key: 'id'
+      }
     },
     name: {
       allowNull: false,
-      type: DataTypes.STRING,
-    },
-    description: {
-      allowNull: false,
-      type: DataTypes.TEXT
+      type: DataTypes.STRING
     }
   }, {
     sequelize,
-    modelName: 'Publications_types',
-    tableName: 'publications_types',  // y la tabla en la DB para ser explicitos
+    modelName: 'States',
+    tableName: 'states',  // y la tabla en la DB para ser explicitos
     underscored: true,  
     timestamps: true,
     // Los scopes son útiles para estandarizar dónde se regresa información  
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
-        attributes: ['id','name', 'description']
+        attributes: ['id', 'country_id','name']
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}
       },
     },
   });
-  return Publications;
+  return States;
 };

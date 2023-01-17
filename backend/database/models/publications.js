@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Publications.belongsTo(models.Profiles)
-      // Publications_types.hasMany(models.Votes, {as: 'votes', foreignKey: 'publication_id'})
-      // Publications.belongsTo(models.Cities)
-      // Publications.belongsTo(models.Publications_types)
+      Publications.belongsTo(models.Profiles)
+      Publications_types.hasMany(models.Votes, {as: 'votes', foreignKey: 'publication_id'})
+      Publications.belongsTo(models.Cities)
+      Publications.belongsTo(models.Publications_types)
     }
   }
   Publications.init({
@@ -26,15 +26,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: Profile,
+        model: 'profile',
         key: 'id'
       }
     },
     publication_type_id: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
       references: {
-        model: Publications_types,
+        model: 'publications_types',
         key: 'id'
       }
     },
@@ -59,9 +59,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     city_id: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
       references: {
-        model: Cities,
+        model: 'cities',
         key: 'id'
       }
     },

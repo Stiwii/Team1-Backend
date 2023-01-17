@@ -16,22 +16,22 @@ module.exports = {
           type: Sequelize.UUID,
           foreignKey: true,
           references: {
-            model: 'Profiles',
+            model: 'profiles',
             key: 'id'
           },
           onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          onDelete: 'RESTRICT'
         },
         publication_type_id:{
           allowNull: false,
           type: Sequelize.BIGINT,
           foreignKey: true,
           references: {
-            model: 'Publications_types',
+            model: 'publications_types',
             key: 'id'
           },
           onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          onDelete: 'RESTRICT'
         },
         title:{
           allowNull:false,
@@ -51,14 +51,14 @@ module.exports = {
         },
         city_id: {
           allowNull: false,
-          type: Sequelize.STRING,
+          type: Sequelize.BIGINT,
           foreignKey: true,
           references: {
-            model: 'City',
+            model: 'cities',
             key: 'id'
           },
           onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          onDelete: 'RESTRICT'
         },
         image_url: {
           allowNull: false,

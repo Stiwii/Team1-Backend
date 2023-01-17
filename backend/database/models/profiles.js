@@ -23,10 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       // Relations - PROFILES
       
       Profiles.belongsTo(models.Users)
-      // Profiles.belongsTo(models.Votes)
-      // Profiles.belongsTo(models.Publications)
-      // Profiles.hasMany(models.Roles, {as: 'roles', foreignKey: 'user_id'})
-      // Profiles.hasMany(models.Countries, {as: 'countries', foreignKey: 'user_id'})
+      Profiles.belongsTo(models.Votes)
+      Profiles.belongsTo(models.Publications)
+      Profiles.hasMany(models.Roles, {as: 'roles', foreignKey: 'role_id'})
+      Profiles.hasMany(models.Countries, {as: 'countries', foreignKey: 'country_id'})
 
 			// Consejo avanzado, esta aquí por si más adelante hay una lección.
 			// Algunas veces, el scope tendrá includes
