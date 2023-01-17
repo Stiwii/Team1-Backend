@@ -6,7 +6,6 @@ const { CustomError } = require('../utils/custom-error');
 class CountriesService {
 
     constructor(){
-
     }
 
     async findAndCount(query) {
