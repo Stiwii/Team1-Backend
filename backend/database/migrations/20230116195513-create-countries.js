@@ -1,31 +1,19 @@
-//migration de Votes creada por sequelize-cli y editada por nosotros
+//migration de Countries creada por sequelize-cli y editada por nosotros
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.createTable('votes', {
-        publication_id: {
-          type: Sequelize.UUIDV4,
+      await queryInterface.createTable('countries', {
+        id: { // usando Serial
           allowNull: false,
-          foreignKey: true,
-          references: {
-            model: 'publications',
-            key: 'id'
-          },
-          onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-          onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.BIGINT  // Puede ser Integer o BigInt -> BigInt es mejor
         },
-        profile_id: {
-          type: Sequelize.UUIDV4,
+        name: {
           allowNull: false,
-          foreignKey: true,
-          references: {
-            model: 'profiles',
-            key: 'id'
-          },
-          onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-          onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+          type: Sequelize.STRING
         },
         created_at: {
           allowNull: false,
@@ -39,7 +27,6 @@ module.exports = {
           field: 'updated_at'
         }
       }, { transaction })
-
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()
@@ -49,7 +36,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.dropTable('Votes', { transaction })
+      await queryInterface.dropTable('Countries', { transaction })
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()

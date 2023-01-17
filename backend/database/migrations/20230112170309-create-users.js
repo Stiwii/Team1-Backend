@@ -40,13 +40,13 @@ module.exports = {
           defaultValue: null,
           type: Sequelize.STRING  
         },
-        createdAt: {
+        created_at: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'created_at' // --> Asegurense de establecer el campo en snake_case aquí
           // o usando created_at en vez de createdAt en el Key
         },
-        updatedAt: {
+        updated_at: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'updated_at'
