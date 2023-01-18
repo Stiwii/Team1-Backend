@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-const Navbar = ({}) => {
+const Navbar = () => {
   return (
     <nav>
         <div className='h-[200px] justify-center items-center'>
