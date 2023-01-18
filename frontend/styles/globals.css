@@ -19,6 +19,13 @@
       font-size: 13px;
       line-height: 15.23px;
     }
+    .h500-normal-12px {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 14.06px;
+    }
     .h500-normal-16px {
       font-family: 'Roboto';
       font-style: normal;
@@ -46,6 +53,13 @@
       font-weight: 400;
       font-size: 16px;
       line-height: 19px
+    }
+    .h400-normal-18px {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 18px
     }
     .h600-medium--20px {
       font-family: 'Roboto';
@@ -76,6 +90,15 @@
   }
   .shadow-card-box {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  }
+  .shadow-hamburguer {
+    filter: drop-shadow(-5px 8px 20px rgba(0, 0, 0, 0.30));
+  }
+  .header-container {
+    width: 100vw;
+    height: 71px;
+    display: flex;
+    align-items: center;
   }
 };
 

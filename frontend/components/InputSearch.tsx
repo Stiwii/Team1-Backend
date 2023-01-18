@@ -4,12 +4,15 @@ import {AiOutlineSearch} from 'react-icons/ai'
 const InputSearch = () => {
 
     return (
-        <form className='search flex justify-center mb-20 w-[465px] h-[46px] h400-normal-13px'>
-            <div className='flex relative p-1 rounded-full w-full bg-[#fff]'>
-                <input id='search' type="text" placeholder='¿Qué quieres ver en tu ciudad?' className='search-input flex-1 p-2 ml-[24px] rounded-full bg-[#fff] text-[#000]'/>
-                <button className='button-input rounded-full w-12'><AiOutlineSearch className='lens text-[#334155] text-2xl ml-[12px]'/></button>
-            </div>
-        </form>
+        <div className='wrapper w-[100%] max-w-[465px] m-1 h400-normal-13px h-[46px]'>
+            <div className="searchBar w-[100%] flex flex-row items-center rounded-[23px] bg-white h-[100%]">
+                <input id="searchInput" type="text" name="searchInput" placeholder="¿Qué quieres ver en tu ciudad?" value="" className='w-[100%] bg-transparent ml-[24px]'/>
+                <button id="searchSubmit" type="submit" name="searchQuerySubmit" className='mr-[20px]'>
+                    <AiOutlineSearch className='lens text-primary-grayDark text-2xl'/>
+                </button>
+            </div>      
+        </div>
+
     )
 }
 

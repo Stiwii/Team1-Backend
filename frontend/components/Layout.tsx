@@ -1,6 +1,7 @@
 import Navbar from './Navbar'
 import Footer from './Footer'
 import { ReactNode } from 'react';
+import Header from './Header';
 
 interface Props {
   children?: ReactNode
@@ -10,6 +11,7 @@ interface Props {
 export default function Layout({ children, ...props }: Props) {  
   return (
     <>
+      <Header />
       <Navbar />
         {children}
       <Footer />
