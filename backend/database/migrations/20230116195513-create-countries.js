@@ -1,45 +1,19 @@
-//migration de users creada por sequelize-cli y editada por nosotros
+//migration de Countries creada por sequelize-cli y editada por nosotros
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.createTable('users', {
-        id: { // usando UUID
+      await queryInterface.createTable('countries', {
+        id: { // usando Serial
           allowNull: false,
-          defaultValue: Sequelize.UUIDV4,
+          autoIncrement: true,
           primaryKey: true,
-          type: Sequelize.UUID
+          type: Sequelize.BIGINT  // Puede ser Integer o BigInt -> BigInt es mejor
         },
-        first_name: { 
+        name: {
           allowNull: false,
-          type: Sequelize.STRING  
-        },
-        last_name: { 
-          allowNull: false,
-          type: Sequelize.STRING  
-        },
-        email: { 
-          allowNull: false,
-          unique: true,
-          type: Sequelize.STRING 
-        },
-        username: {
-          allowNull: false,
-          unique: true,
-          type: Sequelize.STRING  
-        },
-        password: { 
-          allowNull: false,
-          type: Sequelize.STRING  
-        },
-        email_verified: {
-          defaultValue: null,
-          type: Sequelize.DATE  
-        },
-        token: {
-          defaultValue: null,
-          type: Sequelize.STRING  
+          type: Sequelize.STRING
         },
         created_at: {
           allowNull: false,
@@ -62,7 +36,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.dropTable('users',{ transaction })
+      await queryInterface.dropTable('countries', { transaction })
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()

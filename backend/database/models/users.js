@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     /**
@@ -22,11 +20,14 @@ module.exports = (sequelize, DataTypes) => {
 			through: Solo funciona en belongsToMany, especiifica la tabla pivote usando el modelo js
 		*/
       // Users.belongsTo(models.MODELNAME1, {as: 'country', foreignKey: 'country_id'})
-
-      // Users.hasOne(models.Profiles, {as: 'profiles', foreignKey: 'user_id'}) <<<<<<<<<
-
+      // Users.hasOne(models.Profiles, {as: 'profiles', foreignKey: 'user_id'})
       // Users.hasMany(models.Profiles, {as: 'profiles', foreignKey: 'user_id'})
       // Users.belongsToMany(models.MODELNAME4, {as: 'votes', through: models.Votes, foreignKey: 'user_id'})
+
+      // Relations - USERS
+
+      Users.hasMany(models.Profiles, {as: 'profiles', foreignKey: 'user_id'}) 
+
 			// Consejo avanzado, esta aquí por si más adelante hay una lección.
 			// Algunas veces, el scope tendrá includes
       // para evitar errores es usual usarlo así
@@ -34,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Users.init({
-    id: {
+    id:{
       allowNull: false,
       type: DataTypes.UUID,
       primaryKey: true
@@ -50,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       allowNull: false,
       type: DataTypes.STRING,
+      unique:true,
       validate: {
         isEmail: true,
         notEmpty: true,
@@ -57,7 +59,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     username: {
       allowNull: false,
-      type: DataTypes.STRING  
+      type: DataTypes.STRING ,
+      unique: true
     },
     password: {
       allowNull: false, 

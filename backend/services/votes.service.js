@@ -1,9 +1,8 @@
 const models = require('../database/models');
-const uuid = require('uuid')
 const { Op } = require('sequelize');
 const { CustomError } = require('../utils/custom-error');
 
-class UsersService {
+class VotesService {
 
   constructor() {
   }
@@ -27,78 +26,66 @@ class UsersService {
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
-    const users = await models.Users.scope('public_view').findAndCountAll(options);
-    return users;
+    const votes = await models.Votes.scope('public_view').findAndCountAll(options);
+    return votes;
   }
 
-  async createUser({ first_name, last_name, email, username, password }) {
+  async createVote({ publication_id, profile_id }) {
     const transaction = await models.sequelize.transaction();
     try {
-      let newUser = await models.Users.create({
-        id: uuid.v4(),
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        username: username,
-        password: password
+      let newVote = await models.Votes.create({
+        publication_id: publication_id,
+        profile_id: profile_id,
       }, { transaction });
 
       await transaction.commit();
-      return newUser
+      return newVote
     } catch (error) {
       await transaction.rollback();
       throw error
     }
   }
   //Return Instance if we do not converted to json (or raw:true)
-  async getUserOr404(id) {
-    let user = await models.Users.findByPk(id);
+  async getVoteOr404(id) {
+    let vote = await models.Votes.findByPk(id);
 
-    if (!user) throw new CustomError('Not found User', 404, 'Not Found');
+    if (!vote) throw new CustomError('Not found Vote', 404, 'Not Found');
 
-    return user
+    return vote
   }
 
   //Return not an Instance raw:true | we also can converted to Json instead
-  async getUser(id) {
-    let user = await models.Users.findByPk(id, { raw: true })
-    return user
+  async getVote(id) {
+    let vote = await models.Votes.findByPk(id, { raw: true })
+    return vote
   }
 
-  async updateUser(id, obj) {
+  async updateVote(id, obj) {
     const transaction = await models.sequelize.transaction();
     try {
-      let user = await models.Users.findByPk(id);
-
-      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
-
-      let updatedUser = await user.update(obj, {
+      let vote = await models.Votes.findByPk(id);
+      if (!vote) throw new CustomError('Not found vote', 404, 'Not Found')
+      let updatedVote = await vote.update(obj, {
         where: {
           id: id
         }
       }, { transaction })
-
       await transaction.commit();
-
-      return updatedUser
+      return updatedVote
     } catch (error) {
       await transaction.rollback();
       throw error
     }
   }
 
-  async removeUser(id) {
+  async removeVote(id) {
     const transaction = await models.sequelize.transaction();
     try {
-      let user = await models.Users.findByPk(id)
-
-      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
-
-      await user.destroy({ transaction })
-
+      let vote = await models.Votes.findByPk(id)
+      if (!vote) throw new CustomError('Not found vote', 404, 'Not Found')
+      await vote.destroy({ transaction })
       await transaction.commit();
-
-      return user
+      return vote
     } catch (error) {
       await transaction.rollback();
       throw error
@@ -107,4 +94,4 @@ class UsersService {
 
 }
 
-module.exports = UsersService;
+module.exports = VotesService;

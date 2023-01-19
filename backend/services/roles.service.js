@@ -1,9 +1,8 @@
 const models = require('../database/models');
-const uuid = require('uuid')
 const { Op } = require('sequelize');
 const { CustomError } = require('../utils/custom-error');
 
-class UsersService {
+class RolesService {
 
   constructor() {
   }
@@ -27,52 +26,48 @@ class UsersService {
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
-    const users = await models.Users.scope('public_view').findAndCountAll(options);
-    return users;
+    const roles = await models.Roles.findAndCountAll(options);
+    return roles;
   }
 
-  async createUser({ first_name, last_name, email, username, password }) {
+  async createRole({ name }) {
     const transaction = await models.sequelize.transaction();
     try {
-      let newUser = await models.Users.create({
-        id: uuid.v4(),
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        username: username,
-        password: password
+      let newRole = await models.Roles.create({
+        name:name,
       }, { transaction });
 
       await transaction.commit();
-      return newUser
+      return newRole
     } catch (error) {
       await transaction.rollback();
       throw error
     }
   }
   //Return Instance if we do not converted to json (or raw:true)
-  async getUserOr404(id) {
-    let user = await models.Users.findByPk(id);
+  async getRoleOr404(id) {
+    let role = await models.Roles.findByPk(id);
 
-    if (!user) throw new CustomError('Not found User', 404, 'Not Found');
+    if (!role) throw new CustomError('Not found Role', 404, 'Not Found');
 
-    return user
+    return role
   }
 
   //Return not an Instance raw:true | we also can converted to Json instead
-  async getUser(id) {
-    let user = await models.Users.findByPk(id, { raw: true })
-    return user
+  async getRole(id) {
+    role
+    let role = await models.Roles.findByPk(id, { raw: true })
+    return role
   }
 
-  async updateUser(id, obj) {
+  async updateRole(id, obj) {
     const transaction = await models.sequelize.transaction();
     try {
-      let user = await models.Users.findByPk(id);
+      let role = await models.Roles.findByPk(id);
 
-      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
+      if (!role) throw new CustomError('Not found role', 404, 'Not Found')
 
-      let updatedUser = await user.update(obj, {
+      let updatedRole = await role.update(obj, {
         where: {
           id: id
         }
@@ -80,25 +75,21 @@ class UsersService {
 
       await transaction.commit();
 
-      return updatedUser
+      return updatedRole
     } catch (error) {
       await transaction.rollback();
       throw error
     }
   }
 
-  async removeUser(id) {
+  async removeRole(id) {
     const transaction = await models.sequelize.transaction();
     try {
-      let user = await models.Users.findByPk(id)
-
-      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
-
-      await user.destroy({ transaction })
-
+      let role = await models.Roles.findByPk(id)
+      if (!role) throw new CustomError('Not found role', 404, 'Not Found')
+      await role.destroy({ transaction })
       await transaction.commit();
-
-      return user
+      return role
     } catch (error) {
       await transaction.rollback();
       throw error
@@ -107,4 +98,4 @@ class UsersService {
 
 }
 
-module.exports = UsersService;
+module.exports = RolesService;

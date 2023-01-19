@@ -1,58 +1,37 @@
-//migration de users creada por sequelize-cli y editada por nosotros
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.createTable('users', {
+      await queryInterface.createTable('publications_types', {
+        //elegir si usan UUID o Serial
         id: { // usando UUID
           allowNull: false,
-          defaultValue: Sequelize.UUIDV4,
+          autoIncrement: true,
           primaryKey: true,
-          type: Sequelize.UUID
+          type: Sequelize.BIGINT 
         },
-        first_name: { 
+        name:{
+          allowNull:false,
+          type: Sequelize.STRING,
+        },
+        description:{
           allowNull: false,
-          type: Sequelize.STRING  
+          type: Sequelize.TEXT
         },
-        last_name: { 
-          allowNull: false,
-          type: Sequelize.STRING  
-        },
-        email: { 
-          allowNull: false,
-          unique: true,
-          type: Sequelize.STRING 
-        },
-        username: {
-          allowNull: false,
-          unique: true,
-          type: Sequelize.STRING  
-        },
-        password: { 
-          allowNull: false,
-          type: Sequelize.STRING  
-        },
-        email_verified: {
-          defaultValue: null,
-          type: Sequelize.DATE  
-        },
-        token: {
-          defaultValue: null,
-          type: Sequelize.STRING  
-        },
-        created_at: {
+        createdAt: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'created_at' // --> Asegurense de establecer el campo en snake_case aquí
           // o usando created_at en vez de createdAt en el Key
         },
-        updated_at: {
+        updatedAt: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'updated_at'
         }
       }, { transaction })
+
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()
@@ -62,7 +41,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.dropTable('users',{ transaction })
+      await queryInterface.dropTable('publications_types',{ transaction })
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()
