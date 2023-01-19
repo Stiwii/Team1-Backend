@@ -20,7 +20,7 @@ module.exports = {
             key: 'id'
           },
           onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-          onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+          onDelete: 'CASCADE' // Elijan como quieren que se comporte la DB
         },
         role_id: {
           type: Sequelize.BIGINT,
