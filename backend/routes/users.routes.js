@@ -2,36 +2,27 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    getUsers,
-    addUser,
-    getUser,
-    updateUser,
-    removeUser } = require('../controllers/users.controller')
+  getUsers,
+  getUser,
+  updateUser } = require('../controllers/users.controller')
 
-// const {
-//     isAdminRole,
-//     isTheSameUser,
-//     isAdminOrSameUser,
-//     isAnyRoleByList
-// } = require('../middlewares/auth.checkers') // requerimos la función
+const { getVote } = require('../controllers/votes.controller')
+const { getPublication} = require('../controllers/publications.controller')
 
-/* 
- Ideen una manera que sea modular, limpia y escalable.
- Si hacen muchas funciones como isAdminOrSameUser para cada situación,
- mientras se pueda leer claramente y escalar, está bien.
-*/
-//Solo cuiden la escalabilidad, esta son unas ideas
+//? this route is administrave
+router.route('/')
+  .get(getUsers)
 
-// router.get('/', isAnyRoleByList(['admin']), getUsers) //
-// router.post('/', isAdminRole, addUser) // 
-// router.get('/:id', isAdminOrSameUser, getUser) //
-// router.put('/:id', isTheSameUser, updateUser) //
-// router.delete('/:id', removeUser) //
+//? this routes is for users loged
+router.route('/:id')
+  .get(getUser)
+  .put(updateUser)
 
-router.get('/', getUsers)
-router.post('/', addUser)
-router.get('/:id', getUser)
-router.put('/:id', updateUser)
-router.delete('/:id', removeUser)
+router.route('/:id/votes')
+  .get(getVote)
+
+router.route('/:id/publications')
+  .get(getPublication)
+
 
 module.exports = router;

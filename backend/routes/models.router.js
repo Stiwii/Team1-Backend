@@ -1,26 +1,21 @@
 const express = require('express');
 const routesUsers = require('./users.routes')
-// const isAuthenticatedByPassportJwt = require('../libs/passport')
+const routesPublicationsTypes = require('./publicationsTypes.routes')
 const routesPublications = require('./publications.routes')
-const routesCountries = require('./countries.routes')
-const routesCities = require('./cities.routes')
+const routesStates = require('./states.routes')
+
 
 
 function routerModels(app) {
-  const router = express.Router();
+  const router = express.Router()
 
-  app.use('/api/v1', router);
+  app.use('/api/v1', router)
 
-  router.use('/users', routesUsers)
-  // router.use('/users', isAuthenticatedByPassportJwt ,routesUsers)//<- middleware here
-  // other models here
 
-  router.use('/users', routesUsers)
+  router.use('/publications-types', routesPublicationsTypes)
   router.use('/publications', routesPublications)
-  router.use('/countries', routesCountries)
-  router.use('/cities', routesCities)
-  // router.use('/publications_types',routes)
-  // other models here
-}
+  router.use('/users', routesUsers)
+  router.use('./states',routesStates)
+
 
 module.exports = routerModels;

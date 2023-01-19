@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUIDV4,
       allowNull: false,
       foreignKey: true,
+      unique:true,
       references: {
         model: 'publications',
         key: 'id'

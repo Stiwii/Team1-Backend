@@ -1,7 +1,3 @@
-//Seeder creado
-
-//noten que es igual a una migración!
-
 'use strict';
 const { Op } = require("sequelize");
 /** @type {import('sequelize-cli').Migration} */
@@ -11,12 +7,17 @@ module.exports = {
     try {
       await queryInterface.bulkInsert('roles', [
         {
-          name: 'public',
+          name: 'event',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          name: 'admin',
+          name: 'concert',
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          name: 'tournament',
           created_at: new Date(),
           updated_at: new Date()
         }
@@ -34,12 +35,12 @@ module.exports = {
     try {
       await queryInterface.bulkDelete('roles', {
         name: {
-          [Op.or]: ['admin', 'public',]
+          [Op.or]: ['event', 'concert', 'tournament']
         }
-      }, { transaction });
-      await transaction.commit();
+      }, { transaction })
+      await transaction.commit()
     } catch (error) {
-      await transaction.rollback();
+      await transaction.rollback()
       throw error
     }
   }

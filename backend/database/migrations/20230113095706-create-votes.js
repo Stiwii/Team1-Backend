@@ -9,12 +9,13 @@ module.exports = {
           type: Sequelize.UUID,
           allowNull: false,
           foreignKey: true,
+          unique: true,
           references: {
             model: 'publications',
             key: 'id'
           },
           onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-          onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+          onDelete: 'CASCADE' // Elijan como quieren que se comporte la DB
         },
         profile_id: {
           type: Sequelize.UUID,
@@ -25,7 +26,7 @@ module.exports = {
             key: 'id'
           },
           onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-          onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+          onDelete: 'CASCADE' // Elijan como quieren que se comporte la DB
         },
         created_at: {
           allowNull: false,

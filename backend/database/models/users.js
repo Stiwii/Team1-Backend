@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 
       // Relations - USERS
 
-      Users.hasOne(models.Profiles, {as: 'profiles', foreignKey: 'user_id'}) 
+      Users.hasMany(models.Profiles, {as: 'profiles', foreignKey: 'user_id'}) 
 
 			// Consejo avanzado, esta aquí por si más adelante hay una lección.
 			// Algunas veces, el scope tendrá includes
@@ -51,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       allowNull: false,
       type: DataTypes.STRING,
+      unique:true,
       validate: {
         isEmail: true,
         notEmpty: true,
@@ -58,7 +59,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     username: {
       allowNull: false,
-      type: DataTypes.STRING  
+      type: DataTypes.STRING ,
+      unique: true
     },
     password: {
       allowNull: false, 

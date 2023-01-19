@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { getCities } = require('../controllers/cities.controller')
+const { getRoles } = require('../controllers/roles.controller')
 
 router.route('/')
-	.get(getCities)
+	.get(getRoles)
 
 
 module.exports = router;

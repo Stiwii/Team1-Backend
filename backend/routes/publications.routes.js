@@ -1,15 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-const publicationsControllers = require('../controllers/publications.controller')
+const {getPublications, getPublication,addPublication, removePublication} = require('../controllers/publications.controller')
+const { getVotes } = require('../controllers/votes.controller')
 
 router.route('/')
-    .get(publicationsControllers.getPublications)
-    .post(publicationsControllers.addPublication)
+  .get(getPublications)
+  .post(addPublication)
 
 router.route('/:id')
-    .get(publicationsControllers.getPublication)
-    .put(publicationsControllers.updatePublication)
-    .delete(publicationsControllers.removePublication)
+  .get(getPublication)
+  .delete(removePublication)
+
+router.route('/:id/votes')
+  .get(getVotes)
 
 module.exports = router;

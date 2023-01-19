@@ -1,29 +1,19 @@
-//Seeder creado
-
-//noten que es igual a una migración!
-
 'use strict';
 const { Op } = require("sequelize");
-const {v4: uuid4} = require('uuid');
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.bulkInsert('profiles', [
+      await queryInterface.bulkInsert('roles', [
         {
-          id: '',
-          user_id:'',
-          role_id:'',
-          country_id:'',
-          image_url:'',
-          code_phone:'',
-          phone:'',
+          id:'',
+          country_id: '',
+          name: '',
           created_at: new Date(),
           updated_at: new Date()
         }
-    ], { transaction })
+      ], { transaction })
 
       await transaction.commit();
     } catch (error) {
@@ -35,14 +25,14 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.bulkDelete('profiles', {
-        id: {
-          [Op.or]: []
-        } 
-      }, { transaction });
-      await transaction.commit();
+      await queryInterface.bulkDelete('roles', {
+        name: {
+          [Op.or]: ['']
+        }
+      }, { transaction })
+      await transaction.commit()
     } catch (error) {
-      await transaction.rollback();
+      await transaction.rollback()
       throw error
     }
   }
