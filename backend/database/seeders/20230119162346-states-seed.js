@@ -5,7 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.bulkInsert('roles', [
+      await queryInterface.bulkInsert('states', [
         {
           country_id: '1',
           name: 'Sinaloa',
@@ -24,9 +24,9 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.bulkDelete('roles', {
+      await queryInterface.bulkDelete('states', {
         name: {
-          [Op.or]: ['']
+          [Op.or]: ['Sinaloa']
         }
       }, { transaction })
       await transaction.commit()

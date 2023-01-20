@@ -8,16 +8,19 @@ module.exports = {
       await queryInterface.bulkInsert('publications_types', [
         {
           name: 'event',
+          description: 'event',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
           name: 'concert',
+          description: 'concert',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
           name: 'tournament',
+          description: 'tournament',
           created_at: new Date(),
           updated_at: new Date()
         }
