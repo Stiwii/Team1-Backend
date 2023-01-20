@@ -17,5 +17,6 @@ function routerModels(app) {
   router.use('/users', routesUsers)
   router.use('./states',routesStates)
 
+}
 
 module.exports = routerModels;

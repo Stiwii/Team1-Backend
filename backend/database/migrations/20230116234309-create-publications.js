@@ -34,11 +34,9 @@ module.exports = {
           onDelete: 'RESTRICT'
         },
         title:{
-          allowNull:false,
           type: Sequelize.STRING,
         },
         description:{
-          allowNull: false,
           type: Sequelize.TEXT
         },
         content: {
@@ -46,7 +44,6 @@ module.exports = {
           type: Sequelize.TEXT
         },
         picture: {
-          allowNull: false,
           type: Sequelize.STRING
         },
         city_id: {
