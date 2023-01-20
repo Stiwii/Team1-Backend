@@ -39,9 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'publications',
         key: 'id'
-      },
-      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+      } // Elijan como quieren que se comporte la DB
     },
     profile_id: {
       type: DataTypes.UUIDV4,
@@ -50,9 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'profiles',
         key: 'id'
-      },
-      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+      }
     }
   }, {
     sequelize,

@@ -47,9 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'users',
         key: 'id'
-      },
-      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+      }
     },
     role_id: {
       type: DataTypes.BIGINT,
@@ -58,9 +56,7 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'roles',
         key: 'id'
-      },
-      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+      }
     },
     country_id: {
       type: DataTypes.BIGINT,
@@ -69,22 +65,15 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'countries',
         key: 'id'
-      },
-      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+      }
     },
     image_url: {
-      allowNull: false,
-      unique: true,
       type: DataTypes.STRING
     },
     code_phone: {
-      allowNull: false,
-      unique: true,
       type: DataTypes.INTEGER
     },
     phone: {
-      allowNull: false,
       type: DataTypes.INTEGER
     }
   }, {
