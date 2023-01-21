@@ -7,18 +7,21 @@ module.exports = {
     try {
       await queryInterface.bulkInsert('publications_types', [
         {
+          id: '1',
           name: 'event',
           description: 'event',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
+          id: '2',
           name: 'concert',
           description: 'concert',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
+          id: '3',
           name: 'tournament',
           description: 'tournament',
           created_at: new Date(),
