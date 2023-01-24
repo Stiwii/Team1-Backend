@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passportJWT = require('../libs/passport')
 
 const {
     getUsers,
@@ -7,6 +8,7 @@ const {
     getUser,
     updateUser,
     removeUser,
+    getInfoUser,
     getEmail
  } = require('../controllers/users.controller')
 
@@ -18,7 +20,7 @@ router.route('/')
   .get(getUsers)
 // .post(addUser)
 router.get('/mail/', getEmail)
-
+router.get('/user-info',passportJWT.authenticate('jwt', {session: false}), getInfoUser)
 //? this routes is for users loged
 router.route('/:id')
   .get(getUser)

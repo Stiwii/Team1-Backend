@@ -67,6 +67,11 @@ class UsersService {
         return user
     }
 
+    async getInfo(id) {
+        let user = await models.Users.scope('user_info').findByPk(id, { raw: true })
+        return user
+    }
+
     async updateUser(id, obj) {
         const transaction = await models.sequelize.transaction();
         try {
@@ -90,7 +95,7 @@ class UsersService {
     }
 
 
-    async setUser({ firstName, lastName, email, username, password, countryId, imageUrl, codePhone, phone }) {
+    async setUser({ firstName, lastName, email, username, password, imageUrl, codePhone, phone }) {
         const transaction = await models.sequelize.transaction();
         try {
             let newUser = await models.Users.create({
@@ -105,13 +110,14 @@ class UsersService {
                 id: uuid.v4(),
                 user_id: newUser.id,
                 // country_id: countryId,
+                // role_id:roleId,
                 image_url: imageUrl,
                 code_phone: codePhone,
                 phone: phone
             }, { transaction });
 
             await transaction.commit();
-            return {
+            return  {
                 id: newUser.id,
                 firstName: newUser.first_name,
                 lastName: newUser.last_name,

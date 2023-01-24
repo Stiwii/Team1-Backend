@@ -61,6 +61,18 @@ const getUser = async(request, response, next) => {
     }
 }
 
+const getInfoUser = async(request, response, next) => {
+  try {
+      let  id  = request.user.id
+      // const id = "FAA"
+      // console.log("FROM TOKEN");
+      let user = await usersService.getInfo(id)
+      return response.json({results: user})
+  } catch (error) {
+      next(error)
+  }
+}
+
 const getEmail = async(request, response, next) => {
     try {
         let { email } = request.body
@@ -100,5 +112,6 @@ module.exports = {
     getUser,
     updateUser,
     removeUser,
-    getEmail
+    getEmail,
+    getInfoUser
 }

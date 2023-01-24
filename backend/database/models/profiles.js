@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
 		*/
       // Relations - PROFILES
       
-      Profiles.belongsTo(models.Users, {as: 'user', foreignKey: 'profile_id'})
+      Profiles.belongsTo(models.Users, {as: 'user'})
+      // Profiles.belongsTo(models.Users, {as: 'user', foreignKey: 'profile_id'})
       Profiles.belongsTo(models.Roles,{as: 'role', foreignKey: 'role_id'})
       Profiles.belongsTo(models.Countries)
       Profiles.hasMany(models.Votes, {as: 'votes', foreignKey: 'profile_id'})

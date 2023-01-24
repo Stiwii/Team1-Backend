@@ -6,7 +6,7 @@ const dotenv = require('dotenv')
 dotenv.config();
 const authService = new AuthService();
 
-const signUp = async (request, response, next) => {
+const logIn = async (request, response, next) => {
     const { email, password } = request.body
     try {
         const user = await authService.checkUsersCredentials(email, password)
@@ -29,7 +29,6 @@ const signUp = async (request, response, next) => {
     }
 }
 
-
 module.exports = {
-    signUp
+    logIn
 }

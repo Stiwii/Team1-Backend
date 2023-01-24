@@ -1,7 +1,10 @@
 const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
+const {swaggerDocs: V1SwaggerDocs } = require ('./utils/swagger')
+
 require('dotenv').config()
+
 const routerModels = require('./routes/models.router');
 
 const app = express()
@@ -62,4 +65,5 @@ routerModels(app) //Here we can add others
 
 app.listen(PORT, () => {
   console.log(`Server : http://localhost:${PORT}`)
+  // V1SwaggerDocs(app,config.api.port)
 })

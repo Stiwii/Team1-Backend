@@ -76,6 +76,9 @@ module.exports = (sequelize, DataTypes) => {
       public_view: {
         attributes: ['id','first_name',"last_name","email","username"]
       },
+      user_info: {
+        attributes: ['id',"email","username"]
+      },
       check_user: {
         attributes: ['id','first_name',"last_name","email","username","password"]
       },
