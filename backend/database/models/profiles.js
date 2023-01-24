@@ -21,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
 		*/
       // Relations - PROFILES
       
-      Profiles.belongsTo(models.Users, {as: 'users', foreignKey: 'profile_id'})
-      Profiles.belongsTo(models.Roles)
+      Profiles.belongsTo(models.Users, {as: 'user', foreignKey: 'profile_id'})
+      Profiles.belongsTo(models.Roles,{as: 'role', foreignKey: 'role_id'})
       Profiles.belongsTo(models.Countries)
       Profiles.hasMany(models.Votes, {as: 'votes', foreignKey: 'profile_id'})
       Profiles.hasMany(models.Publications, {as: 'publications', foreignKey: 'profile_id'})
@@ -42,10 +42,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     role_id: {
-      type: DataTypes.BIGINT
+      type: DataTypes.BIGINT,
+      defaultValue:"1"
     },
     country_id: {
-      type: DataTypes.BIGINT
+      type: DataTypes.BIGINT,
+      defaultValue:"1"
     },
     image_url: {
       type: DataTypes.STRING
@@ -67,6 +69,9 @@ module.exports = (sequelize, DataTypes) => {
 		scopes: {
       public_view: {
         attributes: ['id']
+      },
+      new_profile: {
+        attributes: ['id',"image_url","code_phone","phone"]
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}

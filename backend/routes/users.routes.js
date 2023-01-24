@@ -17,7 +17,7 @@ const { getPublication} = require('../controllers/publications.controller')
 router.route('/')
   .get(getUsers)
 // .post(addUser)
-// router.get('/mail/', getEmail)
+router.get('/mail/', getEmail)
 
 //? this routes is for users loged
 router.route('/:id')

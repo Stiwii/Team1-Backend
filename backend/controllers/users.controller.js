@@ -1,6 +1,9 @@
 const UsersService = require('../services/users.service');
 const mailer = require('../utils/mailer')
 const {getPagination, getPagingData} = require('../utils/sequelize-utils');
+const dotenv = require('dotenv')
+
+dotenv.config();
 
 const usersService = new UsersService();
 

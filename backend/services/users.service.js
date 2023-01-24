@@ -104,8 +104,7 @@ class UsersService {
             let newProfile = await models.Profiles.create({
                 id: uuid.v4(),
                 user_id: newUser.id,
-                role_id: "2",
-                country_id: countryId,
+                // country_id: countryId,
                 image_url: imageUrl,
                 code_phone: codePhone,
                 phone: phone
@@ -130,15 +129,18 @@ class UsersService {
     }
 
     async getUserByEmail(email) {
-        let user = await models.Users.findOne({
+        let user = await models.Users.scope('check_user').findOne({
             where: {
                 email: email
             },
-            include: {
-                model: models.Profiles,
-                as: 'profiles',
-                attributes: ['id']
-            }
+            include: [{
+                model: models.Profiles.scope('new_profile'),
+                as: 'profile',
+                include: {
+                    model: models.Roles.scope('public_view'),
+                    as: 'role'
+                }
+            }]    
         })
         return user
     }

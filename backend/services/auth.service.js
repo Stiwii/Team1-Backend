@@ -12,7 +12,7 @@ class AuthService {
         try {
             let user = await usersService.getUserByEmail(email)
             const verifyPassword = comparePassword(password, user.password)
-            console.log("FROM CHECKUSER: ",verifyPassword);
+            // console.log("FROM CHECKUSER: ",user.password);
             if (verifyPassword) {
                 return user
             }

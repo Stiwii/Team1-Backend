@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     name: {
-      type: DataTypes.STRING  
+      type: DataTypes.STRING,
     }
   }, {
     sequelize,
@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
-        attributes: ['id','first_name','last_name','email','token']
+        attributes: ['id','name']
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}

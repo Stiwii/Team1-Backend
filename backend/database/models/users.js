@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 
       // Relations - USERS
 
-      Users.hasMany(models.Profiles, {as: 'profiles', foreignKey: 'user_id'}) 
+      Users.hasMany(models.Profiles, {as: 'profile', foreignKey: 'user_id'}) 
 
 			// Consejo avanzado, esta aquí por si más adelante hay una lección.
 			// Algunas veces, el scope tendrá includes
@@ -75,6 +75,9 @@ module.exports = (sequelize, DataTypes) => {
 		scopes: {
       public_view: {
         attributes: ['id','first_name',"last_name","email","username"]
+      },
+      check_user: {
+        attributes: ['id','first_name',"last_name","email","username","password"]
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}
