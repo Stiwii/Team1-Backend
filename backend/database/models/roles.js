@@ -31,12 +31,10 @@ module.exports = (sequelize, DataTypes) => {
   };
   Roles.init({
     id: {
-      allowNull: false,
       type: DataTypes.BIGINT,
       primaryKey: true
     },
     name: {
-      allowNull: false, 
       type: DataTypes.STRING  
     }
   }, {

@@ -32,23 +32,10 @@ module.exports = (sequelize, DataTypes) => {
   };
   Votes.init({
     publication_id: {
-      type: DataTypes.UUIDV4,
-      allowNull: false,
-      foreignKey: true,
-      unique:true,
-      references: {
-        model: 'publications',
-        key: 'id'
-      } // Elijan como quieren que se comporte la DB
+      type: DataTypes.UUIDV4
     },
     profile_id: {
-      type: DataTypes.UUIDV4,
-      allowNull: false,
-      foreignKey: true,
-      references: {
-        model: 'profiles',
-        key: 'id'
-      }
+      type: DataTypes.UUIDV4
     }
   }, {
     sequelize,
@@ -60,6 +47,9 @@ module.exports = (sequelize, DataTypes) => {
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
+        attributes: ['id','token']
+      },
+      new: {
         attributes: ['email','token']
       },
       no_timestamps: {

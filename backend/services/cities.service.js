@@ -102,7 +102,6 @@ class CitiesService {
             throw error
         }
     }
-
   }
   
   module.exports = CitiesService;

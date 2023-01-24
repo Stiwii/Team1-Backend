@@ -21,11 +21,9 @@ module.exports = (sequelize, DataTypes) => {
   Countries.init({
     id: {
       type: DataTypes.BIGINT,
-      allowNull: false,
       primaryKey: true
     },
     name: {
-      allowNull: false, 
       type: DataTypes.STRING  
     }
   }, {

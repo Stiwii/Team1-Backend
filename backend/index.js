@@ -29,7 +29,6 @@ if (process.env.NODE_ENV === 'production') {
        https://stackoverflow.com/questions/70752770/helmet-express-err-blocked-by-response-notsameorigin-200
   */
   app.use(helmet({crossOriginResourcePolicy: false}))
-    
 } else {
   app.use(cors())
 }

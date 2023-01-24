@@ -48,6 +48,7 @@ module.exports = {
           type: Sequelize.STRING
         },
         code_phone: {
+          allowNull: false,
           type: Sequelize.INTEGER
         },
         phone: {

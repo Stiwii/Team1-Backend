@@ -16,17 +16,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   Publications_types.init({
     id: { // usando UUID
-      allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.BIGINT 
     },
     name: {
-      allowNull: false,
       type: DataTypes.STRING,
     },
     description: {
-      allowNull: false,
       type: DataTypes.TEXT
     }
   }, {

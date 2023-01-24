@@ -17,22 +17,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   States.init({
     id: { // usando Serial
-      allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.BIGINT  // Puede ser Integer o BigInt -> BigInt es mejor
     },
     country_id:{
-      allowNull: false,
-      type: DataTypes.BIGINT,
-      foreignKey: true,
-      references: {
-        model: 'countries',
-        key: 'id'
-      }
+      type: DataTypes.BIGINT
     },
     name: {
-      allowNull: false,
       type: DataTypes.STRING
     }
   }, {

@@ -20,14 +20,16 @@ const getProfiles = async (request, response, next) => {
   }
 }
 
-const addProfile = async (request, response, next) => {
-  try {
-    let { body } = request
-    let profile = await profilesService.createProfile(body)
-    return response.status(201).json({ results: profile })
-  } catch (error) {
-    next(error)
-  }
+const addProfile = async(request, response, next) => {
+    try {
+        const userId = request.params.id
+        // console.log("FROM CONTROLLER: ",id);
+        let { body } = request
+        let profile = await profilesService.createProfile(userId,body)
+        return response.status(201).json({results: profile})
+    } catch (error) {
+        next(error)
+    }
 }
 
 const getProfile = async (request, response, next) => {
