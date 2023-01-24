@@ -1,4 +1,5 @@
 const UsersService = require('../services/users.service');
+const mailer = require('../utils/mailer')
 const {getPagination, getPagingData} = require('../utils/sequelize-utils');
 
 const usersService = new UsersService();
@@ -30,10 +31,38 @@ const addUser = async(request, response, next) => {
     }
 }
 
+const registerUser = async(request, response, next) => {
+    try {
+        let { body } = request
+        let user = await usersService.setUser(body)
+        await mailer.sendMail({
+            from:  process.env.MAIL_SEND,
+            to: user.email,
+            subject: `Verify account ${user.firstName} From Harmonyk`,
+            html: `<h1>Enter the following link to verify your account: ${process.env.HOST_CLOUD}/api/v1/auth/verify-user/${user.id}</h1> `,
+            text: 'Thanks you',
+        })
+        return response.status(201).json({results: user})
+    } catch (error) {
+        next(error)
+    }
+}
+
 const getUser = async(request, response, next) => {
     try {
         let { id } = request.params
         let users = await usersService.getUserOr404(id)
+        return response.json({results: users})
+    } catch (error) {
+        next(error)
+    }
+}
+
+const getEmail = async(request, response, next) => {
+    try {
+        let { email } = request.body
+        console.log("FROM CONTROLLER EMAIL: ",email);
+        let users = await usersService.getUserByEmail(email)
         return response.json({results: users})
     } catch (error) {
         next(error)
@@ -64,7 +93,9 @@ const removeUser = async(request, response, next) => {
 module.exports = {
     getUsers,
     addUser,
+    registerUser,
     getUser,
     updateUser,
-    removeUser
+    removeUser,
+    getEmail
 }

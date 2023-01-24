@@ -36,40 +36,28 @@ module.exports = (sequelize, DataTypes) => {
   };
   Users.init({
     id:{
-      allowNull: false,
       type: DataTypes.UUID,
       primaryKey: true
     },
     first_name: {
-      allowNull: false, 
       type: DataTypes.STRING  
     },
     last_name: {
-      allowNull: false, 
       type: DataTypes.STRING
     },
     email: {
-      allowNull: false,
       type: DataTypes.STRING,
-      validate: {
-        isEmail: true,
-        notEmpty: true,
-      }
     },
     username: {
-      allowNull: false,
       type: DataTypes.STRING  
     },
     password: {
-      allowNull: false, 
       type: DataTypes.STRING  
     },
     email_verified: {
-      defaultValue: null,
       type: DataTypes.DATE
     },
     token: {
-      defaultValue: null,
       type: DataTypes.STRING  
     }
   }, {
@@ -82,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
-        attributes: ['id','first_name','last_name','email','token']
+        attributes: ['id','first_name',"last_name","email","username"]
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}

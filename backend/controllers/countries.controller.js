@@ -1,4 +1,4 @@
-const CountriesService = require('../services/countries.services');
+const CountriesService = require('../services/countries.service');
 const {getPagination, getPagingData} = require('../utils/sequelize-utils');
 
 const countriesService = new CountriesService();

@@ -6,7 +6,9 @@ const {
     addUser,
     getUser,
     updateUser,
-    removeUser } = require('../controllers/users.controller')
+    removeUser,
+    getEmail
+ } = require('../controllers/users.controller')
 
 // const {
 //     isAdminRole,
@@ -30,6 +32,7 @@ const {
 
 router.get('/', getUsers)
 router.post('/', addUser)
+router.get('/mail/', getEmail)
 router.get('/:id', getUser)
 router.put('/:id', updateUser)
 router.delete('/:id', removeUser)

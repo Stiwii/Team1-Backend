@@ -1,6 +1,5 @@
 'use strict';
 const {Model} = require('sequelize');
-const models = require('./')
 module.exports = (sequelize, DataTypes) => {
   class Profiles extends Model {
     /**
@@ -22,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
 		*/
       // Relations - PROFILES
       
-      Profiles.belongsTo(models.Users)
-      Profiles.belongsTo(models.Votes)
-      Profiles.belongsTo(models.Publications)
-      Profiles.hasMany(models.Roles, {as: 'roles', foreignKey: 'role_id'})
-      Profiles.hasMany(models.Countries, {as: 'countries', foreignKey: 'country_id'})
+      Profiles.belongsTo(models.Users, {as: 'users', foreignKey: 'profile_id'})
+      Profiles.belongsTo(models.Roles)
+      Profiles.belongsTo(models.Countries)
+      Profiles.hasMany(models.Votes, {as: 'votes', foreignKey: 'profile_id'})
+      Profiles.hasMany(models.Publications, {as: 'publications', foreignKey: 'profile_id'})
 
 			// Consejo avanzado, esta aquí por si más adelante hay una lección.
 			// Algunas veces, el scope tendrá includes
@@ -36,55 +35,27 @@ module.exports = (sequelize, DataTypes) => {
   };
   Profiles.init({
     id: {
-      allowNull: false,
       type: DataTypes.UUID,
       primaryKey: true
     },
     user_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      foreignKey: true,
-      references: {
-        model: 'users',
-        key: 'id'
-      },
-      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+      type: DataTypes.UUID
     },
     role_id: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-      foreignKey: true,
-      references: {
-        model: 'roles',
-        key: 'id'
-      },
-      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+      type: DataTypes.BIGINT
     },
     country_id: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-      foreignKey: true,
-      references: {
-        model: 'countries',
-        key: 'id'
-      },
-      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
+      type: DataTypes.BIGINT
     },
     image_url: {
-      allowNull: false,
-      unique: true,
       type: DataTypes.STRING
     },
     code_phone: {
-      allowNull: false,
       unique: true,
       type: DataTypes.INTEGER
     },
     phone: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.INTEGER
     }
   }, {
@@ -97,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
-        attributes: ['id','first_name','last_name','email','token']
+        attributes: ['id']
       },
       no_timestamps: {
         attributes: {exclude: ['created_at', 'updated_at']}

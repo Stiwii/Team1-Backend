@@ -31,17 +31,18 @@ class ProfilesService {
         return roles;
     }
 
-    async createProfile({ userId,roleId,imageUrl,codePhone,phone,countryId }) {
+    async createProfile(obj) {
         const transaction = await models.sequelize.transaction();
         try {
+            // console.log('FROM SERVICE PROFILE: ',obj);
             let newProfile = await models.Profiles.create({
                 id:uuid.v4(),
-                user_id:userId,
-                role_id:roleId,
-                image_url:imageUrl,
-                code_phone:codePhone,
-                phone:phone,
-                country_id:countryId
+                user_id:obj.user_id,
+                role_id:obj.role_id,
+                country_id:obj.country_id,
+                image_url:obj.image_url,
+                code_phone:obj.code_phone,
+                phone:obj.phone
             }, { transaction });
 
             await transaction.commit();

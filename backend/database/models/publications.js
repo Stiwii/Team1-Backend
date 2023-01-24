@@ -23,54 +23,31 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     profile_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: 'profile',
-        key: 'id'
-      }
+      type: DataTypes.UUID
     },
     publication_type_id: {
-      allowNull: false,
-      type: DataTypes.BIGINT,
-      references: {
-        model: 'publications_types',
-        key: 'id'
-      }
+      type: DataTypes.BIGINT
     },
     title: {
-      allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     description: {
-      allowNull: false,
       type: DataTypes.TEXT
     },
     content: {
-      allowNull: false,
       type: DataTypes.TEXT
     },
     picture: {
-      allowNull: false,
       type: DataTypes.STRING,
       validate:{
         isUrl:true
       }
     },
     city_id: {
-      allowNull: false,
-      type: DataTypes.BIGINT,
-      references: {
-        model: 'cities',
-        key: 'id'
-      }
+      type: DataTypes.BIGINT
     },
     image_url: {
-      allowNull: false,
-      type: DataTypes.STRING,
-      validate: {
-        isUrl: true
-      }
+      type: DataTypes.STRING
     }
   }, {
     sequelize,

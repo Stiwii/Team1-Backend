@@ -1,4 +1,4 @@
-const PublicationsService = require('../services/publications.services');
+const PublicationsService = require('../services/publications.service');
 const {getPagination, getPagingData} = require('../utils/sequelize-utils');
 
 const publicationsService = new PublicationsService();

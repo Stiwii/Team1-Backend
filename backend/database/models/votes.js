@@ -33,25 +33,9 @@ module.exports = (sequelize, DataTypes) => {
   Votes.init({
     publication_id: {
       type: DataTypes.UUIDV4,
-      allowNull: false,
-      foreignKey: true,
-      references: {
-        model: 'publications',
-        key: 'id'
-      },
-      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
     },
     profile_id: {
       type: DataTypes.UUIDV4,
-      allowNull: false,
-      foreignKey: true,
-      references: {
-        model: 'profiles',
-        key: 'id'
-      },
-      onUpdate: 'CASCADE', // Casi siempre elegimos CASCADE
-      onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
     }
   }, {
     sequelize,
@@ -63,6 +47,9 @@ module.exports = (sequelize, DataTypes) => {
 		// y minimizar que se nos escape algo
 		scopes: {
       public_view: {
+        attributes: ['id','token']
+      },
+      new: {
         attributes: ['email','token']
       },
       no_timestamps: {
