@@ -27,8 +27,8 @@ class ProfilesService {
         //Necesario para el findAndCountAll de Sequelize
         options.distinct = true
 
-        const roles = await models.Roles.findAndCountAll(options);
-        return roles;
+        const profiles = await models.Profiles.findAndCountAll(options);
+        return profiles;
     }
 
     async createProfile(obj) {

@@ -33,7 +33,7 @@ const addPublicationType = async (request, response, next) => {
 const getPublicationType = async (request, response, next) => {
   try {
     let { id } = request.params
-    let publicationsTypes = await publicationsTypesService.getPublicationTypeOr404(id)
+    let publicationsTypes = await publicationsTypesService.getPublicationType(id)
     return response.json({ results: publicationsTypes })
   } catch (error) {
     next(error)

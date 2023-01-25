@@ -109,8 +109,6 @@ class UsersService {
             let newProfile = await models.Profiles.create({
                 id: uuid.v4(),
                 user_id: newUser.id,
-                // country_id: countryId,
-                // role_id:roleId,
                 image_url: imageUrl,
                 code_phone: codePhone,
                 phone: phone

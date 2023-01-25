@@ -13,22 +13,24 @@ class PublicationsService {
         const options = {
             where: {},
         }
-        
+
         const { limit, offset } = query;
-          if (limit && offset) {
-            options.limit =  limit;
-            options.offset =  offset;
-          }
-        
+        if (limit && offset) {
+            options.limit = limit;
+            options.offset = offset;
+        }
+
         const { name } = query;
-          if (name) {
+        if (name) {
             options.where.name = { [Op.iLike]: `%${name}%` };
-          }
+        }
 
         //Necesario para el findAndCountAll de Sequelize
         options.distinct = true
     
         const publications = await models.Publications.findAndCountAll(options);
+        // const publications = await models.Publications.findOne();
+        console.log("TRIGGER: ",publications);
         return publications;
     }
 
