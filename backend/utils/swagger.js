@@ -1,15 +1,13 @@
 const swaggerJSDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
-const dotenv = require('dotenv')
-
-dotenv.config();
+require('dotenv').config()
 
 const options = {
     definition: {
         openapi: "3.0.0",
         info: {
-            title: "Red Social API",
-            description: "Servidor de una red social",
+            title: "Pa cuando API",
+            description: "Servidor de una facilitador de eventos",
             version: "1.0.0"
         },
         servers: [{ url: process.env.HOST_CLOUD }],
@@ -18,7 +16,7 @@ const options = {
             description: "Operations about user"
         }, {
             name: "Publications",
-            description: "Operations about Post"
+            description: "Operations about Publications"
         }],
         components: {
             securitySchemes: {
@@ -47,73 +45,26 @@ const options = {
                             format: "date",
                             example: "name@email.com"
                         },
-                        nickName: {
+                        username: {
                             type: 'string',
                             example: "aka"
                         },
                         password: {
                             type: 'string',
-                            minLength: 8,
                             example: "pass1234"
-                        },
-                        gender: {
-                            type: 'string',
-                            example: "male"
-                        },
-                        birthday: {
-                            type: "string",
-                            format: "date",
-                            example: "1945-12-12"
-                        },
-                    }
-                },
-                post: {
-                    type: 'object',
-                    properties: {
-                        id: {
-                            type: 'string',
-                            format: "uuid",
-                            example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                        },
-                        userId: {
-                            type: 'string',
-                            format: "uuid",
-                            example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                        },
-                        content: {
-                            type: "string",
-                            example: "new post"
-                        }
-                    }
-                },
-                follow: {
-                    type: 'object',
-                    properties: {
-                        id: {
-                            type: 'string',
-                            format: "uuid",
-                            example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                        },
-                        firstName: {
-                            type: 'string',
-                            example: "NameONE"
-                        },
-                        lastName: {
-                            type: "string",
-                            example: "LastNameTWO"
                         }
                     }
                 }
             }
         },
         paths: {
-            "/api/v1/users": {
+            "/api/v1/auth/sign-up": {
                 post: {
                     tags: [
                         "User"
                     ],
                     summary: "Add a new User",
-                    description: "Add a new User to red social",
+                    description: "Add a new User",
                     operationId: "addUser",
                     requestBody: {
                         description: "After registering, a verification email will be sent to your email",
@@ -132,56 +83,16 @@ const options = {
                             content: {
                                 "application/json": {
                                     schema: {
-                                        "$ref": "#/components/schemas/user"
-                                    }
-                                }
-                            }
-                        },
-                        400: {
-                            description: "Invalid ID supplied"
-                        }
-                    }
-                },
-                get: {
-                    tags: [
-                        "User"
-                    ],
-                    summary: "get all Users",
-                    description: "search all users of the social network",
-                    operationId: "findAllUser",
-                    responses: {
-                        200: {
-                            description: "Successful operation",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "array",
-                                        items: {
-                                            properties: {
-                                                id: {
-                                                    type: 'string', example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                                                },
-                                                firstName: {
-                                                    type: 'string', example: "Name"
-                                                },
-                                                lastName: {
-                                                    type: 'string', example: "LastName"
-                                                },
-                                                email: {
-                                                    type: 'string', format: "date", example: "unknown@email.com"
-                                                },
-                                                gender: {
-                                                    type: 'string', example: "male"
-                                                },
-                                                birthday: {
-                                                    type: "string", format: "date", example: "1925-12-12"
-                                                },
-                                                nickName: {
-                                                    type: 'string', example: "aka"
-                                                },
-                                                isVerified: {
-                                                    type: 'boolean', example: "false"
-                                                }
+                                        type: "object",
+                                        properties: {
+                                            id: {
+                                                type: 'string', example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                            },
+                                            email: {
+                                                type: 'string', example: "unknown@email.com"
+                                            },
+                                            username: {
+                                                type: 'string', example: "unknown"
                                             }
                                         }
                                     }
@@ -193,7 +104,98 @@ const options = {
                         }
                     }
                 }
+            },
+            "/api/v1/auth/login ": {
+                post: {
+                    tags: [
+                        "User"
+                    ],
+                    summary: "Login to the page",
+                    description: "Login to the page Pa cuando",
+                    operationId: "LogIn",
+                    requestBody: {
+                        description: "After login you will receive a token",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "object",
+                                    properties: {
+                                        email: {
+                                            type: 'string', example: "unknown@email.com"
+                                        },
+                                        password: {
+                                            type: 'string', example: "pass1234"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        required: true
+                    },
+                    responses: {
+                        201: {
+                            description: "Successful operation",
+                            content: {
+                                "application/json": {
+                                    schema: {
+                                        type: "object",
+                                        properties: {
+                                            message: {
+                                                type: 'string', example: "Correct Credentials!"
+                                            },
+                                            token: {
+                                                type: 'string', example: "3fed23.......434&ñ#+34-"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        400: {
+                            description: "Invalid ID supplied"
+                        }
+                    }
+                }
+            },
+            "/api/v1/auth/info-user ": {
+                 get: {
+                tags: [
+                    "User"
+                ],
+                summary: "Get my data",
+                description: "Get my information",
+                operationId: "in",
+                responses: {
+                    "200": {
+                        description: "successful operation",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "object",
+                                    properties: {
+                                        id: {
+                                            type: 'string', example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                        },
+                                        email: {
+                                            type: 'string', example: "unknown@email.com"
+                                        },
+                                        username: {
+                                            type: 'string', example: "unknown"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                security: [
+                    {
+                        jwtAuth: []
+                    }
+                ]
+            },
             }
+           
         }
     },
     apis: ["src/users/users.router.js","src/follows/follows.router.js","src/posts/posts.router.js","src/auth/auth.router.js"]
@@ -203,7 +205,7 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options)
 
 const swaggerDocs = (app, port) => {
-    app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+    app.use("/api/v1/docs"`${process.env.PORT}/api/v1/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec))
     app.get("/api/v1/docs.json", (req, res) => {
         res.setHeader("Content-Type", "application/json")
         res.send(swaggerSpec)

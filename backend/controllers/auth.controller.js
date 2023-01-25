@@ -29,6 +29,21 @@ const logIn = async (request, response, next) => {
     }
 }
 
+const verifyUser =async (request, response, next) => {
+    const id = request.params.id
+    try {
+        const user = await authService.getInfo(id)
+        if (user) {
+            response.status(200).json({ message: 'Verify user succesfully!' })
+        } else {
+            response.status(400).json({ message: 'Already verified user' })
+        }
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
-    logIn
+    logIn,
+    verifyUser
 }
