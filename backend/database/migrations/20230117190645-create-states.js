@@ -10,7 +10,7 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.BIGINT  // Puede ser Integer o BigInt -> BigInt es mejor
         },
-        country_id:{
+        country_id: {
           allowNull: false,
           type: Sequelize.BIGINT,
           foreignKey: true,
@@ -43,7 +43,7 @@ module.exports = {
       throw error
     }
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface, /*Sequelize*/) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.dropTable('states', { transaction })

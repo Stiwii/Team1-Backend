@@ -11,7 +11,7 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.UUID
         },
-        profile_id:{
+        profile_id: {
           allowNull: false,
           type: Sequelize.UUID,
           foreignKey: true,
@@ -22,7 +22,7 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'RESTRICT'
         },
-        publication_type_id:{
+        publication_type_id: {
           allowNull: false,
           type: Sequelize.BIGINT,
           foreignKey: true,
@@ -33,10 +33,10 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'RESTRICT'
         },
-        title:{
+        title: {
           type: Sequelize.STRING,
         },
-        description:{
+        description: {
           type: Sequelize.TEXT
         },
         content: {
@@ -77,16 +77,16 @@ module.exports = {
         }
       }, { transaction })
 
-      await transaction.commit()
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
+        await transaction.commit()
+      } catch (error) {
+        await transaction.rollback()
+        throw error
+      }
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface, /*Sequelize*/) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.dropTable('publications',{ transaction })
+      await queryInterface.dropTable('publications', { transaction })
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()

@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 const {
   Model
-} = require('sequelize');
+} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Publications extends Model {
     /**
@@ -12,9 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Publications.belongsTo(models.Profiles)
-      Publications.belongsTo(models.Publications_types,{as: 'publication_type', foreignKey: 'publication_type_id'})
+      Publications.belongsTo(models.Publications_types, { as: 'publication_type', foreignKey: 'publication_type_id' })
       Publications.belongsTo(models.Cities)
-      Publications.hasMany(models.Votes, {as: 'votes', foreignKey: 'publication_id'})
+      Publications.hasMany(models.Votes, { as: 'votes', foreignKey: 'publication_id' })
     }
   }
   Publications.init({
@@ -39,8 +39,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     picture: {
       type: DataTypes.STRING,
-      validate:{
-        isUrl:true
+      validate: {
+        isUrl: true
       }
     },
     city_id: {
@@ -53,18 +53,18 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Publications',
     tableName: 'publications',  // y la tabla en la DB para ser explicitos
-    underscored: true,  
+    underscored: true,
     timestamps: true,
     // Los scopes son útiles para estandarizar dónde se regresa información  
-		// y minimizar que se nos escape algo
-		scopes: {
+    // y minimizar que se nos escape algo
+    scopes: {
       public_view: {
-        attributes: ['id','profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id', 'image_url']
+        attributes: ['id', 'profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id', 'image_url']
       },
       no_timestamps: {
-        attributes: {exclude: ['created_at', 'updated_at']}
+        attributes: { exclude: ['created_at', 'updated_at'] }
       },
     },
-  });
-  return Publications;
-};
+  })
+  return Publications
+}

@@ -1,9 +1,9 @@
-'use strict';
-const { Op } = require("sequelize");
+'use strict'
+const { Op } = require('sequelize')
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    const transaction = await queryInterface.sequelize.transaction();
+  async up(queryInterface, /*Sequelize*/) {
+    const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.bulkInsert('publications_types', [
         {
@@ -29,15 +29,15 @@ module.exports = {
         }
       ], { transaction })
 
-      await transaction.commit();
+      await transaction.commit()
     } catch (error) {
-      await transaction.rollback();
+      await transaction.rollback()
       throw error
     }
   },
 
-  async down(queryInterface, Sequelize) {
-    const transaction = await queryInterface.sequelize.transaction();
+  async down(queryInterface, /*Sequelize*/) {
+    const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.bulkDelete('publications_types', {
         name: {
@@ -50,4 +50,4 @@ module.exports = {
       throw error
     }
   }
-};
+}

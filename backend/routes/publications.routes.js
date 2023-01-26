@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
-const {getPublications, getPublication,addPublication, removePublication} = require('../controllers/publications.controller')
+const { getPublications, getPublication, addPublication, removePublication } = require('../controllers/publications.controller')
 const { getVotes } = require('../controllers/votes.controller')
 
 router.route('/')
@@ -15,4 +15,4 @@ router.route('/:id')
 router.route('/:id/votes')
   .get(getVotes)
 
-module.exports = router;
+module.exports = router
