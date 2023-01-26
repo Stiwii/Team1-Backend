@@ -30,6 +30,10 @@ const options = {
     {
       name: 'Roles',
       description: 'Operations about roles'
+    },
+    {
+      name: 'Auth',
+      description: 'Operations about authorization'
     }
     ],
     components: {
@@ -151,7 +155,7 @@ const options = {
       '/api/v1/auth/sign-up': {
         post: {
           tags: [
-            'User'
+            'Auth'
           ],
           summary: 'Add a new User',
           description: 'Add a new User',
@@ -198,7 +202,7 @@ const options = {
       '/api/v1/auth/login ': {
         post: {
           tags: [
-            'User'
+            'Auth'
           ],
           summary: 'Login to the page',
           description: 'Login to the page Pa cuando',
@@ -250,7 +254,7 @@ const options = {
       '/api/v1/auth/info-user ': {
         get: {
           tags: [
-            'User'
+            'Auth'
           ],
           summary: 'Get my data',
           description: 'Get my information',
@@ -290,9 +294,17 @@ const options = {
           tags: [
             "Publications"
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: "Get all Publications",
+          description: "search all available publications",
+          operationId: " ??? ",
+        },
+        post: {
+          tags: [
+            "Publications"
+          ],
+          summary: "Add a publication",
+          description: "Add a new publication",
+          operationId: " ??? ",
         }
       },
       '/api/v1/publications/{publication_id}': {
@@ -300,17 +312,9 @@ const options = {
           tags: [
             "Publications"
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
-        },
-        put: {
-          tags: [
-            "Publications"
-          ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: "Get a Publication",
+          description: "Search for information about a publication",
+          operationId: "???",
         }
       },
       '/api/v1/publications/{publication_id}/vote': {
@@ -318,59 +322,90 @@ const options = {
           tags: [
             "Publications"
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: "Vote for a publication",
+          description: "Vote for an available publication",
+          operationId: "???",
         }
       },
       '/api/v1/user/{user_id}': {
         get: {
           tags: [
-            "Publications"
+            "User"
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: "get my data",
+          description: "find my user information",
+          operationId: "???",
         },
         put: {
           tags: [
-            "Publications"
+            "User"
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: "Update my user",
+          description: "update my user information",
+          operationId: "???",
         }
       },
       '/api/v1/user/{user_id}/vote': {
         get: {
           tags: [
-            "Publications"
+            "User"
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: "Get my votes",
+          description: "Get the votes of the publications",
+          operationId: "???",
         }
       },
       '/api/v1/user/{user_id}/publications': {
         get: {
           tags: [
-            "Publications"
+            "User"
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: "Get my votes",
+          description: "Get the votes of the publications",
+          operationId: "???",
         }
       },
       '/api/v1/users': {
         get: {
           tags: [
-            "Publications"
+            "User"
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: "Get users",
+          description: "admin endpoint",
+          operationId: "???",
         }
       },
+      '/api/v1/states': {
+        get: {
+          tags: [
+            "States"
+          ],
+          summary: "get all states",
+          description: "search all users of the social network",
+          operationId: "???",
+        }
+      },
+      '/api/v1/cities': {
+        get: {
+          tags: [
+            "Cities"
+          ],
+          summary: "get all cities",
+          description: "search all users of the social network",
+          operationId: "???",
+        }
+      },
+      '/api/v1/roles': {
+        get: {
+          tags: [
+            "Roles"
+          ],
+          summary: "get all roles",
+          description: "search all users of the social network",
+          operationId: "???",
+        }
+      },
+
 
 
 
