@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 8000
 /*
 Cors Settings
 */
-const whitelist = ['http://localhost:8000']
+// const whitelist = ['http://localhost:8000']
 
 // const corsOptions = {
 //   origin: (origin, callback) => {

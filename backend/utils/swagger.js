@@ -52,8 +52,8 @@ const options = {
           properties: {
             id: {
               type: 'string',
-              format: "uuid",
-              example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              format: 'uuid',
+              example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
             },
             firstName: {
               type: 'string',
@@ -65,7 +65,7 @@ const options = {
             },
             email: {
               type: 'string',
-              format: "email",
+              format: 'email',
               example: 'quebendicion@email.com'
             },
             username: {
@@ -80,13 +80,13 @@ const options = {
           properties: {
             profile_id: {
               type: 'string',
-              format: "uuid",
-              example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              format: 'uuid',
+              example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
             },
             publication_type_id: {
               type: 'string',
-              format: "integer",
-              example: "1"
+              format: 'integer',
+              example: '1'
             },
             title: {
               type: 'string',
@@ -106,8 +106,8 @@ const options = {
             },
             city_id: {
               type: 'string',
-              format: "integer",
-              example: "1"
+              format: 'integer',
+              example: '1'
             }
           }
         },
@@ -292,117 +292,186 @@ const options = {
       '/api/v1/publications ': {
         get: {
           tags: [
-            "Publications"
+            'Publications'
           ],
-          summary: "Get all Publications",
-          description: "search all available publications",
-          operationId: " ??? ",
+          summary: 'Get all Publications',
+          description: 'search all available publications',
+          operationId: ' ??? ',
+          responses: {
+            200: {
+                description: "Successful operation",
+                content: {
+                    "application/json": {
+                        schema: {
+                            type: "array",
+                            items: {
+                                properties: {
+                                    id: {
+                                        type: 'string', example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                    },
+                                    firstName: {
+                                        type: 'string', example: "Name"
+                                    },
+                                    lastName: {
+                                        type: 'string', example: "LastName"
+                                    },
+                                    email: {
+                                        type: 'string', format: "date", example: "unknown@email.com"
+                                    },
+                                    gender: {
+                                        type: 'string', example: "male"
+                                    },
+                                    birthday: {
+                                        type: "string", format: "date", example: "1925-12-12"
+                                    },
+                                    nickName: {
+                                        type: 'string', example: "aka"
+                                    },
+                                    isVerified: {
+                                        type: 'boolean', example: "false"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            400: {
+                description: "Invalid ID supplied"
+            }
+        }
         },
         post: {
           tags: [
-            "Publications"
+            'Publications'
           ],
-          summary: "Add a publication",
-          description: "Add a new publication",
-          operationId: " ??? ",
+          summary: 'Add a publication',
+          description: 'Add a new publication',
+          operationId: ' ??? ',
+          requestBody: {
+            description: "After registering, a verification email will be sent to your email",
+            content: {
+                "application/json": {
+                    schema: {
+                        "$ref": "#/components/schemas/user"
+                    }
+                }
+            },
+            required: true
+        },
+        responses: {
+          201: {
+              description: "Successful operation",
+              content: {
+                  "application/json": {
+                      schema: {
+                          "$ref": "#/components/schemas/user"
+                      }
+                  }
+              }
+          },
+          400: {
+              description: "Invalid ID supplied"
+          }
+      } 
         }
       },
       '/api/v1/publications/{publication_id}': {
         get: {
           tags: [
-            "Publications"
+            'Publications'
           ],
-          summary: "Get a Publication",
-          description: "Search for information about a publication",
-          operationId: "???",
+          summary: 'Get a Publication',
+          description: 'Search for information about a publication',
+          operationId: '???',
         }
       },
       '/api/v1/publications/{publication_id}/vote': {
         get: {
           tags: [
-            "Publications"
+            'Publications'
           ],
-          summary: "Vote for a publication",
-          description: "Vote for an available publication",
-          operationId: "???",
+          summary: 'Vote for a publication',
+          description: 'Vote for an available publication',
+          operationId: '???',
         }
       },
       '/api/v1/user/{user_id}': {
         get: {
           tags: [
-            "User"
+            'User'
           ],
-          summary: "get my data",
-          description: "find my user information",
-          operationId: "???",
+          summary: 'get my data',
+          description: 'find my user information',
+          operationId: '???',
         },
         put: {
           tags: [
-            "User"
+            'User'
           ],
-          summary: "Update my user",
-          description: "update my user information",
-          operationId: "???",
+          summary: 'Update my user',
+          description: 'update my user information',
+          operationId: '???',
         }
       },
       '/api/v1/user/{user_id}/vote': {
         get: {
           tags: [
-            "User"
+            'User'
           ],
-          summary: "Get my votes",
-          description: "Get the votes of the publications",
-          operationId: "???",
+          summary: 'Get my votes',
+          description: 'Get the votes of the publications',
+          operationId: '???',
         }
       },
       '/api/v1/user/{user_id}/publications': {
         get: {
           tags: [
-            "User"
+            'User'
           ],
-          summary: "Get my votes",
-          description: "Get the votes of the publications",
-          operationId: "???",
+          summary: 'Get my votes',
+          description: 'Get the votes of the publications',
+          operationId: '???',
         }
       },
       '/api/v1/users': {
         get: {
           tags: [
-            "User"
+            'User'
           ],
-          summary: "Get users",
-          description: "admin endpoint",
-          operationId: "???",
+          summary: 'Get users',
+          description: 'admin endpoint',
+          operationId: '???',
         }
       },
       '/api/v1/states': {
         get: {
           tags: [
-            "States"
+            'States'
           ],
-          summary: "get all states",
-          description: "search all users of the social network",
-          operationId: "???",
+          summary: 'get all states',
+          description: 'search all users of the social network',
+          operationId: '???',
         }
       },
       '/api/v1/cities': {
         get: {
           tags: [
-            "Cities"
+            'Cities'
           ],
-          summary: "get all cities",
-          description: "search all users of the social network",
-          operationId: "???",
+          summary: 'get all cities',
+          description: 'search all users of the social network',
+          operationId: '???',
         }
       },
       '/api/v1/roles': {
         get: {
           tags: [
-            "Roles"
+            'Roles'
           ],
-          summary: "get all roles",
-          description: "search all users of the social network",
-          operationId: "???",
+          summary: 'get all roles',
+          description: 'search all users of the social network',
+          operationId: '???',
         }
       },
 

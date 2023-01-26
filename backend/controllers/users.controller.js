@@ -1,9 +1,8 @@
 const UsersService = require('../services/users.service')
 const mailer = require('../utils/mailer')
 const { getPagination, getPagingData } = require('../utils/sequelize-utils')
-const dotenv = require('dotenv')
 
-dotenv.config()
+require('dotenv').config()
 
 const usersService = new UsersService()
 
@@ -64,8 +63,8 @@ const getUser = async (request, response, next) => {
 const getInfoUser = async (request, response, next) => {
   try {
     let id = request.user.id
-    // const id = "FAA"
-    // console.log("FROM TOKEN")
+    // const id = 'FAA'
+    // console.log('FROM TOKEN')
     let user = await usersService.getInfo(id)
     return response.json({ results: user })
   } catch (error) {
