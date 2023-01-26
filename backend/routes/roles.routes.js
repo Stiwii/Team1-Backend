@@ -1,10 +1,10 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
 const { getRoles } = require('../controllers/roles.controller')
 
 router.route('/')
-	.get(getRoles)
+  .get(getRoles)
 
 
-module.exports = router;
+module.exports = router

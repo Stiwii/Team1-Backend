@@ -1,13 +1,11 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const passportJWT = require('../libs/passport')
 
 const {
   getUsers,
-  addUser,
   getUser,
   updateUser,
-  removeUser,
   getInfoUser,
   getEmail
 } = require('../controllers/users.controller')
@@ -33,4 +31,4 @@ router.route('/:id/votes')
 router.route('/:id/publications')
   .get(getPublication)
 
-module.exports = router;
+module.exports = router

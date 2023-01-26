@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
 const { getPublicationsTypes, getPublicationType } = require('../controllers/publications_types.controller')
 

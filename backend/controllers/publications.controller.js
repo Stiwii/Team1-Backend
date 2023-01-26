@@ -1,15 +1,15 @@
 const PublicationsService = require('../services/publications.service');
 const { getPagination, getPagingData } = require('../utils/sequelize-utils');
 
-const publicationsService = new PublicationsService();
+const publicationsService = new PublicationsService()
 
 const getPublications = async (request, response, next) => {
   try {
     let query = request.query
-    let { page, size } = query;
+    let { page, size } = query
     const { limit, offset } = getPagination(page, size, '10')
-    query.limit = limit;
-    query.offset = offset;
+    query.limit = limit
+    query.offset = offset
 
     let publications = await publicationsService.findAndCount(query)
     const results = getPagingData(publications, page, limit)
@@ -21,10 +21,12 @@ const getPublications = async (request, response, next) => {
 }
 
 const addPublication = async (request, response, next) => {
+  
   try {
-    let profile_id = request.profile.id
-    let { publication_type_id, title, description, content, picture , city_id, image_url } = request
+    // let profile_id = request.profile.id
+    let { profile_id , publication_type_id, title, description, content, picture , city_id, image_url } = request.body
     let publication = await publicationsService.createPublication({profile_id,publication_type_id, title, description, content, picture , city_id, image_url})
+    
     return response.status(201).json({ results: publication })
   } catch (error) {
     next(error)

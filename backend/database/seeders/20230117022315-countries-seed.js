@@ -2,13 +2,13 @@
 
 //noten que es igual a una migración!
 
-'use strict';
-const { Op } = require("sequelize");
+'use strict'
+const { Op } = require('sequelize')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    const transaction = await queryInterface.sequelize.transaction();
+  async up(queryInterface, /*Sequelize*/) {
+    const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.bulkInsert('countries', [
         {
@@ -19,25 +19,25 @@ module.exports = {
         }
       ], { transaction })
 
-      await transaction.commit();
+      await transaction.commit()
     } catch (error) {
-      await transaction.rollback();
+      await transaction.rollback()
       throw error
     }
   },
 
-  async down(queryInterface, Sequelize) {
-    const transaction = await queryInterface.sequelize.transaction();
+  async down(queryInterface, /*Sequelize*/) {
+    const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.bulkDelete('countries', {
         name: {
           [Op.or]: ['México']
         }
-      }, { transaction });
-      await transaction.commit();
+      }, { transaction })
+      await transaction.commit()
     } catch (error) {
-      await transaction.rollback();
+      await transaction.rollback()
       throw error
     }
   }
-};
+}

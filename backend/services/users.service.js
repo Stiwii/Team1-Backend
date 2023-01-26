@@ -1,8 +1,8 @@
-const models = require('../database/models');
+const models = require('../database/models')
 const uuid = require('uuid')
 const { hashPassword } = require('../utils/crypto')
-const { Op } = require('sequelize');
-const { CustomError } = require('../utils/custom-error');
+const { Op } = require('sequelize')
+const { CustomError } = require('../utils/custom-error')
 
 
 class UsersService {
@@ -15,26 +15,26 @@ class UsersService {
       where: {},
     }
 
-    const { limit, offset } = query;
+    const { limit, offset } = query
     if (limit && offset) {
-      options.limit = limit;
-      options.offset = offset;
+      options.limit = limit
+      options.offset = offset
     }
 
-    const { name } = query;
+    const { name } = query
     if (name) {
-      options.where.name = { [Op.iLike]: `%${name}%` };
+      options.where.name = { [Op.iLike]: `%${name}%` }
     }
 
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
-    const users = await models.Users.scope('public_view').findAndCountAll(options);
-    return users;
+    const users = await models.Users.scope('public_view').findAndCountAll(options)
+    return users
   }
 
   async createUser({ first_name, last_name, email, username, password }) {
-    const transaction = await models.sequelize.transaction();
+    const transaction = await models.sequelize.transaction()
     try {
       let newUser = await models.Users.create({
         id: uuid.v4(),
@@ -43,24 +43,25 @@ class UsersService {
         email: email,
         username: username,
         password: password
-      }, { transaction });
+      }, { transaction })
 
-      await transaction.commit();
+      await transaction.commit()
       return newUser
     } catch (error) {
-      await transaction.rollback();
+      await transaction.rollback()
       throw error
     }
   }
   //Return Instance if we do not converted to json (or raw:true)
   async getUserOr404(id) {
-    let user = await models.Users.findOne({
-      attributes: {
-        exclude: ['password', 'created_at', 'updated_at', 'email_verified', 'token', 'id']
-      },
+    let user = await models.Users.scope('public_view').findOne({
       where: {
         id: id  
-      }
+      },
+      include:[{
+        model: models.Profiles.scope('public_view'),
+        as: 'profile'
+      }]
     })
     if (!user) throw new CustomError('Not found User', 404, 'Not Found');
 
@@ -79,30 +80,34 @@ class UsersService {
   }
 
   async updateUser(id, obj) {
-    const transaction = await models.sequelize.transaction();
+    const transaction = await models.sequelize.transaction()
     try {
-      let user = await models.Users.findByPk(id);
+      let user = await models.Users.scope('public_view').findByPk(id)
 
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
 
       let updatedUser = await user.update(obj, {
         where: {
           id: id
-        }
+        },
+        include:[{
+          model: models.Profiles.scope('public_view'),
+          as: 'profile'
+        }]
       }, { transaction })
 
-      await transaction.commit();
+      await transaction.commit()
 
       return updatedUser
     } catch (error) {
-      await transaction.rollback();
+      await transaction.rollback()
       throw error
     }
   }
 
 
   async setUser({ firstName, lastName, email, username, password, imageUrl, codePhone, phone }) {
-    const transaction = await models.sequelize.transaction();
+    const transaction = await models.sequelize.transaction()
     try {
       let newUser = await models.Users.create({
         id: uuid.v4(),
@@ -111,16 +116,16 @@ class UsersService {
         email: email,
         username: username,
         password: hashPassword(password)
-      }, { transaction });
+      }, { transaction })
       let newProfile = await models.Profiles.create({
         id: uuid.v4(),
         user_id: newUser.id,
         image_url: imageUrl,
         code_phone: codePhone,
         phone: phone
-      }, { transaction });
+      }, { transaction })
 
-      await transaction.commit();
+      await transaction.commit()
       return {
         id: newUser.id,
         firstName: newUser.first_name,
@@ -133,7 +138,7 @@ class UsersService {
         Phone: newProfile.phone
       }
     } catch (error) {
-      await transaction.commit();
+      await transaction.commit()
       throw error
     }
   }
@@ -155,7 +160,7 @@ class UsersService {
     return user
   }
   async removeUser(id) {
-    const transaction = await models.sequelize.transaction();
+    const transaction = await models.sequelize.transaction()
     try {
       let user = await models.Users.findByPk(id)
 
@@ -163,11 +168,11 @@ class UsersService {
 
       await user.destroy({ transaction })
 
-      await transaction.commit();
+      await transaction.commit()
 
       return user
     } catch (error) {
-      await transaction.rollback();
+      await transaction.rollback()
       throw error
     }
   }
@@ -175,4 +180,4 @@ class UsersService {
 
 
 
-module.exports = UsersService;
+module.exports = UsersService

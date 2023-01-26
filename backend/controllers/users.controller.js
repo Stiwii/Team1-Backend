@@ -1,19 +1,19 @@
-const UsersService = require('../services/users.service');
+const UsersService = require('../services/users.service')
 const mailer = require('../utils/mailer')
-const { getPagination, getPagingData } = require('../utils/sequelize-utils');
+const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 const dotenv = require('dotenv')
 
-dotenv.config();
+dotenv.config()
 
-const usersService = new UsersService();
+const usersService = new UsersService()
 
 const getUsers = async (request, response, next) => {
   try {
     let query = request.query
-    let { page, size } = query;
+    let { page, size } = query
     const { limit, offset } = getPagination(page, size, '10')
-    query.limit = limit;
-    query.offset = offset;
+    query.limit = limit
+    query.offset = offset
 
     let users = await usersService.findAndCount(query)
     const results = getPagingData(users, page, limit)
@@ -65,7 +65,7 @@ const getInfoUser = async (request, response, next) => {
   try {
     let id = request.user.id
     // const id = "FAA"
-    // console.log("FROM TOKEN");
+    // console.log("FROM TOKEN")
     let user = await usersService.getInfo(id)
     return response.json({ results: user })
   } catch (error) {
@@ -76,7 +76,6 @@ const getInfoUser = async (request, response, next) => {
 const getEmail = async (request, response, next) => {
   try {
     let { email } = request.body
-    console.log("FROM CONTROLLER EMAIL: ", email);
     let users = await usersService.getUserByEmail(email)
     return response.json({ results: users })
   } catch (error) {
@@ -87,9 +86,10 @@ const getEmail = async (request, response, next) => {
 const updateUser = async (request, response, next) => {
   try {
     let { id } = request.params
-    let { username, first_name, last_name } = request.body
-    let user = await usersService.updateUser(id, { username, first_name, last_name })
-    return response.status(200).json({ first_name: user.first_name, last_name: user.last_name, username: user.username })
+    let { username, first_name, last_name, image_url, code_phone, phone } = request.body
+    let user = await usersService.updateUser(id, { username, first_name, last_name, image_url, code_phone, phone })
+    // return response.status(200).json({ first_name: user.first_name, last_name: user.last_name, username: user.username })
+    return response.status(200).json({ result: user})
   } catch (error) {
     next(error)
   }

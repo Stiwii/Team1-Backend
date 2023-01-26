@@ -4,7 +4,7 @@ const helmet = require('helmet')
 const { swaggerDocs: V1SwaggerDocs } = require('./utils/swagger')
 require('dotenv').config()
 
-const routerModels = require('./routes/models.router');
+const routerModels = require('./routes/models.router')
 
 const app = express()
 const PORT = process.env.PORT || 8000
@@ -14,15 +14,15 @@ Cors Settings
 */
 const whitelist = ['http://localhost:8000']
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.includes(origin) || !origin) {
-      callback(null, true)
-    } else {
-      callback(new Error('Denied By CORS'))
-    }
-  }
-}
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if (whitelist.includes(origin) || !origin) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Denied By CORS'))
+//     }
+//   }
+// }
 
 if (process.env.NODE_ENV === 'production') {
   app.use(cors())
@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'production') {
 /* 
 Accept Json & form-urlencoded
 */
-app.use(express.json());
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 /*
@@ -50,11 +50,11 @@ Routes
 */
 app.get('/', ({ res }) => {
   res.json({
-    api: "API Join Momentum",
-    state: "Up and Running",
-    version: "1.0.1"
+    api: 'API Join Momentum',
+    state: 'Up and Running',
+    version: '1.0.1'
   })
-});
+})
 
 // publicRouter(app)
 // docsRouter(app)

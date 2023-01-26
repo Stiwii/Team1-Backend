@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require('express')
 const routesUsers = require('./users.routes')
 
-const isAuthenticatedByPassportJwt = require('../libs/passport')
+// const isAuthenticatedByPassportJwt = require('../libs/passport')
 
 const routesProfiles = require('./profiles.routes')
 const routesPublications = require('./publications.routes')
@@ -27,9 +27,8 @@ function routerModels(app) {
   router.use('/profiles', routesProfiles)
   router.use('/publications-types', routesPublicationsTypes)
   router.use('/publications', routesPublications)
-  router.use('/users', routesUsers)
-  router.use('./states',routesStates)
+  router.use('./states', routesStates)
 
 }
 
-module.exports = routerModels;
+module.exports = routerModels

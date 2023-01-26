@@ -1,10 +1,9 @@
-const AuthService = require('../services/auth.service');
-const UsersService = require('../services/users.service');
+const AuthService = require('../services/auth.service')
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 
-dotenv.config();
-const authService = new AuthService();
+dotenv.config()
+const authService = new AuthService()
 
 const logIn = async (request, response, next) => {
   const { email, password } = request.body
@@ -14,7 +13,8 @@ const logIn = async (request, response, next) => {
       const token = jwt.sign({
         id: user.id,
         email: user.email,
-        role: user.profile[0].role.name
+        role: user.profile[0].role.name,
+        profileId: user.profile[0].id
       }, process.env.JWT_SECRET_WORD)
 
       response.status(200).json({

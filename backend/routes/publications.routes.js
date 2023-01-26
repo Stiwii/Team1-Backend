@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
-const {getPublications, getPublication,addPublication, removePublication} = require('../controllers/publications.controller')
-const { getVotes } = require('../controllers/votes.controller')
+const { getPublications, getPublication, addPublication, removePublication } = require('../controllers/publications.controller')
+const { addVote } = require('../controllers/votes.controller')
 
 router.route('/')
   .get(getPublications)
@@ -13,6 +13,6 @@ router.route('/:id')
   .delete(removePublication)
 
 router.route('/:id/votes')
-  .get(getVotes)
+  .get(addVote)
 
-module.exports = router;
+module.exports = router
