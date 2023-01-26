@@ -32,10 +32,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Votes.init({
     publication_id: {
-      type: DataTypes.UUIDV4
+      type: DataTypes.UUIDV4,
+      primaryKey: true
     },
     profile_id: {
-      type: DataTypes.UUIDV4
+      type: DataTypes.UUIDV4,
+      primaryKey:true
     }
   }, {
     sequelize,
@@ -47,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     // y minimizar que se nos escape algo
     scopes: {
       public_view: {
-        attributes: ['id', 'token']
+        attributes: ['publication_id','profile_id']
       },
       new: {
         attributes: ['email', 'token']

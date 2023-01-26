@@ -1,7 +1,8 @@
 const models = require('../database/models')
 const uuid = require('uuid')
-const { Op } = require('sequelize')
+const { Op, json } = require('sequelize')
 const { CustomError } = require('../utils/custom-error')
+const { response } = require('express')
 
 class PublicationsService {
 
@@ -33,7 +34,6 @@ class PublicationsService {
   }
 
   async createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url }) {
-    console.log("hola")
     const transaction = await models.sequelize.transaction()
 
     try {
@@ -93,18 +93,21 @@ class PublicationsService {
     }
   }
 
-  async removePublication(id) {
+  async removePublication(id, profileId) {
     const transaction = await models.sequelize.transaction()
     try {
       let publication = await models.Publications.findByPk(id)
 
       if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 
-      await publication.destroy({ transaction })
+      if (publication.profile_id == profileId) {
+        await publication.destroy({ transaction })
+        await transaction.commit()
 
-      await transaction.commit()
-
-      return publication
+        return publication
+      }else{
+        return null
+      }
     } catch (error) {
       await transaction.rollback()
       throw error

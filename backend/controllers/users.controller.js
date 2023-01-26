@@ -47,7 +47,18 @@ const registerUser = async (request, response, next) => {
     })
     return response.status(201).json({ results: user })
   } catch (error) {
-    next(error)
+    response.status(400).json({
+      message: error.message, fields: {
+        firstName: 'String',
+        lastName: 'String',
+        username: 'String',
+        email: 'example@example.com',
+        password: 'String',
+        imageUrl: 'StringURL',
+        codePhone: 'number',
+        phone: 'number'
+      }
+    })
   }
 }
 
@@ -86,10 +97,13 @@ const getEmail = async (request, response, next) => {
 const updateUser = async (request, response, next) => {
   try {
     let { id } = request.params
-    let { username, first_name, last_name, image_url, code_phone, phone } = request.body
-    let user = await usersService.updateUser(id, { username, first_name, last_name, image_url, code_phone, phone })
-    // return response.status(200).json({ first_name: user.first_name, last_name: user.last_name, username: user.username })
-    return response.status(200).json({ result: user})
+    let profile_id = request.user.profileId
+    if (id == request.user.id) {
+      let { username, first_name, last_name, image_url, code_phone, phone } = request.body
+      let user = await usersService.updateUser(id, { profile_id, username, first_name, last_name, image_url, code_phone, phone })
+      // return response.status(200).json({ first_name: user.first_name, last_name: user.last_name, username: user.username })
+      return response.status(200).json({ result: user })
+    }
   } catch (error) {
     next(error)
   }

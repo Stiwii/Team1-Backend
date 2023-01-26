@@ -16,19 +16,20 @@ const { getPublication } = require('../controllers/publications.controller')
 //? this route is administrave
 router.route('/')
   .get(getUsers)
-// .post(addUser)
+
 router.get('/mail/', getEmail)
 router.get('/user-info', passportJWT.authenticate('jwt', { session: false }), getInfoUser)
+
 //? this routes is for users loged
 router.route('/:id')
-  .get(getUser)
-  .put(updateUser)
+  .get(passportJWT.authenticate('jwt', { session: false }),getUser)
+  .put(passportJWT.authenticate('jwt', { session: false }),updateUser)
 // router.delete('/:id', removeUser)
 
 router.route('/:id/votes')
-  .get(getVote)
+  .get(passportJWT.authenticate('jwt', { session: false }),getVote)
 
 router.route('/:id/publications')
-  .get(getPublication)
+  .get(passportJWT.authenticate('jwt', { session: false }),getPublication)
 
 module.exports = router

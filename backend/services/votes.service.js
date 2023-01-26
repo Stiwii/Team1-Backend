@@ -33,8 +33,8 @@ class VotesService {
   async createVote({ publication_id, profile_id }) {
     const transaction = await models.sequelize.transaction()
     try {
-
-      let validate = await models.Votes.findOne({
+      
+      let validate = await models.Votes.scope('public_view').findOne({
         where: {
           publication_id: publication_id,
           profile_id: profile_id
@@ -48,12 +48,14 @@ class VotesService {
             profile_id: profile_id
           }
         },{transaction})
+        await transaction.commit()
         return value
       }
 
+
       let data = await models.Votes.create({
         publication_id: publication_id,
-        profile_id: profile_id,
+        profile_id: profile_id
       },{transaction})
 
       await transaction.commit()

@@ -5,6 +5,9 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.createTable('votes', {
+        id:{
+
+        },
         publication_id: {
           type: Sequelize.UUID,
           allowNull: false,

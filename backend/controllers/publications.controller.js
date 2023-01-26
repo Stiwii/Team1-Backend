@@ -21,22 +21,33 @@ const getPublications = async (request, response, next) => {
 }
 
 const addPublication = async (request, response, next) => {
-  
+
   try {
-    // let profile_id = request.profile.id
-    let { profile_id , publication_type_id, title, description, content, picture , city_id, image_url } = request.body
-    let publication = await publicationsService.createPublication({profile_id,publication_type_id, title, description, content, picture , city_id, image_url})
-    
+    let profile_id = request.user.profileId
+    let { publication_type_id, title, description, content, picture, city_id, image_url } = request.body
+    let publication = await publicationsService.createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url })
+
     return response.status(201).json({ results: publication })
   } catch (error) {
-    next(error)
+    response.status(400).json({
+      message: error.message, fields: {
+        publication_type_id: 'number',
+        title: 'string',
+        description: 'string',
+        content: 'string',
+        picture: 'string',
+        city_id: 'number',
+        image_url: 'string_URL'
+      }
+    })
   }
 }
 
 const getPublication = async (request, response, next) => {
   try {
     let { id } = request.params
-    let publications = await publicationsService.getPublicationOr404(id)
+    let profileId = request.user.profileId
+    let publications = await publicationsService.findAndCount(profileId)
     return response.json({ results: publications })
   } catch (error) {
     next(error)
@@ -57,7 +68,8 @@ const updatePublication = async (request, response, next) => {
 const removePublication = async (request, response, next) => {
   try {
     let { id } = request.params
-    let publication = await publicationsService.removePublication(id)
+    let profileId = request.user.profileId
+    let publication = await publicationsService.removePublication(id, profileId)
     return response.json({ results: publication, message: 'removed' })
   } catch (error) {
     next(error)

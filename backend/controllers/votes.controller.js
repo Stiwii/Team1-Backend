@@ -22,8 +22,8 @@ const getVotes = async (request, response, next) => {
 
 const addVote = async (request, response, next) => {
   try {
-    let profile_id = request.profile.id
-    let publication_id = request.params.id
+    let profile_id = request.user.profileId
+    let publication_id = request.params.id 
     let vote = await votesService.createVote({ publication_id, profile_id })
     return response.status(201).json({ results: vote })
   } catch (error) {
@@ -34,7 +34,8 @@ const addVote = async (request, response, next) => {
 const getVote = async (request, response, next) => {
   try {
     let { id } = request.params
-    let votes = await votesService.getVotesOr404(id)
+    let profileId = request.user.profileId
+    let votes = await votesService.findAndCount(profileId)
     return response.json({ results: votes })
   } catch (error) {
     next(error)

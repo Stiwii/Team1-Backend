@@ -7,10 +7,10 @@ const routesProfiles = require('./profiles.routes')
 const routesPublications = require('./publications.routes')
 const routesPublicationsTypes = require('./publicationsTypes.routes')
 // const routesCountries = require('./countries.routes')
-// const routesCities = require('./cities.routes')
+const routesCities = require('./cities.routes')
 const routesStates = require('./states.routes')
 const routesAuth = require('./auth.routes')
-
+const routesRoles = require('./roles.routes')
 
 function routerModels(app) {
   const router = express.Router()
@@ -27,8 +27,9 @@ function routerModels(app) {
   router.use('/profiles', routesProfiles)
   router.use('/publications-types', routesPublicationsTypes)
   router.use('/publications', routesPublications)
-  router.use('./states', routesStates)
-
+  router.use('/states', routesStates)
+  router.use('/roles', routesRoles)
+  router.use('/cities', routesCities)
 }
 
 module.exports = routerModels

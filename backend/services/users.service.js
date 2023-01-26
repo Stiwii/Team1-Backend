@@ -56,9 +56,9 @@ class UsersService {
   async getUserOr404(id) {
     let user = await models.Users.scope('public_view').findOne({
       where: {
-        id: id  
+        id: id
       },
-      include:[{
+      include: [{
         model: models.Profiles.scope('public_view'),
         as: 'profile'
       }]
@@ -79,26 +79,35 @@ class UsersService {
     return user
   }
 
-  async updateUser(id, obj) {
+  async updateUser(id,  obj) {
     const transaction = await models.sequelize.transaction()
     try {
+      let  profileID = obj.profile_id
       let user = await models.Users.scope('public_view').findByPk(id)
-
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
 
-      let updatedUser = await user.update(obj, {
-        where: {
-          id: id
-        },
-        include:[{
-          model: models.Profiles.scope('public_view'),
-          as: 'profile'
-        }]
-      }, { transaction })
+      let profile = await models.Profiles.findByPk(profileID)
+      if (!profile) throw new CustomError('Not found user', 404, 'Not Found')
+      console.log(`este es el profile id: ${profileID}`)
 
+      let updatedUser = await user.update(obj, { transaction })
+
+
+      console.log(profile)
+      let updatedProfile = await profile.update(obj, { transaction })
+
+      // console.log(updatedProfile)
       await transaction.commit()
 
-      return updatedUser
+      return ({
+        // profile_id : updatedProfile.id,
+        username: updatedUser.username,
+        first_name: updatedUser.first_name,
+        last_name: updatedUser.last_name,
+        image_url: updatedProfile.image_url,
+        code_phone: updatedProfile.code_phone,
+        phone: updatedProfile.phone
+      })
     } catch (error) {
       await transaction.rollback()
       throw error
@@ -138,7 +147,7 @@ class UsersService {
         Phone: newProfile.phone
       }
     } catch (error) {
-      await transaction.commit()
+      await transaction.rollback()
       throw error
     }
   }
