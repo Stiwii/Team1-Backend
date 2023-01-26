@@ -1,15 +1,15 @@
-const ProfilesService = require('../services/profiles.service');
-const { getPagination, getPagingData } = require('../utils/sequelize-utils');
+const ProfilesService = require('../services/profiles.service')
+const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 
-const profilesService = new ProfilesService();
+const profilesService = new ProfilesService()
 
 const getProfiles = async (request, response, next) => {
   try {
     let query = request.query
-    let { page, size } = query;
+    let { page, size } = query
     const { limit, offset } = getPagination(page, size, '10')
-    query.limit = limit;
-    query.offset = offset;
+    query.limit = limit
+    query.offset = offset
 
     let profiles = await profilesService.findAndCount(query)
     const results = getPagingData(profiles, page, limit)
@@ -22,8 +22,10 @@ const getProfiles = async (request, response, next) => {
 
 const addProfile = async (request, response, next) => {
   try {
+    const userId = request.params.id
+    // console.log("FROM CONTROLLER: ",id);
     let { body } = request
-    let profile = await profilesService.createProfile(body)
+    let profile = await profilesService.createProfile(userId, body)
     return response.status(201).json({ results: profile })
   } catch (error) {
     next(error)

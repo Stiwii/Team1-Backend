@@ -1,18 +1,19 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
+const passportJWT = require('../libs/passport')
 
-const {getPublications, getPublication,addPublication, removePublication} = require('../controllers/publications.controller')
-const { getVotes } = require('../controllers/votes.controller')
+const { getPublications, getPublication, addPublication, removePublication } = require('../controllers/publications.controller')
+const { addVote } = require('../controllers/votes.controller')
 
 router.route('/')
   .get(getPublications)
-  .post(addPublication)
+  .post(passportJWT.authenticate('jwt', { session: false }),addPublication)
 
 router.route('/:id')
   .get(getPublication)
-  .delete(removePublication)
+  .delete(passportJWT.authenticate('jwt', { session: false }),removePublication)
 
 router.route('/:id/votes')
-  .get(getVotes)
+  .get(passportJWT.authenticate('jwt', { session: false }),addVote)
 
-module.exports = router;
+module.exports = router

@@ -9,7 +9,6 @@ module.exports = {
           type: Sequelize.UUID,
           allowNull: false,
           foreignKey: true,
-          unique: true,
           references: {
             model: 'publications',
             key: 'id'
@@ -47,7 +46,7 @@ module.exports = {
       throw error
     }
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface, /*Sequelize*/) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.dropTable('votes', { transaction })

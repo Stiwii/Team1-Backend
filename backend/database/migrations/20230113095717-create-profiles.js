@@ -48,6 +48,7 @@ module.exports = {
           type: Sequelize.STRING
         },
         code_phone: {
+          allowNull: false,
           type: Sequelize.INTEGER
         },
         phone: {
@@ -72,7 +73,7 @@ module.exports = {
       throw error
     }
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface, /*Sequelize*/) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.dropTable('profiles', { transaction })

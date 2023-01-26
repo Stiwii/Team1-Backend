@@ -1,25 +1,15 @@
+//migration de Countries creada por sequelize-cli y editada por nosotros
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.createTable('states', {
+      await queryInterface.createTable('countries', {
         id: { // usando Serial
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.BIGINT  // Puede ser Integer o BigInt -> BigInt es mejor
-        },
-        country_id:{
-          allowNull: false,
-          type: Sequelize.BIGINT,
-          foreignKey: true,
-          references: {
-            model: 'countries',
-            key: 'id'
-          },
-          onUpdate: 'CASCADE',
-          onDelete: 'RESTRICT'
         },
         name: {
           allowNull: false,
@@ -43,10 +33,10 @@ module.exports = {
       throw error
     }
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface, /*Sequelize*/) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.dropTable('states', { transaction })
+      await queryInterface.dropTable('countries', { transaction })
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()
