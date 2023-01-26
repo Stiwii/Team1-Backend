@@ -7,164 +7,170 @@ const { CustomError } = require('../utils/custom-error');
 
 class UsersService {
 
-    constructor() {
+  constructor() {
+  }
+
+  async findAndCount(query) {
+    const options = {
+      where: {},
     }
 
-    async findAndCount(query) {
-        const options = {
-            where: {},
+    const { limit, offset } = query;
+    if (limit && offset) {
+      options.limit = limit;
+      options.offset = offset;
+    }
+
+    const { name } = query;
+    if (name) {
+      options.where.name = { [Op.iLike]: `%${name}%` };
+    }
+
+    //Necesario para el findAndCountAll de Sequelize
+    options.distinct = true
+
+    const users = await models.Users.scope('public_view').findAndCountAll(options);
+    return users;
+  }
+
+  async createUser({ first_name, last_name, email, username, password }) {
+    const transaction = await models.sequelize.transaction();
+    try {
+      let newUser = await models.Users.create({
+        id: uuid.v4(),
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        username: username,
+        password: password
+      }, { transaction });
+
+      await transaction.commit();
+      return newUser
+    } catch (error) {
+      await transaction.rollback();
+      throw error
+    }
+  }
+  //Return Instance if we do not converted to json (or raw:true)
+  async getUserOr404(id) {
+    let user = await models.Users.findOne({
+      attributes: {
+        exclude: ['password', 'created_at', 'updated_at', 'email_verified', 'token', 'id']
+      },
+      where: {
+        id: id  
+      }
+    })
+    if (!user) throw new CustomError('Not found User', 404, 'Not Found');
+
+    return user
+  }
+
+  //Return not an Instance raw:true | we also can converted to Json instead
+  async getUser(id) {
+    let user = await models.Users.findByPk(id, { raw: true })
+    return user
+  }
+
+  async getInfo(id) {
+    let user = await models.Users.scope('user_info').findByPk(id, { raw: true })
+    return user
+  }
+
+  async updateUser(id, obj) {
+    const transaction = await models.sequelize.transaction();
+    try {
+      let user = await models.Users.findByPk(id);
+
+      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
+
+      let updatedUser = await user.update(obj, {
+        where: {
+          id: id
         }
+      }, { transaction })
 
-        const { limit, offset } = query;
-        if (limit && offset) {
-            options.limit = limit;
-            options.offset = offset;
+      await transaction.commit();
+
+      return updatedUser
+    } catch (error) {
+      await transaction.rollback();
+      throw error
+    }
+  }
+
+
+  async setUser({ firstName, lastName, email, username, password, imageUrl, codePhone, phone }) {
+    const transaction = await models.sequelize.transaction();
+    try {
+      let newUser = await models.Users.create({
+        id: uuid.v4(),
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        username: username,
+        password: hashPassword(password)
+      }, { transaction });
+      let newProfile = await models.Profiles.create({
+        id: uuid.v4(),
+        user_id: newUser.id,
+        image_url: imageUrl,
+        code_phone: codePhone,
+        phone: phone
+      }, { transaction });
+
+      await transaction.commit();
+      return {
+        id: newUser.id,
+        firstName: newUser.first_name,
+        lastName: newUser.last_name,
+        email: newUser.email,
+        username: newUser.username,
+        roleId: newProfile.role_id,
+        countryId: newProfile.country_id,
+        codePhone: newProfile.code_phone,
+        Phone: newProfile.phone
+      }
+    } catch (error) {
+      await transaction.commit();
+      throw error
+    }
+  }
+
+  async getUserByEmail(email) {
+    let user = await models.Users.scope('check_user').findOne({
+      where: {
+        email: email
+      },
+      include: [{
+        model: models.Profiles.scope('new_profile'),
+        as: 'profile',
+        include: {
+          model: models.Roles.scope('public_view'),
+          as: 'role'
         }
+      }]
+    })
+    return user
+  }
+  async removeUser(id) {
+    const transaction = await models.sequelize.transaction();
+    try {
+      let user = await models.Users.findByPk(id)
 
-        const { name } = query;
-        if (name) {
-            options.where.name = { [Op.iLike]: `%${name}%` };
-        }
+      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
 
-        //Necesario para el findAndCountAll de Sequelize
-        options.distinct = true
+      await user.destroy({ transaction })
 
-        const users = await models.Users.scope('public_view').findAndCountAll(options);
-        return users;
+      await transaction.commit();
+
+      return user
+    } catch (error) {
+      await transaction.rollback();
+      throw error
     }
-
-    async createUser({ first_name, last_name, email, username, password }) {
-        const transaction = await models.sequelize.transaction();
-        try {
-            let newUser = await models.Users.create({
-                id: uuid.v4(),
-                first_name: first_name,
-                last_name: last_name,
-                email: email,
-                username: username,
-                password: password
-            }, { transaction });
-
-            await transaction.commit();
-            return newUser
-        } catch (error) {
-            await transaction.rollback();
-            throw error
-        }
-    }
-    //Return Instance if we do not converted to json (or raw:true)
-    async getUserOr404(id) {
-        let user = await models.Users.findByPk(id);
-
-        if (!user) throw new CustomError('Not found User', 404, 'Not Found');
-
-        return user
-    }
-
-    //Return not an Instance raw:true | we also can converted to Json instead
-    async getUser(id) {
-        let user = await models.Users.findByPk(id, { raw: true })
-        return user
-    }
-
-    async getInfo(id) {
-        let user = await models.Users.scope('user_info').findByPk(id, { raw: true })
-        return user
-    }
-
-    async updateUser(id, obj) {
-        const transaction = await models.sequelize.transaction();
-        try {
-            let user = await models.Users.findByPk(id);
-
-            if (!user) throw new CustomError('Not found user', 404, 'Not Found')
-
-            let updatedUser = await user.update(obj, {
-                where: {
-                    id: id
-                }
-            }, { transaction })
-
-            await transaction.commit();
-
-            return updatedUser
-        } catch (error) {
-            await transaction.rollback();
-            throw error
-        }
-    }
-
-
-    async setUser({ firstName, lastName, email, username, password, imageUrl, codePhone, phone }) {
-        const transaction = await models.sequelize.transaction();
-        try {
-            let newUser = await models.Users.create({
-                id: uuid.v4(),
-                first_name: firstName,
-                last_name: lastName,
-                email: email,
-                username: username,
-                password: hashPassword(password)
-            }, { transaction });
-            let newProfile = await models.Profiles.create({
-                id: uuid.v4(),
-                user_id: newUser.id,
-                image_url: imageUrl,
-                code_phone: codePhone,
-                phone: phone
-            }, { transaction });
-
-            await transaction.commit();
-            return  {
-                id: newUser.id,
-                firstName: newUser.first_name,
-                lastName: newUser.last_name,
-                email: newUser.email,
-                username: newUser.username,
-                roleId: newProfile.role_id,
-                countryId: newProfile.country_id,
-                codePhone: newProfile.code_phone,
-                Phone: newProfile.phone
-            }
-        } catch (error) {
-            await transaction.commit();
-            throw error
-        }
-    }
-
-    async getUserByEmail(email) {
-        let user = await models.Users.scope('check_user').findOne({
-            where: {
-                email: email
-            },
-            include: [{
-                model: models.Profiles.scope('new_profile'),
-                as: 'profile',
-                include: {
-                    model: models.Roles.scope('public_view'),
-                    as: 'role'
-                }
-            }]    
-        })
-        return user
-    }
-    async removeUser(id) {
-        const transaction = await models.sequelize.transaction();
-        try {
-            let user = await models.Users.findByPk(id)
-
-            if (!user) throw new CustomError('Not found user', 404, 'Not Found')
-
-            await user.destroy({ transaction })
-
-            await transaction.commit();
-
-            return user
-        } catch (error) {
-            await transaction.rollback();
-            throw error
-        }
-    }
+  }
 }
 
 
