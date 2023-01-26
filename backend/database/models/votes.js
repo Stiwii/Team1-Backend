@@ -32,10 +32,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Votes.init({
     publication_id: {
-      type: DataTypes.UUIDV4
+      type: DataTypes.UUIDV4,
+      primaryKey: true
     },
     profile_id: {
-      type: DataTypes.UUIDV4
+      type: DataTypes.UUIDV4,
+      primaryKey: true
     }
   }, {
     sequelize,
