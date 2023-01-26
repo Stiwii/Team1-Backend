@@ -10,6 +10,6 @@ router.post('/sign-up', registerUser)
 
 // router.post('/recovery-password', authServices.postRecoveryToken)
 // router.patch('/recovery-password/:id', authServices.patchPassword)
-router.get('/verify-user/:id', verifyUser)
+// router.get('/verify-user/:id', verifyUser)
 
 module.exports = router

@@ -3,9 +3,7 @@
 const JwtStrategy = require('passport-jwt').Strategy
 const { ExtractJwt } = require('passport-jwt')
 const passport = require('passport')
-const dotenv = require('dotenv')
-
-dotenv.config()
+require('dotenv').config()
 
 const UsersService = require('../services/users.service')
 const usersService = new UsersService() 

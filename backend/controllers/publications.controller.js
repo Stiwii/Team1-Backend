@@ -46,8 +46,8 @@ const addPublication = async (request, response, next) => {
 const getPublication = async (request, response, next) => {
   try {
     let { id } = request.params
-    let profileId = request.user.profileId
-    let publications = await publicationsService.findAndCount(profileId)
+    // let profileId = request.user.profileId
+    let publications = await publicationsService.getPublicationOr404(id)
     return response.json({ results: publications })
   } catch (error) {
     next(error)

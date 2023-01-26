@@ -15,7 +15,7 @@ const { getPublication } = require('../controllers/publications.controller')
 
 //? this route is administrave
 router.route('/')
-  .get(getUsers)
+  .get(passportJWT.authenticate('jwt', { session: false }),getUsers)
 
 router.get('/mail/', getEmail)
 router.get('/user-info', passportJWT.authenticate('jwt', { session: false }), getInfoUser)

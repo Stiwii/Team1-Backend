@@ -10,7 +10,7 @@ router.route('/')
   .post(passportJWT.authenticate('jwt', { session: false }),addPublication)
 
 router.route('/:id')
-  .get(passportJWT.authenticate('jwt', { session: false }),getPublication)
+  .get(getPublication)
   .delete(passportJWT.authenticate('jwt', { session: false }),removePublication)
 
 router.route('/:id/votes')

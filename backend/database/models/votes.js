@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
   Votes.init({
     publication_id: {
       type: DataTypes.UUIDV4,
-      primaryKey: true
+      primaryKey:true
     },
     profile_id: {
       type: DataTypes.UUIDV4,
@@ -59,5 +59,6 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   })
+  Votes.removeAttribute('id');
   return Votes
 }

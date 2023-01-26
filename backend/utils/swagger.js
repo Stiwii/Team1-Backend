@@ -30,6 +30,10 @@ const options = {
     {
       name: 'Roles',
       description: 'Operations about roles'
+    },
+    {
+      name: 'Auth',
+      description: 'Operations about authorization'
     }
     ],
     components: {
@@ -48,8 +52,8 @@ const options = {
           properties: {
             id: {
               type: 'string',
-              format: "uuid",
-              example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              format: 'uuid',
+              example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
             },
             firstName: {
               type: 'string',
@@ -61,7 +65,7 @@ const options = {
             },
             email: {
               type: 'string',
-              format: "email",
+              format: 'email',
               example: 'quebendicion@email.com'
             },
             username: {
@@ -76,13 +80,13 @@ const options = {
           properties: {
             profile_id: {
               type: 'string',
-              format: "uuid",
-              example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              format: 'uuid',
+              example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
             },
             publication_type_id: {
               type: 'string',
-              format: "integer",
-              example: "1"
+              format: 'integer',
+              example: '1'
             },
             title: {
               type: 'string',
@@ -102,8 +106,8 @@ const options = {
             },
             city_id: {
               type: 'string',
-              format: "integer",
-              example: "1"
+              format: 'integer',
+              example: '1'
             }
           }
         },
@@ -151,7 +155,7 @@ const options = {
       '/api/v1/auth/sign-up': {
         post: {
           tags: [
-            'User'
+            'Auth'
           ],
           summary: 'Add a new User',
           description: 'Add a new User',
@@ -198,7 +202,7 @@ const options = {
       '/api/v1/auth/login ': {
         post: {
           tags: [
-            'User'
+            'Auth'
           ],
           summary: 'Login to the page',
           description: 'Login to the page Pa cuando',
@@ -250,7 +254,7 @@ const options = {
       '/api/v1/auth/info-user ': {
         get: {
           tags: [
-            'User'
+            'Auth'
           ],
           summary: 'Get my data',
           description: 'Get my information',
@@ -288,89 +292,189 @@ const options = {
       '/api/v1/publications ': {
         get: {
           tags: [
-            "Publications"
+            'Publications'
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: 'Get all Publications',
+          description: 'search all available publications',
+          operationId: ' ??? ',
+          responses: {
+            200: {
+                description: "Successful operation",
+                content: {
+                    "application/json": {
+                        schema: {
+                            type: "array",
+                            items: {
+                                properties: {
+                                    id: {
+                                        type: 'string', example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                    },
+                                    firstName: {
+                                        type: 'string', example: "Name"
+                                    },
+                                    lastName: {
+                                        type: 'string', example: "LastName"
+                                    },
+                                    email: {
+                                        type: 'string', format: "date", example: "unknown@email.com"
+                                    },
+                                    gender: {
+                                        type: 'string', example: "male"
+                                    },
+                                    birthday: {
+                                        type: "string", format: "date", example: "1925-12-12"
+                                    },
+                                    nickName: {
+                                        type: 'string', example: "aka"
+                                    },
+                                    isVerified: {
+                                        type: 'boolean', example: "false"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            400: {
+                description: "Invalid ID supplied"
+            }
+        }
+        },
+        post: {
+          tags: [
+            'Publications'
+          ],
+          summary: 'Add a publication',
+          description: 'Add a new publication',
+          operationId: ' ??? ',
+          requestBody: {
+            description: "After registering, a verification email will be sent to your email",
+            content: {
+                "application/json": {
+                    schema: {
+                        "$ref": "#/components/schemas/user"
+                    }
+                }
+            },
+            required: true
+        },
+        responses: {
+          201: {
+              description: "Successful operation",
+              content: {
+                  "application/json": {
+                      schema: {
+                          "$ref": "#/components/schemas/user"
+                      }
+                  }
+              }
+          },
+          400: {
+              description: "Invalid ID supplied"
+          }
+      } 
         }
       },
       '/api/v1/publications/{publication_id}': {
         get: {
           tags: [
-            "Publications"
+            'Publications'
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
-        },
-        put: {
-          tags: [
-            "Publications"
-          ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: 'Get a Publication',
+          description: 'Search for information about a publication',
+          operationId: '???',
         }
       },
       '/api/v1/publications/{publication_id}/vote': {
         get: {
           tags: [
-            "Publications"
+            'Publications'
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: 'Vote for a publication',
+          description: 'Vote for an available publication',
+          operationId: '???',
         }
       },
       '/api/v1/user/{user_id}': {
         get: {
           tags: [
-            "Publications"
+            'User'
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: 'get my data',
+          description: 'find my user information',
+          operationId: '???',
         },
         put: {
           tags: [
-            "Publications"
+            'User'
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: 'Update my user',
+          description: 'update my user information',
+          operationId: '???',
         }
       },
       '/api/v1/user/{user_id}/vote': {
         get: {
           tags: [
-            "Publications"
+            'User'
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: 'Get my votes',
+          description: 'Get the votes of the publications',
+          operationId: '???',
         }
       },
       '/api/v1/user/{user_id}/publications': {
         get: {
           tags: [
-            "Publications"
+            'User'
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: 'Get my votes',
+          description: 'Get the votes of the publications',
+          operationId: '???',
         }
       },
       '/api/v1/users': {
         get: {
           tags: [
-            "Publications"
+            'User'
           ],
-          summary: "get all Publications",
-          description: "search all users of the social network",
-          operationId: "findAllUser",
+          summary: 'Get users',
+          description: 'admin endpoint',
+          operationId: '???',
         }
       },
+      '/api/v1/states': {
+        get: {
+          tags: [
+            'States'
+          ],
+          summary: 'get all states',
+          description: 'search all users of the social network',
+          operationId: '???',
+        }
+      },
+      '/api/v1/cities': {
+        get: {
+          tags: [
+            'Cities'
+          ],
+          summary: 'get all cities',
+          description: 'search all users of the social network',
+          operationId: '???',
+        }
+      },
+      '/api/v1/roles': {
+        get: {
+          tags: [
+            'Roles'
+          ],
+          summary: 'get all roles',
+          description: 'search all users of the social network',
+          operationId: '???',
+        }
+      },
+
 
 
 
