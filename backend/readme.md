@@ -1,1 +1,2 @@
-empty file
+###  Migrations
+- sequelize-cli db:migrate 
