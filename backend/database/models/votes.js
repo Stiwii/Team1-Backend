@@ -59,6 +59,6 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   })
-  Votes.removeAttribute('id');
+  Votes.removeAttribute('id')
   return Votes
 }

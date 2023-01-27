@@ -1,8 +1,7 @@
 const models = require('../database/models')
 const uuid = require('uuid')
-const { Op, json } = require('sequelize')
+const { Op } = require('sequelize')
 const { CustomError } = require('../utils/custom-error')
-const { response } = require('express')
 
 class PublicationsService {
 
@@ -68,6 +67,15 @@ class PublicationsService {
   //Return not an Instance raw:true | we also can converted to Json instead
   async getPublication(id) {
     let publication = await models.Publications.findByPk(id, { raw: true })
+    return publication
+  }
+
+  async findPublicationByUser(profileId) {
+    let publication = await models.Publications.findAndCountAll({
+      where: {
+        profile_id:profileId
+      }
+    })
     return publication
   }
 

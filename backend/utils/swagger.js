@@ -16,6 +16,10 @@ const options = {
       description: 'Operations about user'
     },
     {
+      name: 'Publications_types',
+      description: 'Operations about Publications'
+    },
+    {
       name: 'Publications',
       description: 'Operations about Publications'
     },
@@ -78,11 +82,6 @@ const options = {
           type: 'object',
           required: ['profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id'],
           properties: {
-            profile_id: {
-              type: 'string',
-              format: 'uuid',
-              example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-            },
             publication_type_id: {
               type: 'string',
               format: 'integer',
@@ -102,12 +101,18 @@ const options = {
             },
             picture: {
               type: 'string',
-              example: 'newPicture'
+              format: 'url',
+              example: 'www.picture.com'
             },
             city_id: {
               type: 'string',
               format: 'integer',
               example: '1'
+            },
+            image_url: {
+              type: 'string',
+              format: 'url',
+              example: 'www.image_url'
             }
           }
         },
@@ -165,7 +170,34 @@ const options = {
             content: {
               'application/json': {
                 schema: {
-                  '$ref': '#/components/schemas/user'
+                  type: 'object',
+                  properties: {
+                    firstName: {
+                      type: 'string', example: 'jh'
+                    },
+                    lastName: {
+                      type: 'string', example: 'delaCruz'
+                    },
+                    username: {
+                      type: 'string', example: 'jhdelacruz777'
+                    },
+                    email: {
+                      type: 'string', format: 'email', example: 'quebendicion@gmail.com'
+                    },
+                    password: {
+                      type: 'string', example: 'pass1234'
+                    },
+                    imageUrl: {
+                      type: 'string', format: 'url', example: 'www.image.com'
+                    },
+                    codePhone: {
+                      type: 'string', format: 'integer', example: '51'
+                    },
+                    phone: {
+                      type: 'string', format: 'integer', example: '999888666'
+                    }
+
+                  }
                 }
               }
             },
@@ -193,13 +225,13 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Invalid ID supplied'
+            40: {
+              description: 'Error Bad Request'
             }
           }
         }
       },
-      '/api/v1/auth/login ': {
+      '/api/v1/auth/login': {
         post: {
           tags: [
             'Auth'
@@ -245,13 +277,13 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Invalid ID supplied'
+            401: {
+              description: 'Error: Unauthorized'
             }
           }
         }
       },
-      '/api/v1/auth/info-user ': {
+      '/api/v1/users/user-info': {
         get: {
           tags: [
             'Auth'
@@ -282,12 +314,139 @@ const options = {
               }
             }
           },
+          '401': {
+            description: 'successful Error',
+          },
           security: [
             {
               jwtAuth: []
             }
           ]
         },
+      },
+      '/api/v1/publications-types': {
+        get: {
+          tags: [
+            'Publications_types'
+          ],
+          summary: 'Get all Publications types',
+          description: 'search all available publications types',
+          operationId: 'getPublicationsTypes',
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          count: {
+                            type: 'integer',
+                            example: '5'
+                          },
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          results: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                id: {
+                                  type: 'string', example: '1'
+                                },
+                                name: {
+                                  type: 'string', example: 'newEvent'
+                                },
+                                description: {
+                                  type: 'string', example: 'newDescription'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            401: {
+              description: 'Error'
+            }
+          }
+        }
+      },
+      '/api/v1/publications-types/{publicationsTypesId} ': {
+        get: {
+          tags: [
+            'Publications_types'
+          ],
+          summary: 'Get all Publications',
+          description: 'search all available publications',
+          operationId: 'getPublicationType',
+          parameters: [
+            {
+              name: 'publicationsTypesId',
+              in: 'path',
+              description: 'ID of Publications-types',
+              required: true,
+              schema: {
+                type: 'integer'
+              }
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'integer', example: '1'
+                          },
+                          name: {
+                            type: 'string', example: 'newEvent'
+                          },
+                          description: {
+                            type: 'string', example: 'newDescription'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            401: {
+              description: 'Error'
+            }
+          }
+        }
       },
       '/api/v1/publications ': {
         get: {
@@ -299,47 +458,78 @@ const options = {
           operationId: ' ??? ',
           responses: {
             200: {
-                description: "Successful operation",
-                content: {
-                    "application/json": {
-                        schema: {
-                            type: "array",
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          count: {
+                            type: 'integer',
+                            example: '5'
+                          },
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          results: {
+                            type: 'array',
                             items: {
-                                properties: {
-                                    id: {
-                                        type: 'string', example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                                    },
-                                    firstName: {
-                                        type: 'string', example: "Name"
-                                    },
-                                    lastName: {
-                                        type: 'string', example: "LastName"
-                                    },
-                                    email: {
-                                        type: 'string', format: "date", example: "unknown@email.com"
-                                    },
-                                    gender: {
-                                        type: 'string', example: "male"
-                                    },
-                                    birthday: {
-                                        type: "string", format: "date", example: "1925-12-12"
-                                    },
-                                    nickName: {
-                                        type: 'string', example: "aka"
-                                    },
-                                    isVerified: {
-                                        type: 'boolean', example: "false"
-                                    }
+                              properties: {
+                                id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                profile_id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                publication_type_id: {
+                                  type: 'string', example: '1'
+                                },
+                                title: {
+                                  type: 'string', example: 'newTitle'
+                                },
+                                description: {
+                                  type: 'string', example: 'newDescription'
+                                },
+                                content: {
+                                  type: 'string', example: 'newContent'
+                                },
+                                picture: {
+                                  type: 'string', format: 'url', example: 'www.picture.com'
+                                },
+                                city_id: {
+                                  type: 'string', example: '1'
+                                },
+                                image_url: {
+                                  type: 'string', format: 'url', example: 'www.image.com'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
                                 }
+                              }
                             }
+                          }
                         }
+                      }
                     }
+                  }
                 }
+              }
             },
-            400: {
-                description: "Invalid ID supplied"
+            401: {
+              description: 'Error'
             }
-        }
+          }
         },
         post: {
           tags: [
@@ -347,63 +537,383 @@ const options = {
           ],
           summary: 'Add a publication',
           description: 'Add a new publication',
-          operationId: ' ??? ',
+          operationId: ' createPublications ',
           requestBody: {
-            description: "After registering, a verification email will be sent to your email",
+            description: 'After registering, a verification email will be sent to your email',
             content: {
-                "application/json": {
-                    schema: {
-                        "$ref": "#/components/schemas/user"
-                    }
+              'application/json': {
+                schema: {
+                  '$ref': '#/components/schemas/Publications'
                 }
+              }
             },
             required: true
-        },
-        responses: {
-          201: {
-              description: "Successful operation",
-              content: {
-                  "application/json": {
-                      schema: {
-                          "$ref": "#/components/schemas/user"
-                      }
-                  }
-              }
           },
-          400: {
-              description: "Invalid ID supplied"
-          }
-      } 
+          responses: {
+            201: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          profile_id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          publication_type_id: {
+                            type: 'string', example: '1'
+                          },
+                          title: {
+                            type: 'string', example: 'newTitle'
+                          },
+                          description: {
+                            type: 'string', example: 'newDescription'
+                          },
+                          content: {
+                            type: 'string', example: 'newContent'
+                          },
+                          picture: {
+                            type: 'string', format: 'url', example: 'www.picture.com'
+                          },
+                          city_id: {
+                            type: 'string', example: '1'
+                          },
+                          image_url: {
+                            type: 'string', format: 'url', example: 'www.image.com'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+                        }
+
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
         }
       },
-      '/api/v1/publications/{publication_id}': {
+      '/api/v1/publications/{publicationId}': {
         get: {
           tags: [
             'Publications'
           ],
           summary: 'Get a Publication',
           description: 'Search for information about a publication',
-          operationId: '???',
+          operationId: 'getPublication',
+          parameters: [
+            {
+              name: 'publicationId',
+              in: 'path',
+              description: 'ID of Publication',
+              required: true,
+              schema: {
+                type: 'string'
+              }
+            }
+          ],
+          responses: {
+            201: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          profile_id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          publication_type_id: {
+                            type: 'integer', example: '1'
+                          },
+                          title: {
+                            type: 'string', example: 'newTitle'
+                          },
+                          description: {
+                            type: 'string', example: 'newDescription'
+                          },
+                          content: {
+                            type: 'string', example: 'newContent'
+                          },
+                          picture: {
+                            type: 'string', format: 'url', example: 'www.picture.com'
+                          },
+                          city_id: {
+                            type: 'integer', example: '1'
+                          },
+                          image_url: {
+                            type: 'string', format: 'url', example: 'www.image.com'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+                        }
+
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          },
+        },
+        delete: {
+          tags: [
+            'Publications'
+          ],
+          summary: 'Delete my publication',
+          description: 'Delete avalible publication',
+          operationId: 'removePublication',
+          parameters: [
+            {
+              name: 'publicationId',
+              in: 'path',
+              description: 'ID of publication',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'uuid'
+              }
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          profile_id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          publication_type_id: {
+                            type: 'string', example: '1'
+                          },
+                          title: {
+                            type: 'string', example: 'newTitle'
+                          },
+                          description: {
+                            type: 'string', example: 'newDescription'
+                          },
+                          content: {
+                            type: 'string', example: 'newContent'
+                          },
+                          picture: {
+                            type: 'string', format: 'url', example: 'www.picture.com'
+                          },
+                          city_id: {
+                            type: 'string', example: '1'
+                          },
+                          image_url: {
+                            type: 'string', format: 'url', example: 'www.image.com'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+                        }
+
+                      },
+                      message: {
+                        type: 'object',
+                        example: 'removed'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error',
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
         }
       },
-      '/api/v1/publications/{publication_id}/vote': {
+      '/api/v1/publications/{publicationId}/votes': {
         get: {
           tags: [
             'Publications'
           ],
           summary: 'Vote for a publication',
           description: 'Vote for an available publication',
-          operationId: '???',
+          operationId: 'votePublication',
+          parameters: [
+            {
+              name: 'publicationId',
+              in: 'path',
+              description: 'ID of publication',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'uuid'
+              }
+            }
+          ],
+          responses: {
+            201: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          publication_id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          profile_id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
         }
       },
-      '/api/v1/user/{user_id}': {
+      '/api/v1/users/{userId}': {
         get: {
           tags: [
             'User'
           ],
           summary: 'get my data',
           description: 'find my user information',
-          operationId: '???',
+          operationId: 'getMyUser',
+          parameters: [
+            {
+              name: 'userId',
+              in: 'path',
+              description: 'ID of User',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'uuid'
+              }
+            }
+          ],
+          responses: {
+            201: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          first_name: {
+                            type: 'string', example: 'jh'
+                          },
+                          last_name: {
+                            type: 'string', example: 'delaCruz'
+                          },
+                          email: {
+                            type: 'string', example: 'quebendicion@gmail.com'
+                          },
+                          username: {
+                            type: 'string', example: 'jhdelacruz777'
+                          },
+                          profile: {
+                            type: 'object',
+                            properties: {
+                              image_url: {
+                                type: 'string', format: 'url', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                              },
+                              code_phone: {
+                                type: 'integer', example: '55'
+                              },
+                              phone: {
+                                type: 'integer', example: '999888777'
+                              }
+                            }
+
+                          }
+                        }
+
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
         },
         put: {
           tags: [
@@ -411,27 +921,251 @@ const options = {
           ],
           summary: 'Update my user',
           description: 'update my user information',
-          operationId: '???',
+          operationId: 'putUser',
+          parameters: [
+            {
+              name: 'userId',
+              in: 'path',
+              description: 'ID of User',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'uuid'
+              }
+            }
+          ],
+          requestBody: {
+            description: 'After registering, a verification email will be sent to your email',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    username: {
+                      type: 'string', example: 'jhdelacruz777'
+                    },
+                    first_name: {
+                      type: 'string', example: 'jh'
+                    },
+                    last_name: {
+                      type: 'string', example: 'delaCruz'
+                    },
+                    image_url: {
+                      type: 'string', format: 'url', example: 'www.image.com'
+                    },
+                    code_phone: {
+                      type: 'integer', example: '55'
+                    },
+                    phone: {
+                      type: 'integer', example: '999888777'
+                    },
+                  }
+                }
+              }
+            },
+            required: true
+          },
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      result: {
+                        type: 'object',
+                        properties: {
+                          username: {
+                            type: 'string', example: 'jhdelacruz777'
+                          },
+                          first_name: {
+                            type: 'string', example: 'jh'
+                          },
+                          last_name: {
+                            type: 'string', example: 'delaCruz'
+                          },
+                          image_url: {
+                            type: 'string', format: 'url', example: 'www.image.com'
+                          },
+                          code_phone: {
+                            type: 'integer', example: '55'
+                          },
+                          phone: {
+                            type: 'integer', example: '999888777'
+                          },
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
         }
       },
-      '/api/v1/user/{user_id}/vote': {
+      '/api/v1/users/{userId}/votes': {
         get: {
           tags: [
             'User'
           ],
           summary: 'Get my votes',
           description: 'Get the votes of the publications',
-          operationId: '???',
+          operationId: 'getMyVotes',
+          parameters: [
+            {
+              name: 'userId',
+              in: 'path',
+              description: 'ID of User',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'uuid'
+              }
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          count: {
+                            type: 'integer',
+                            example: '5'
+                          },
+                          rows: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                publication_id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                profile_id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
         }
       },
-      '/api/v1/user/{user_id}/publications': {
+      '/api/v1/users/{userId}/publications': {
         get: {
           tags: [
             'User'
           ],
-          summary: 'Get my votes',
-          description: 'Get the votes of the publications',
-          operationId: '???',
+          summary: 'Get my publications',
+          description: 'Get my publications',
+          operationId: 'getMyPublictions',
+          parameters: [
+            {
+              name: 'userId',
+              in: 'path',
+              description: 'ID of User',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'uuid'
+              }
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          count: {
+                            type: 'integer',
+                            example: '5'
+                          },
+                          rows: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                publication_id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                profile_id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                title: {
+                                  type: 'string', example: 'newTitle'
+                                },
+                                description: {
+                                  type: 'string', example: 'newDescription'
+                                },
+                                content: {
+                                  type: 'string', example: 'newContent'
+                                },
+                                picture: {
+                                  type: 'string', format: 'url', example: 'www.picture.com'
+                                },
+                                city_id: {
+                                  type: 'integer', example: '1'
+                                },
+                                image_url: {
+                                  type: 'string', format: 'url', example: 'www.image.com'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Invalid ID supplied'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
         }
       },
       '/api/v1/users': {
@@ -441,7 +1175,68 @@ const options = {
           ],
           summary: 'Get users',
           description: 'admin endpoint',
-          operationId: '???',
+          operationId: 'getAllUsers',
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          count: {
+                            type: 'integer',
+                            example: '5'
+                          },
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          results: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                first_name: {
+                                  type: 'string', example: 'jh'
+                                },
+                                last_name: {
+                                  type: 'string', example: 'delaCruz'
+                                },
+                                email: {
+                                  type: 'string', example: 'quebendicion@gmail.com'
+                                },
+                                username: {
+                                  type: 'string', example: 'jhdelacruz777'
+                                },
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Invalid ID supplied'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
         }
       },
       '/api/v1/states': {
@@ -451,7 +1246,64 @@ const options = {
           ],
           summary: 'get all states',
           description: 'search all users of the social network',
-          operationId: '???',
+          operationId: 'getAllStates',
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          count: {
+                            type: 'integer',
+                            example: '5'
+                          },
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          results: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                id: {
+                                  type: 'integer', example: '1'
+                                },
+                                country_id: {
+                                  type: 'integer', example: '1'
+                                },
+                                name: {
+                                  type: 'string', example: 'nowNameState'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Invalid ID supplied'
+            }
+          }
+
         }
       },
       '/api/v1/cities': {
@@ -461,7 +1313,64 @@ const options = {
           ],
           summary: 'get all cities',
           description: 'search all users of the social network',
-          operationId: '???',
+          operationId: 'getAllCities',
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          count: {
+                            type: 'integer',
+                            example: '5'
+                          },
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          results: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                id: {
+                                  type: 'integer', example: '1'
+                                },
+                                state_id: {
+                                  type: 'integer', example: '1'
+                                },
+                                name: {
+                                  type: 'string', example: 'nowNameCity'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Invalid ID supplied'
+            }
+          }
+
         }
       },
       '/api/v1/roles': {
@@ -471,13 +1380,62 @@ const options = {
           ],
           summary: 'get all roles',
           description: 'search all users of the social network',
-          operationId: '???',
+          operationId: 'getAllRoles',
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          count: {
+                            type: 'integer',
+                            example: '5'
+                          },
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          results: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                id: {
+                                  type: 'integer', example: '1'
+                                },
+                                name: {
+                                  type: 'string', example: 'public'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Invalid ID supplied'
+            }
+          }
         }
       },
-
-
-
-
     }
   },
   apis: ['src/users/users.router.js', 'src/follows/follows.router.js', 'src/posts/posts.router.js', 'src/auth/auth.router.js']
@@ -493,7 +1451,7 @@ const swaggerDocs = (app, /*port*/) => {
     res.send(swaggerSpec)
   })
   console.log(
-    `SWAGGER HOST: /api/v1/docs `
+    'SWAGGER HOST: /api/v1/docs '
   )
 }
 
