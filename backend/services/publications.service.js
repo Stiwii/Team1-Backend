@@ -11,21 +11,37 @@ class PublicationsService {
   }
 
   async findAndCount(query) {
+    const { limit, offset, tags } = query
+
+
+    // let tagsIDs = tags.split(',')
     const options = {
-      where: {},
+      // where: {}
     }
 
-    const { limit, offset } = query
+
     if (limit && offset) {
       options.limit = limit
       options.offset = offset
     }
 
-    const { name } = query
-    if (name) {
-      options.where.name = { [Op.iLike]: `%${name}%` }
+    // const { name } = query
+    // if (name) {
+    //   options.where.name = { [Op.iLike]: `%${name}%` }
+    // }
+
+    if (tags) {
+      let tagsIDs = tags.split(',')
+      options.include = [{ // El options que les di en el ejemplo 
+        model: models.Tags,
+        as: 'tags',
+        required: true,
+        where: { id: tagsIDs },
+        through: { attributes: [] }
+      }]
     }
 
+    console.log(options)
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
@@ -33,7 +49,9 @@ class PublicationsService {
     return publications
   }
 
-  async createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url }) {
+  async
+
+  async createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url, tags}) {
     const transaction = await models.sequelize.transaction()
 
     try {
@@ -48,6 +66,10 @@ class PublicationsService {
         city_id: city_id,
         image_url: image_url
       }, { transaction })
+
+      let tags_ids = tags.split(',')
+      console.log(tags_ids)
+      await newPublication.setTags(tags_ids, { transaction })
 
       await transaction.commit()
       return newPublication
@@ -70,6 +92,8 @@ class PublicationsService {
     let publication = await models.Publications.findByPk(id, { raw: true })
     return publication
   }
+
+
 
   async updatePublication(id, obj) {
     const transaction = await models.sequelize.transaction()
@@ -105,7 +129,7 @@ class PublicationsService {
         await transaction.commit()
 
         return publication
-      }else{
+      } else {
         return null
       }
     } catch (error) {

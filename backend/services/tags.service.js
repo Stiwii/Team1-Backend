@@ -3,10 +3,9 @@ const uuid = require('uuid')
 const { Op } = require('sequelize')
 const { CustomError } = require('../utils/custom-error')
 
-class PublicationsTypesService {
+class TagsService {
 
   constructor() {
-
   }
 
   async findAndCount(query) {
@@ -28,50 +27,47 @@ class PublicationsTypesService {
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
-    const publicationsTypes = await models.Publications_types.findAndCountAll(options)
-    return publicationsTypes
+    const tags = await models.Tags.findAndCountAll(options)
+    return tags
   }
 
-  async createPublicationType(obj) {
+  async createTag({name}) {
     const transaction = await models.sequelize.transaction()
     try {
-      let newPublicationType = await models.Publications_types.create({
-        name: obj.name,
-        description: obj.description
-        
+      let newTag = await models.Tags.create({
+        name: name
       }, { transaction })
 
       await transaction.commit()
-      return newPublicationType
+      return newTag
     } catch (error) {
       await transaction.rollback()
       throw error
     }
   }
   //Return Instance if we do not converted to json (or raw:true)
-  async getPublicationOr404(id) {
-    let publicationType = await models.Publications_types.findByPk(id)
+  async getTagOr404(id) {
+    let tag = await models.Tags.findByPk(id)
 
-    if (!publicationType) throw new CustomError('Not found PublicationType', 404, 'Not Found')
+    if (!tag) throw new CustomError('Not found tag', 404, 'Not Found')
 
-    return publicationType
+    return tag
   }
 
   //Return not an Instance raw:true | we also can converted to Json instead
-  async getPublicationType(id) {
-
-    let publicationType = await models.Publications_types.findByPk(id, { raw: true })
-    return publicationType
+  async getTag(id) {
+    let tag = await models.Tags.findByPk(id, { raw: true })
+    return tag
   }
 
-  async updatePublicationType(id, obj) {
+  async updateTag(id, obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      let publicationType = await models.Publications_types.findByPk(id)
+      let tag = await models.Tags.findByPk(id)
 
-      if (!publicationType) throw new CustomError('Not found PublicationType', 404, 'Not Found')
+      if (!tag) throw new CustomError('Not found tag', 404, 'Not Found')
 
-      let updatedPublicationType = await models.Publications_types.update(obj, {
+      let updatedTag = await tag.update(obj, {
         where: {
           id: id
         }
@@ -79,25 +75,25 @@ class PublicationsTypesService {
 
       await transaction.commit()
 
-      return updatedPublicationType
+      return updatedTag
     } catch (error) {
       await transaction.rollback()
       throw error
     }
   }
 
-  async removePublicationType(id) {
+  async removeTag(id) {
     const transaction = await models.sequelize.transaction()
     try {
-      let publicationType = await models.Publications_types.findByPk(id)
+      let tag = await models.Tags.findByPk(id)
 
-      if (!publicationType) throw new CustomError('Not found PublicationType', 404, 'Not Found')
+      if (!tag) throw new CustomError('Not found tag', 404, 'Not Found')
 
-      await publicationType.destroy({ transaction })
+      await tag.destroy({ transaction })
 
       await transaction.commit()
 
-      return publicationType
+      return tag
     } catch (error) {
       await transaction.rollback()
       throw error
@@ -106,4 +102,4 @@ class PublicationsTypesService {
 
 }
 
-module.exports = PublicationsTypesService
+module.exports = TagsService
