@@ -5,6 +5,7 @@ const statesService = new StatesService()
 
 const getStates = async (request, response, next) => {
   try {
+    console.log("FROM GET STATES: ",request.body);
     let query = request.query
     let { page, size } = query
     const { limit, offset } = getPagination(page, size, '10')

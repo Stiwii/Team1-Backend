@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Publications.belongsTo(models.Profiles, { as: 'profile', foreignKey: 'profile_id' })
       Publications.belongsTo(models.Publications_types, { as: 'publication_type', foreignKey: 'publication_type_id' })
-      Publications.belongsTo(models.Cities, { as: 'cyty', foreignKey: 'city_id' })
+      Publications.belongsTo(models.Cities, { as: 'city', foreignKey: 'city_id' })
       Publications.hasMany(models.Votes, { as: 'votes', foreignKey: 'publication_id' })
     }
   }
@@ -60,6 +60,9 @@ module.exports = (sequelize, DataTypes) => {
     scopes: {
       public_view: {
         attributes: ['id', 'profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id', 'image_url']
+      },
+      get_publication: {
+        attributes: ['id', 'profile_id', 'title', 'description', 'content', 'picture', 'image_url']
       },
       no_timestamps: {
         attributes: { exclude: ['created_at', 'updated_at'] }

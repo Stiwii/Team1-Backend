@@ -52,8 +52,8 @@ class UsersService {
       throw error
     }
   }
-  //Return Instance if we do not converted to json (or raw:true)
-  async getUserOr404(id) {
+
+  async getMyUser(id) {
     let user = await models.Users.scope('public_view').findOne({
       where: {
         id: id
