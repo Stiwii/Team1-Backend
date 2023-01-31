@@ -1,8 +1,7 @@
 const models = require('../database/models')
 const uuid = require('uuid')
-const { Op, json } = require('sequelize')
+const { Op } = require('sequelize')
 const { CustomError } = require('../utils/custom-error')
-const { response } = require('express')
 
 class PublicationsService {
 
@@ -67,7 +66,36 @@ class PublicationsService {
 
   //Return not an Instance raw:true | we also can converted to Json instead
   async getPublication(id) {
-    let publication = await models.Publications.findByPk(id, { raw: true })
+    // let publication = await models.Publications.findByPk(id, { raw: true })
+    let publication = await models.Publications.scope('get_publication').findOne({
+      where: {
+        id: id
+      }
+      ,
+      include: [{
+        model: models.Cities.scope('get_city'),
+        as: 'city',
+        include: {
+          model: models.States.scope('get_state'),
+          as: 'state',
+          include: {
+            model: models.Countries.scope('public_view')
+          }
+        }
+      }, {
+        model: models.Publications_types.scope('public_view'),
+        as: 'publication_type',
+      }]
+    })
+    return publication
+  }
+
+  async findPublicationByUser(profileId) {
+    let publication = await models.Publications.findAndCountAll({
+      where: {
+        profile_id: profileId
+      }
+    })
     return publication
   }
 
@@ -105,7 +133,7 @@ class PublicationsService {
         await transaction.commit()
 
         return publication
-      }else{
+      } else {
         return null
       }
     } catch (error) {

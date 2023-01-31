@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Users.hasMany(models.Profiles, { as: 'profile', foreignKey: 'user_id' })
     }
-  };
+  }
   Users.init({
     id: {
       type: DataTypes.UUID,
@@ -46,13 +46,13 @@ module.exports = (sequelize, DataTypes) => {
     // y minimizar que se nos escape algo
     scopes: {
       public_view: {
-        attributes: ['id', 'first_name', "last_name", "email", "username"]
+        attributes: ['id', 'first_name', 'last_name', 'email', 'username']
       },
       user_info: {
-        attributes: ['id', "email", "username"]
+        attributes: ['id', 'email', 'username']
       },
       check_user: {
-        attributes: ['id', 'first_name', "last_name", "email", "username", "password"]
+        attributes: ['id', 'first_name', 'last_name', 'email', 'username', 'password']
       },
       no_timestamps: {
         attributes: { exclude: ['created_at', 'updated_at'] }

@@ -16,9 +16,7 @@ function routerModels(app) {
   const router = express.Router()
 
   app.use('/api/v1', router)
-
   router.use('/auth', routesAuth)
-
   router.use('/users', routesUsers)
   // router.use('/users', isAuthenticatedByPassportJwt.authenticate('jwt', {session: false}) ,routesUsers)//<- middleware here
   // other models here

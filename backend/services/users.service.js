@@ -52,8 +52,8 @@ class UsersService {
       throw error
     }
   }
-  //Return Instance if we do not converted to json (or raw:true)
-  async getUserOr404(id) {
+
+  async getMyUser(id) {
     let user = await models.Users.scope('public_view').findOne({
       where: {
         id: id
@@ -63,7 +63,7 @@ class UsersService {
         as: 'profile'
       }]
     })
-    if (!user) throw new CustomError('Not found User', 404, 'Not Found');
+    if (!user) throw new CustomError('Not found User', 404, 'Not Found')
 
     return user
   }
@@ -96,11 +96,9 @@ class UsersService {
       console.log(profile)
       let updatedProfile = await profile.update(obj, { transaction })
 
-      // console.log(updatedProfile)
       await transaction.commit()
 
       return ({
-        // profile_id : updatedProfile.id,
         username: updatedUser.username,
         first_name: updatedUser.first_name,
         last_name: updatedUser.last_name,

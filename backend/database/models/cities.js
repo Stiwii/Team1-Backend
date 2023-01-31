@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Cities.hasMany(models.Publications, { as: 'publications', foreignKey: 'city_id' })
-      Cities.belongsTo(models.States)
+      Cities.belongsTo(models.States,{ as: 'state'})
     }
   }
   Cities.init({
@@ -37,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
     scopes: {
       public_view: {
         attributes: ['id', 'state_id', 'name']
+      },
+      get_city: {
+        attributes: ['id','name']
       },
       no_timestamps: {
         attributes: { exclude: ['created_at', 'updated_at'] }

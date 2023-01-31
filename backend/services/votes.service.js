@@ -59,7 +59,12 @@ class VotesService {
       },{transaction})
 
       await transaction.commit()
-      return data
+      return {
+        publication_id: data.publication_id,
+        profile_id: data.profile_id,
+        updated_at: data.updated_at,
+        created_at: data.created_at
+      }
     } catch (error) {
       await transaction.rollback()
       throw error

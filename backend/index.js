@@ -12,17 +12,17 @@ const PORT = process.env.PORT || 8000
 /*
 Cors Settings
 */
-// const whitelist = ['http://localhost:8000']
+const whitelist = ['http://localhost:8000']
 
-// const corsOptions = {
-//   origin: (origin, callback) => {
-//     if (whitelist.includes(origin) || !origin) {
-//       callback(null, true)
-//     } else {
-//       callback(new Error('Denied By CORS'))
-//     }
-//   }
-// }
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin) || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Denied By CORS'))
+    }
+  }
+}
 
 if (process.env.NODE_ENV === 'production') {
   app.use(cors())
@@ -30,11 +30,12 @@ if (process.env.NODE_ENV === 'production') {
   /* For Error ERR_BLOCKED_BY_RESPONSE.NotSameOrigin 200 
        https://stackoverflow.com/questions/70752770/helmet-express-err-blocked-by-response-notsameorigin-200
   */
+  // console.log("GAAAAAAAAAAAAAA");
   app.use(helmet({ crossOriginResourcePolicy: false }))
 } else {
   app.use(cors())
+  console.log("RAAAAAAAAAAAAAAA");
 }
-
 /* 
 Accept Json & form-urlencoded
 */

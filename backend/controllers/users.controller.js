@@ -46,26 +46,32 @@ const registerUser = async (request, response, next) => {
     // })
     return response.status(201).json({ results: user })
   } catch (error) {
-    response.status(400).json({
-      message: error.message, fields: {
-        firstName: 'String',
-        lastName: 'String',
-        username: 'String',
-        email: 'example@example.com',
-        password: 'String',
-        imageUrl: 'StringURL',
-        codePhone: 'number',
-        phone: 'number'
-      }
-    })
+    // response.status(400).json({
+    //   message: error.message, fields: {
+    //     firstName: 'String',
+    //     lastName: 'String',
+    //     username: 'String',
+    //     email: 'example@example.com',
+    //     password: 'String',
+    //     imageUrl: 'StringURL',
+    //     codePhone: 'number',
+    //     phone: 'number'
+    //   }
+    // })
+    next(error)
   }
 }
 
 const getUser = async (request, response, next) => {
   try {
     let { id } = request.params
-    let users = await usersService.getUserOr404(id)
-    return response.json({ results: users })
+    let userId = request.user.id
+    if(userId===id){
+      let users = await usersService.getMyUser(id)
+      return response.json({ results: users })
+    }else{
+      return response.status(404).json({message: 'Invalid User'})
+    }
   } catch (error) {
     next(error)
   }
@@ -74,8 +80,6 @@ const getUser = async (request, response, next) => {
 const getInfoUser = async (request, response, next) => {
   try {
     let id = request.user.id
-    // const id = 'FAA'
-    // console.log('FROM TOKEN')
     let user = await usersService.getInfo(id)
     return response.json({ results: user })
   } catch (error) {
@@ -100,7 +104,6 @@ const updateUser = async (request, response, next) => {
     if (id == request.user.id) {
       let { username, first_name, last_name, image_url, code_phone, phone } = request.body
       let user = await usersService.updateUser(id, { profile_id, username, first_name, last_name, image_url, code_phone, phone })
-      // return response.status(200).json({ first_name: user.first_name, last_name: user.last_name, username: user.username })
       return response.status(200).json({ result: user })
     }
   } catch (error) {

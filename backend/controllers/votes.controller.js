@@ -33,7 +33,6 @@ const addVote = async (request, response, next) => {
 
 const getVote = async (request, response, next) => {
   try {
-    let { id } = request.params
     let profileId = request.user.profileId
     let votes = await votesService.findAndCount(profileId)
     return response.json({ results: votes })

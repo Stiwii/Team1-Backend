@@ -6,7 +6,7 @@ const rolesService = new RolesService()
 const getRoles = async (request, response, next) => {
   try {
     let query = request.query
-    let { page, size } = query
+    let { page, size } = query // QUERY STRING (page,size) EXAMPLE: http://localhost:9010/api/v1/roles?page=1&size=5
     const { limit, offset } = getPagination(page, size, '10')
     query.limit = limit
     query.offset = offset

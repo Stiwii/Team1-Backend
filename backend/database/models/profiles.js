@@ -44,11 +44,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     role_id: {
       type: DataTypes.BIGINT,
-      defaultValue: "1"
+      defaultValue: '1'
     },
     country_id: {
       type: DataTypes.BIGINT,
-      defaultValue: "1"
+      defaultValue: '1'
     },
     image_url: {
       type: DataTypes.STRING
@@ -69,10 +69,10 @@ module.exports = (sequelize, DataTypes) => {
     // y minimizar que se nos escape algo
     scopes: {
       public_view: {
-        attributes: ["image_url", "code_phone", "phone"]
+        attributes: ['image_url', 'code_phone', 'phone']
       },
       new_profile: {
-        attributes: ['id', "image_url", "code_phone", "phone"]
+        attributes: ['id', 'image_url', 'code_phone', 'phone']
       },
       no_timestamps: {
         attributes: { exclude: ['created_at', 'updated_at'] }

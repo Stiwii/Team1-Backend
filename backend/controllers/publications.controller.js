@@ -1,5 +1,5 @@
-const PublicationsService = require('../services/publications.service');
-const { getPagination, getPagingData } = require('../utils/sequelize-utils');
+const PublicationsService = require('../services/publications.service')
+const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 
 const publicationsService = new PublicationsService()
 
@@ -46,9 +46,18 @@ const addPublication = async (request, response, next) => {
 const getPublication = async (request, response, next) => {
   try {
     let { id } = request.params
-    // let profileId = request.user.profileId
-    let publications = await publicationsService.getPublicationOr404(id)
-    return response.json({ results: publications })
+    let publication = await publicationsService.getPublication(id)
+    return response.json({ results: publication })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const getPublicationsByUser = async (request, response, next) => {
+  try {
+    let profileId = request.user.profileId
+    let publication = await publicationsService.findPublicationByUser(profileId)
+    return response.json({ results: publication })
   } catch (error) {
     next(error)
   }
@@ -81,5 +90,6 @@ module.exports = {
   addPublication,
   getPublication,
   updatePublication,
-  removePublication
+  removePublication,
+  getPublicationsByUser
 }
