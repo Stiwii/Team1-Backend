@@ -6,10 +6,12 @@ const publicationsService = new PublicationsService()
 const getPublications = async (request, response, next) => {
   try {
     let query = request.query
-    let { page, size } = query
+    let { page, size, tags } = query
+
     const { limit, offset } = getPagination(page, size, '10')
     query.limit = limit
     query.offset = offset
+    query.tags = tags
 
     let publications = await publicationsService.findAndCount(query)
     const results = getPagingData(publications, page, limit)
@@ -20,12 +22,38 @@ const getPublications = async (request, response, next) => {
   }
 }
 
+const getPublicationsofUser = async (request, response, next) => {
+  try {
+    let query = request.query
+    let { page, size, tags } = query
+
+    const { limit, offset } = getPagination(page, size, '10')
+    query.limit = limit
+    query.offset = offset
+    query.tags = tags
+    const { id } = request.params
+    const profileId = request.user.profileId
+    const userId = request.user.id
+    console.log(profileId)
+    if (id == userId) {
+      let publications = await publicationsService.findAndCount2(query, profileId)
+      const results = getPagingData(publications, page, limit)
+      return response.json({ results: results })
+    } else {
+      response.status(400).json({ msg: 'No puedes ver las publicaciones de este usuario' })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 const addPublication = async (request, response, next) => {
 
   try {
     let profile_id = request.user.profileId
-    let { publication_type_id, title, description, content, picture, city_id, image_url } = request.body
-    let publication = await publicationsService.createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url })
+    let { publication_type_id, title, description, content, picture, city_id, image_url, tags } = request.body
+    let publication = await publicationsService.createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url, tags })
 
     return response.status(201).json({ results: publication })
   } catch (error) {
@@ -37,7 +65,8 @@ const addPublication = async (request, response, next) => {
         content: 'string',
         picture: 'string',
         city_id: 'number',
-        image_url: 'string_URL'
+        image_url: 'string_URL',
+        tags: 'tag1,tag2,etc'
       }
     })
   }
@@ -87,6 +116,7 @@ const removePublication = async (request, response, next) => {
 
 module.exports = {
   getPublications,
+  getPublicationsofUser,
   addPublication,
   getPublication,
   updatePublication,

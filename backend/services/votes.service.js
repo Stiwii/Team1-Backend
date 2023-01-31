@@ -7,9 +7,12 @@ class VotesService {
   constructor() {
   }
 
-  async findAndCount(query) {
+  async findAndCount(query,profileId) {
     const options = {
-      where: {},
+      where: {profile_id: profileId},
+      include:[{
+        model:models.Publications.scope('public_view')
+      }]
     }
 
     const { limit, offset } = query
@@ -18,10 +21,10 @@ class VotesService {
       options.offset = offset
     }
 
-    const { name } = query
-    if (name) {
-      options.where.name = { [Op.iLike]: `%${name}%` }
-    }
+    // const { name } = query
+    // if (name) {
+    //   options.where.name = { [Op.iLike]: `%${name}%` }
+    // }
 
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
@@ -30,8 +33,9 @@ class VotesService {
     return votes
   }
 
-  async createVote({ publication_id, profile_id }) {
+  async createVote( {publication_id, profile_id} ) {
     const transaction = await models.sequelize.transaction()
+    
     try {
       
       let validate = await models.Votes.scope('public_view').findOne({
@@ -54,8 +58,8 @@ class VotesService {
 
 
       let data = await models.Votes.create({
-        publication_id: publication_id,
-        profile_id: profile_id
+        profile_id: profile_id,
+        publication_id: publication_id
       },{transaction})
 
       await transaction.commit()

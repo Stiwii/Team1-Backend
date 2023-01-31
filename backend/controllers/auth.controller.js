@@ -15,10 +15,25 @@ const logIn = async (request, response, next) => {
         profileId: user.profile[0].id
       }, process.env.JWT_SECRET_WORD)
 
-      response.status(200).json({
-        message: 'Correct Credentials!',
-        token
-      })
+      if (user.profile[1]) {
+        const tokenAdmin = jwt.sign({
+          id: user.id,
+          email: user.email,
+          role: user.profile[1].role.name,
+          profileId: user.profile[1].id
+        }, process.env.JWT_SECRET_WORD)
+
+        response.status(200).json({
+          message: 'Correct Credentials!',
+          token,
+          tokenAdmin
+        })
+      } else{
+        response.status(200).json({
+          message: 'Correct Credentials!',
+          token
+        })
+      }
     } else {
       response.status(401).json({ message: 'Invalid Credentials' })
     }
