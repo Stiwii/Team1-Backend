@@ -26,7 +26,6 @@ class UsersService {
       options.where.name = { [Op.iLike]: `%${name}%` }
     }
 
-    //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
     const users = await models.Users.scope('public_view').findAndCountAll(options)
@@ -42,7 +41,7 @@ class UsersService {
         last_name: last_name,
         email: email,
         username: username,
-        password: password
+        password: hashPassword(password),
       }, { transaction })
 
       await transaction.commit()
@@ -74,26 +73,35 @@ class UsersService {
     return user
   }
 
+  async verifiedToken(id,token) {
+    let user = await models.Users.findOne({
+      where: {
+          id: id,
+          token: token
+      }
+  })
+    return user
+  }
+
   async getInfo(id) {
     let user = await models.Users.scope('user_info').findByPk(id, { raw: true })
     return user
   }
 
-  async updateUser(id,  obj) {
+
+
+  async updateUser(id, obj) {
     const transaction = await models.sequelize.transaction()
     try {
-      let  profileID = obj.profile_id
+      let profileID = obj.profile_id
       let user = await models.Users.scope('public_view').findByPk(id)
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
 
       let profile = await models.Profiles.findByPk(profileID)
       if (!profile) throw new CustomError('Not found user', 404, 'Not Found')
-      console.log(`este es el profile id: ${profileID}`)
 
       let updatedUser = await user.update(obj, { transaction })
 
-
-      console.log(profile)
       let updatedProfile = await profile.update(obj, { transaction })
 
       await transaction.commit()
@@ -111,6 +119,41 @@ class UsersService {
       throw error
     }
   }
+
+  async updatePassword(id, newPassword) {
+    const transaction = await models.sequelize.transaction()
+    try {
+      let user = await models.Users.scope('public_view').findByPk(id)
+      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
+
+
+      let restoreUser = await user.update({password:hashPassword(newPassword)}, { transaction })
+
+      await transaction.commit()
+
+      return restoreUser
+    } catch (error) {
+      await transaction.rollback()
+      throw error
+    }
+  }
+
+  async setTokenUser(id, token) {
+    const transaction = await models.sequelize.transaction()
+    try {
+      let user = await models.Users.scope('set_token').findByPk(id)
+      if (!user) throw new CustomError('Not found user', 404, 'Not Found')
+      let User = await user.update({ token: token }, { transaction })
+
+      await transaction.commit()
+
+      return User
+    } catch (error) {
+      await transaction.rollback()
+      throw error
+    }
+  }
+
 
 
   async setUser({ firstName, lastName, email, username, password, imageUrl, codePhone, phone }) {
