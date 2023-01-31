@@ -16,7 +16,7 @@ class PublicationsService {
 
     // let tagsIDs = tags.split(',')
     const options = {
-      // where: {}
+
     }
 
 
@@ -49,9 +49,27 @@ class PublicationsService {
     return publications
   }
 
-  async
+  async findAndCount2(query, profileId) {
+    const options = {
+      where: { profile_id: profileId },
+      // include: [{
+      //   model: models.Publications.scope('public_view')
+      // }]
+    }
 
-  async createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url, tags}) {
+    const { limit, offset } = query
+    if (limit && offset) {
+      options.limit = limit
+      options.offset = offset
+    }
+
+    options.distinct = true
+
+    const votes = await models.Publications.scope('public_view').findAndCountAll(options)
+    return votes
+  }
+
+  async createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url, tags }) {
     const transaction = await models.sequelize.transaction()
 
     try {
@@ -82,7 +100,7 @@ class PublicationsService {
   async getPublicationOr404(id) {
     let publication = await models.Publications.findByPk(id)
 
-    if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
+    // if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 
     return publication
   }
