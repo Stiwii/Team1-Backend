@@ -31,7 +31,7 @@ class TagsService {
     return tags
   }
 
-  async createTag({name}) {
+  async createTag(name) {
     const transaction = await models.sequelize.transaction()
     try {
       let newTag = await models.Tags.create({

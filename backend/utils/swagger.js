@@ -34,6 +34,10 @@ const options = {
     {
       name: 'Auth',
       description: 'Operations about authorization'
+    },
+    {
+      name: 'Tags',
+      descrition: 'Operations about  tags'
     }
     ],
     components: {
@@ -299,47 +303,47 @@ const options = {
           operationId: ' ??? ',
           responses: {
             200: {
-                description: "Successful operation",
-                content: {
-                    "application/json": {
-                        schema: {
-                            type: "array",
-                            items: {
-                                properties: {
-                                    id: {
-                                        type: 'string', example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                                    },
-                                    firstName: {
-                                        type: 'string', example: "Name"
-                                    },
-                                    lastName: {
-                                        type: 'string', example: "LastName"
-                                    },
-                                    email: {
-                                        type: 'string', format: "date", example: "unknown@email.com"
-                                    },
-                                    gender: {
-                                        type: 'string', example: "male"
-                                    },
-                                    birthday: {
-                                        type: "string", format: "date", example: "1925-12-12"
-                                    },
-                                    nickName: {
-                                        type: 'string', example: "aka"
-                                    },
-                                    isVerified: {
-                                        type: 'boolean', example: "false"
-                                    }
-                                }
-                            }
+              description: "Successful operation",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "array",
+                    items: {
+                      properties: {
+                        id: {
+                          type: 'string', example: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                        },
+                        firstName: {
+                          type: 'string', example: "Name"
+                        },
+                        lastName: {
+                          type: 'string', example: "LastName"
+                        },
+                        email: {
+                          type: 'string', format: "date", example: "unknown@email.com"
+                        },
+                        gender: {
+                          type: 'string', example: "male"
+                        },
+                        birthday: {
+                          type: "string", format: "date", example: "1925-12-12"
+                        },
+                        nickName: {
+                          type: 'string', example: "aka"
+                        },
+                        isVerified: {
+                          type: 'boolean', example: "false"
                         }
+                      }
                     }
+                  }
                 }
+              }
             },
             400: {
-                description: "Invalid ID supplied"
+              description: "Invalid ID supplied"
             }
-        }
+          }
         },
         post: {
           tags: [
@@ -351,29 +355,29 @@ const options = {
           requestBody: {
             description: "After registering, a verification email will be sent to your email",
             content: {
-                "application/json": {
-                    schema: {
-                        "$ref": "#/components/schemas/user"
-                    }
+              "application/json": {
+                schema: {
+                  "$ref": "#/components/schemas/user"
                 }
+              }
             },
             required: true
-        },
-        responses: {
-          201: {
+          },
+          responses: {
+            201: {
               description: "Successful operation",
               content: {
-                  "application/json": {
-                      schema: {
-                          "$ref": "#/components/schemas/user"
-                      }
+                "application/json": {
+                  schema: {
+                    "$ref": "#/components/schemas/user"
                   }
+                }
               }
-          },
-          400: {
+            },
+            400: {
               description: "Invalid ID supplied"
+            }
           }
-      } 
         }
       },
       '/api/v1/publications/{publication_id}': {
@@ -474,6 +478,279 @@ const options = {
           operationId: '???',
         }
       },
+
+
+      //! Tags SWAGER
+      '/api/v1/tags': {
+        get: {
+          tags: [
+            'Tags'
+          ],
+          summary: 'Get all Tags types',
+          description: 'search all available Tags',
+          operationId: 'getTags',
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          count: {
+                            type: 'integer',
+                            example: '5'
+                          },
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          results: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                id: {
+                                  type: 'string', example: '1'
+                                },
+                                name: {
+                                  type: 'string', example: 'newTag'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            401: {
+              description: 'Error'
+            }
+          }
+        },
+        post: {
+          tags: [
+            'Tags'
+          ],
+          summary: 'Add Tag',
+          description: 'Add new Tag',
+          operationId: ' createTag ',
+          requestBody: {
+            description: 'tags post is for Admin',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    name:{
+                      type: 'string',
+                      example: 'newTag'
+                    }
+                  }
+                }
+              }
+            },
+            required: true
+          },
+          responses: {
+            201: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', example: '5'
+                          },
+                          name: {
+                            type: 'string', example: 'newTag'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
+        }
+      },
+
+      '/api/v1/tags/{tag_id}':{
+        put: {
+          tags: [
+            'Tags'
+          ],
+          summary: 'Update my tag',
+          description: 'update my tag information',
+          operationId: 'putTag',
+          parameters: [
+            {
+              name: 'TagId',
+              in: 'path',
+              description: 'ID of Tag',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'integer'
+              }
+            }
+          ],
+          requestBody: {
+            description: 'Uddate your tag',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string', example: 'updatedTag'
+                    },
+                  }
+                }
+              }
+            },
+            required: true
+          },
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', example: '5'
+                          },
+                          name: {
+                            type: 'string', example: 'newTag'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
+        },
+        delete: {
+          tags: [
+            'Tags'
+          ],
+          summary: 'Delete Tag',
+          description: 'Delete avalible Tag',
+          operationId: 'removeTag',
+          parameters: [
+            {
+              name: 'TagId',
+              in: 'path',
+              description: 'ID of Tag',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'number'
+              }
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', example: '5'
+                          },
+                          name: {
+                            type: 'string', example: 'newTag'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+                        }
+                      },
+                      message: {
+                        type: 'object',
+                        example: 'removed'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error',
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
+        }
+      }
+
+
 
 
 

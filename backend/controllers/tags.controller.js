@@ -23,7 +23,7 @@ const getTags = async (request, response, next) => {
 const addTag = async (request, response, next) => {
   try {
     let { name } = request.body
-    let tag = await tagsService.createTag({name})
+    let tag = await tagsService.createTag(name)
     return response.status(201).json({ results: tag })
   } catch (error) {
     next(error)

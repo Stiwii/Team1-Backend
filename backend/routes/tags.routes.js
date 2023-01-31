@@ -7,7 +7,7 @@ const { getTags, addTag, updateTag, removeTag } = require('../controllers/tags.c
 
 
 router.route('/')
-  .get(passportJWT.authenticate('jwt', { session: false }),getTags) //? this route is piblic
+  .get(getTags) //? this route is piblic
   .post(passportJWT.authenticate('jwt', { session: false }), addTag)//?this route is administrative
 
 
