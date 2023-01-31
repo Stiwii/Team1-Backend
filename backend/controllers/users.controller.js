@@ -111,6 +111,7 @@ const updateUser = async (request, response, next) => {
   }
 }
 
+
 const removeUser = async (request, response, next) => {
   try {
     let { id } = request.params
