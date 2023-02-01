@@ -54,6 +54,9 @@ module.exports = (sequelize, DataTypes) => {
       new: {
         attributes: ['email', 'token']
       },
+      my_votes: {
+        attributes: ['profile_id']
+      },
       no_timestamps: {
         attributes: { exclude: ['created_at', 'updated_at'] }
       },

@@ -11,8 +11,8 @@ const {
   getEmail
 } = require('../controllers/users.controller')
 
-const { getVote } = require('../controllers/votes.controller')
-const { getPublicationsByUser } = require('../controllers/publications.controller')
+const { getVotes } = require('../controllers/votes.controller')
+const {  getPublicationsofUser } = require('../controllers/publications.controller')
 
 //? this route is administrave
 router.route('/')
@@ -28,9 +28,9 @@ router.route('/:id')
 // router.delete('/:id', removeUser)
 
 router.route('/:id/votes')
-  .get(passportJWT.authenticate('jwt', { session: false }),getVote)
+  .get(passportJWT.authenticate('jwt', { session: false }),getVotes)
 
 router.route('/:id/publications')
-  .get(passportJWT.authenticate('jwt', { session: false }),getPublicationsByUser)
+  .get(passportJWT.authenticate('jwt', { session: false }),getPublicationsofUser)
 
 module.exports = router
