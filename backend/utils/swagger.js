@@ -215,14 +215,37 @@ const options = {
                   schema: {
                     type: 'object',
                     properties: {
-                      id: {
-                        type: 'string', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-                      },
-                      email: {
-                        type: 'string', example: 'unknown@email.com'
-                      },
-                      username: {
-                        type: 'string', example: 'unknown'
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          firstName: {
+                            type: 'string', example: 'jh'
+                          },
+                          lastName: {
+                            type: 'string', example: 'delaCruz'
+                          },
+                          username: {
+                            type: 'string', example: 'jhdelacruz777'
+                          },
+                          email: {
+                            type: 'string', format: 'email', example: 'quebendicion@gmail.com'
+                          },
+                          roleId: {
+                            type: 'string', format: 'integer', example: '1'
+                          },
+                          imageUrl: {
+                            type: 'string', format: 'url', example: 'www.image.com'
+                          },
+                          codePhone: {
+                            type: 'string', format: 'integer', example: '51'
+                          },
+                          phone: {
+                            type: 'string', format: 'integer', example: '999888666'
+                          }
+                        }
                       }
                     }
                   }
@@ -640,7 +663,7 @@ const options = {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
                                 },
                                 City: {
-                                  type: 'object', 
+                                  type: 'object',
                                   properties: {
                                     id: {
                                       type: 'string', example: '1'
@@ -657,7 +680,7 @@ const options = {
                                         name: {
                                           type: 'string', example: 'nameState'
                                         },
-                                        Country:{
+                                        Country: {
                                           type: 'object',
                                           properties: {
                                             id: {
@@ -869,7 +892,7 @@ const options = {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
                                 },
                                 City: {
-                                  type: 'object', 
+                                  type: 'object',
                                   properties: {
                                     id: {
                                       type: 'string', example: '1'
@@ -886,7 +909,7 @@ const options = {
                                         name: {
                                           type: 'string', example: 'nameState'
                                         },
-                                        Country:{
+                                        Country: {
                                           type: 'object',
                                           properties: {
                                             id: {
@@ -1354,7 +1377,7 @@ const options = {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
                                 },
                                 City: {
-                                  type: 'object', 
+                                  type: 'object',
                                   properties: {
                                     id: {
                                       type: 'string', example: '1'
@@ -1371,7 +1394,7 @@ const options = {
                                         name: {
                                           type: 'string', example: 'nameState'
                                         },
-                                        Country:{
+                                        Country: {
                                           type: 'object',
                                           properties: {
                                             id: {

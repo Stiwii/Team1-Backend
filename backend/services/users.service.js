@@ -183,7 +183,7 @@ class UsersService {
         email: newUser.email,
         username: newUser.username,
         roleId: newProfile.role_id,
-        countryId: newProfile.country_id,
+        imageUrl: newProfile.image_url,
         codePhone: newProfile.code_phone,
         Phone: newProfile.phone
       }
