@@ -33,7 +33,7 @@ class AuthService {
           role: user.profile[0].role.name,
           profileId: user.profile[0].id
         }, process.env.JWT_SECRET_WORD,
-          { expiresIn: '900s' })
+        { expiresIn: '900s' })
         return { user, token }
       }
       return null

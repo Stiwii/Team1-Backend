@@ -47,7 +47,7 @@ const options = {
     components: {
       securitySchemes: {
         jwtAuth: {
-          description: `<strong>Add 'JWT' before insert token :</strong> 'JWT 2sdasd.....dsdsdsd'`,
+          description: '<strong>Add JWT before insert token :</strong> JWT 2sdasd.....dsdsdsd',
           type: 'apiKey',
           in: 'header',
           name: 'Authorization'
@@ -229,8 +229,8 @@ const options = {
                 }
               }
             },
-            40: {
-              description: 'Error Bad Request'
+            400: {
+              description: 'Error'
             }
           }
         }
@@ -290,6 +290,94 @@ const options = {
           }
         }
       },
+      '/api/v1/auth/forget-password': {
+        get: {
+          tags: [
+            'Auth'
+          ],
+          summary: 'Recover password',
+          description: 'Recover account by mail, you have 15min to use the link in the email',
+          operationId: 'forgetPassword',
+          requestBody: {
+            description: 'Email you want to recover',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    email: {
+                      type: 'string', example: 'unknown@email.com'
+                    }
+                  }
+                }
+              }
+            },
+            required: true
+          },
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      message: {
+                        type: 'string', example: 'Email sended!, Check your inbox'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          }
+        }
+      },
+      '/api/v1/auth/change-password/{token}': {
+        post: {
+          tags: [
+            'Auth'
+          ],
+          summary: 'Change password with token',
+          description: 'he token is in your email, has an expiration date of 15min when created',
+          operationId: 'restorePassword',
+          parameters: [
+            {
+              name: 'token',
+              in: 'path',
+              description: 'The token is in your email',
+              required: true,
+              schema: {
+                type: 'string',
+                example: 'pass1234'
+              }
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      message: {
+                        type: 'string', example: 'update success'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          }
+        }
+      },
       '/api/v1/users/user-info': {
         get: {
           tags: [
@@ -319,10 +407,10 @@ const options = {
                   }
                 }
               }
+            },
+            '400': {
+              description: 'Error',
             }
-          },
-          '401': {
-            description: 'successful Error',
           },
           security: [
             {
@@ -339,6 +427,20 @@ const options = {
           summary: 'Get all Publications types',
           description: 'search all available publications types',
           operationId: 'getPublicationsTypes',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -455,14 +557,34 @@ const options = {
           }
         }
       },
-      '/api/v1/publications ': {
+      '/api/v1/publications': {
         get: {
           tags: [
             'Publications'
           ],
           summary: 'Get all Publications',
           description: 'search all available publications',
-          operationId: ' ??? ',
+          operationId: ' GetAllPublications ',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            },
+            {
+              name: 'tags',
+              in: 'query',
+              description: 'Tags ID to filter',
+              example: '1,2,3'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -1037,6 +1159,18 @@ const options = {
                 type: 'string',
                 format: 'uuid'
               }
+            },
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
             }
           ],
           responses: {
@@ -1103,6 +1237,18 @@ const options = {
                 type: 'string',
                 format: 'uuid'
               }
+            },
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
             }
           ],
           responses: {
@@ -1165,7 +1311,7 @@ const options = {
               }
             },
             400: {
-              description: 'Invalid ID supplied'
+              description: 'Error'
             }
           },
           security: [
@@ -1183,6 +1329,20 @@ const options = {
           summary: 'Get users',
           description: 'admin endpoint',
           operationId: 'getAllUsers',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -1236,7 +1396,7 @@ const options = {
               }
             },
             400: {
-              description: 'Invalid ID supplied'
+              description: 'Error'
             }
           },
           security: [
@@ -1254,6 +1414,20 @@ const options = {
           summary: 'get all states',
           description: 'search all users of the social network',
           operationId: 'getAllStates',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -1307,7 +1481,7 @@ const options = {
               }
             },
             400: {
-              description: 'Invalid ID supplied'
+              description: 'Error'
             }
           }
 
@@ -1321,6 +1495,20 @@ const options = {
           summary: 'get all cities',
           description: 'search all users of the social network',
           operationId: 'getAllCities',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -1374,7 +1562,7 @@ const options = {
               }
             },
             400: {
-              description: 'Invalid ID supplied'
+              description: 'Error'
             }
           }
 
@@ -1388,6 +1576,20 @@ const options = {
           summary: 'get all roles',
           description: 'search all users of the social network',
           operationId: 'getAllRoles',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -1438,14 +1640,11 @@ const options = {
               }
             },
             400: {
-              description: 'Invalid ID supplied'
+              description: 'Error'
             }
           }
         }
       },
-
-
-      //! Tags SWAGER
       '/api/v1/tags': {
         get: {
           tags: [
@@ -1454,6 +1653,20 @@ const options = {
           summary: 'Get all Tags types',
           description: 'search all available Tags',
           operationId: 'getTags',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -1522,7 +1735,7 @@ const options = {
                 schema: {
                   type: 'object',
                   properties: {
-                    name:{
+                    name: {
                       type: 'string',
                       example: 'newTag'
                     }
@@ -1573,8 +1786,7 @@ const options = {
           ]
         }
       },
-
-      '/api/v1/tags/{tag_id}':{
+      '/api/v1/tags/{TagId}': {
         put: {
           tags: [
             'Tags'
@@ -1714,12 +1926,6 @@ const options = {
           ]
         }
       }
-
-
-
-
-
-
     }
   },
   apis: ['src/users/users.router.js', 'src/follows/follows.router.js', 'src/posts/posts.router.js', 'src/auth/auth.router.js']

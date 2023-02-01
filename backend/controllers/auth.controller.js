@@ -66,7 +66,6 @@ const forgetPassword = async (request, response, next) => {
     if (email) {
       let data = await authService.createRecoveryToken(email)
       let user = await usersService.setTokenUser(data.user.id, data.token)
-      console.log("MAIL SEND:  ", user.email);
       mailer.sendMail({
         from: process.env.MAIL_SEND,
         to: user.email,

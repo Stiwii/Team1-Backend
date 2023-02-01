@@ -15,7 +15,20 @@ class PublicationsService {
 
     // let tagsIDs = tags.split(',')
     const options = {
-
+      include: [{
+        model: models.Cities.scope('get_city'),
+        as: 'city',
+        include: {
+          model: models.States.scope('get_state'),
+          as: 'state',
+          include: {
+            model: models.Countries.scope('public_view')
+          }
+        }
+      }, {
+        model: models.Publications_types.scope('public_view'),
+        as: 'publication_type',
+      }]
     }
 
 
@@ -24,27 +37,22 @@ class PublicationsService {
       options.offset = offset
     }
 
-    // const { name } = query
-    // if (name) {
-    //   options.where.name = { [Op.iLike]: `%${name}%` }
-    // }
-
     if (tags) {
       let tagsIDs = tags.split(',')
-      options.include = [{ // El options que les di en el ejemplo 
+      options.include.push({ // El options que les di en el ejemplo 
         model: models.Tags,
         as: 'tags',
         required: true,
         where: { id: tagsIDs },
         through: { attributes: [] }
-      }]
+      })
     }
 
-    console.log(options)
+    // console.log(options)
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
-    const publications = await models.Publications.findAndCountAll(options)
+    const publications = await models.Publications.scope('get_publication').findAndCountAll(options)
     return publications
   }
 
