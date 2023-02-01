@@ -34,7 +34,6 @@ if (process.env.NODE_ENV === 'production') {
   app.use(helmet({ crossOriginResourcePolicy: false }))
 } else {
   app.use(cors())
-  console.log("RAAAAAAAAAAAAAAA");
 }
 /* 
 Accept Json & form-urlencoded

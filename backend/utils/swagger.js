@@ -38,12 +38,16 @@ const options = {
     {
       name: 'Auth',
       description: 'Operations about authorization'
+    },
+    {
+      name: 'Tags',
+      descrition: 'Operations about  tags'
     }
     ],
     components: {
       securitySchemes: {
         jwtAuth: {
-          description: `<strong>Add 'JWT' before insert token :</strong> 'JWT 2sdasd.....dsdsdsd'`,
+          description: '<strong>Add JWT before insert token :</strong> JWT 2sdasd.....dsdsdsd',
           type: 'apiKey',
           in: 'header',
           name: 'Authorization'
@@ -225,8 +229,8 @@ const options = {
                 }
               }
             },
-            40: {
-              description: 'Error Bad Request'
+            400: {
+              description: 'Error'
             }
           }
         }
@@ -271,6 +275,9 @@ const options = {
                       },
                       token: {
                         type: 'string', example: '3fed23.......434&ñ#+34-'
+                      },
+                      tokenAdmin: {
+                        type: 'string', example: '4fths2.......434&ñ#+79-'
                       }
                     }
                   }
@@ -279,6 +286,94 @@ const options = {
             },
             401: {
               description: 'Error: Unauthorized'
+            }
+          }
+        }
+      },
+      '/api/v1/auth/forget-password': {
+        get: {
+          tags: [
+            'Auth'
+          ],
+          summary: 'Recover password',
+          description: 'Recover account by mail, you have 15min to use the link in the email',
+          operationId: 'forgetPassword',
+          requestBody: {
+            description: 'Email you want to recover',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    email: {
+                      type: 'string', example: 'unknown@email.com'
+                    }
+                  }
+                }
+              }
+            },
+            required: true
+          },
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      message: {
+                        type: 'string', example: 'Email sended!, Check your inbox'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          }
+        }
+      },
+      '/api/v1/auth/change-password/{token}': {
+        post: {
+          tags: [
+            'Auth'
+          ],
+          summary: 'Change password with token',
+          description: 'he token is in your email, has an expiration date of 15min when created',
+          operationId: 'restorePassword',
+          parameters: [
+            {
+              name: 'token',
+              in: 'path',
+              description: 'The token is in your email',
+              required: true,
+              schema: {
+                type: 'string',
+                example: 'pass1234'
+              }
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      message: {
+                        type: 'string', example: 'update success'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
             }
           }
         }
@@ -312,10 +407,10 @@ const options = {
                   }
                 }
               }
+            },
+            '400': {
+              description: 'Error',
             }
-          },
-          '401': {
-            description: 'successful Error',
           },
           security: [
             {
@@ -332,6 +427,20 @@ const options = {
           summary: 'Get all Publications types',
           description: 'search all available publications types',
           operationId: 'getPublicationsTypes',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -448,14 +557,34 @@ const options = {
           }
         }
       },
-      '/api/v1/publications ': {
+      '/api/v1/publications': {
         get: {
           tags: [
             'Publications'
           ],
           summary: 'Get all Publications',
           description: 'search all available publications',
-          operationId: ' ??? ',
+          operationId: ' GetAllPublications ',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            },
+            {
+              name: 'tags',
+              in: 'query',
+              description: 'Tags ID to filter',
+              example: '1,2,3'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -489,9 +618,6 @@ const options = {
                                 profile_id: {
                                   type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                 },
-                                publication_type_id: {
-                                  type: 'string', example: '1'
-                                },
                                 title: {
                                   type: 'string', example: 'newTitle'
                                 },
@@ -504,9 +630,6 @@ const options = {
                                 picture: {
                                   type: 'string', format: 'url', example: 'www.picture.com'
                                 },
-                                city_id: {
-                                  type: 'string', example: '1'
-                                },
                                 image_url: {
                                   type: 'string', format: 'url', example: 'www.image.com'
                                 },
@@ -515,6 +638,66 @@ const options = {
                                 },
                                 updated_at: {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                City: {
+                                  type: 'object', 
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'nameCity'
+                                    },
+                                    State: {
+                                      type: 'object',
+                                      properties: {
+                                        id: {
+                                          type: 'string', example: '1'
+                                        },
+                                        name: {
+                                          type: 'string', example: 'nameState'
+                                        },
+                                        Country:{
+                                          type: 'object',
+                                          properties: {
+                                            id: {
+                                              type: 'string', example: '1'
+                                            },
+                                            name: {
+                                              type: 'string', example: 'nameCountry'
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                publication_type_id: {
+                                  type: 'object',
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'namePublicationType'
+                                    },
+                                    description: {
+                                      type: 'string', example: 'info publication'
+                                    }
+                                  }
+                                },
+                                tags: {
+                                  type: 'array',
+                                  items: {
+                                    properties: {
+                                      id: {
+                                        type: 'string', example: '1'
+                                      },
+                                      name: {
+                                        type: 'string', example: 'namePublicationType'
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -642,41 +825,113 @@ const options = {
                       results: {
                         type: 'object',
                         properties: {
-                          id: {
-                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          count: {
+                            type: 'integer',
+                            example: '5'
                           },
-                          profile_id: {
-                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
                           },
-                          publication_type_id: {
-                            type: 'integer', example: '1'
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
                           },
-                          title: {
-                            type: 'string', example: 'newTitle'
-                          },
-                          description: {
-                            type: 'string', example: 'newDescription'
-                          },
-                          content: {
-                            type: 'string', example: 'newContent'
-                          },
-                          picture: {
-                            type: 'string', format: 'url', example: 'www.picture.com'
-                          },
-                          city_id: {
-                            type: 'integer', example: '1'
-                          },
-                          image_url: {
-                            type: 'string', format: 'url', example: 'www.image.com'
-                          },
-                          created_at: {
-                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                          },
-                          updated_at: {
-                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          results: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                profile_id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                title: {
+                                  type: 'string', example: 'newTitle'
+                                },
+                                description: {
+                                  type: 'string', example: 'newDescription'
+                                },
+                                content: {
+                                  type: 'string', example: 'newContent'
+                                },
+                                picture: {
+                                  type: 'string', format: 'url', example: 'www.picture.com'
+                                },
+                                image_url: {
+                                  type: 'string', format: 'url', example: 'www.image.com'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                City: {
+                                  type: 'object', 
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'nameCity'
+                                    },
+                                    State: {
+                                      type: 'object',
+                                      properties: {
+                                        id: {
+                                          type: 'string', example: '1'
+                                        },
+                                        name: {
+                                          type: 'string', example: 'nameState'
+                                        },
+                                        Country:{
+                                          type: 'object',
+                                          properties: {
+                                            id: {
+                                              type: 'string', example: '1'
+                                            },
+                                            name: {
+                                              type: 'string', example: 'nameCountry'
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                publication_type_id: {
+                                  type: 'object',
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'namePublicationType'
+                                    },
+                                    description: {
+                                      type: 'string', example: 'info publication'
+                                    }
+                                  }
+                                },
+                                tags: {
+                                  type: 'array',
+                                  items: {
+                                    properties: {
+                                      id: {
+                                        type: 'string', example: '1'
+                                      },
+                                      name: {
+                                        type: 'string', example: 'namePublicationType'
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
-
                       }
                     }
                   }
@@ -1030,6 +1285,18 @@ const options = {
                 type: 'string',
                 format: 'uuid'
               }
+            },
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
             }
           ],
           responses: {
@@ -1047,15 +1314,104 @@ const options = {
                             type: 'integer',
                             example: '5'
                           },
-                          rows: {
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          results: {
                             type: 'array',
                             items: {
                               properties: {
-                                publication_id: {
+                                id: {
                                   type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                 },
                                 profile_id: {
                                   type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                title: {
+                                  type: 'string', example: 'newTitle'
+                                },
+                                description: {
+                                  type: 'string', example: 'newDescription'
+                                },
+                                content: {
+                                  type: 'string', example: 'newContent'
+                                },
+                                picture: {
+                                  type: 'string', format: 'url', example: 'www.picture.com'
+                                },
+                                image_url: {
+                                  type: 'string', format: 'url', example: 'www.image.com'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                City: {
+                                  type: 'object', 
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'nameCity'
+                                    },
+                                    State: {
+                                      type: 'object',
+                                      properties: {
+                                        id: {
+                                          type: 'string', example: '1'
+                                        },
+                                        name: {
+                                          type: 'string', example: 'nameState'
+                                        },
+                                        Country:{
+                                          type: 'object',
+                                          properties: {
+                                            id: {
+                                              type: 'string', example: '1'
+                                            },
+                                            name: {
+                                              type: 'string', example: 'nameCountry'
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                publication_type_id: {
+                                  type: 'object',
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'namePublicationType'
+                                    },
+                                    description: {
+                                      type: 'string', example: 'info publication'
+                                    }
+                                  }
+                                },
+                                tags: {
+                                  type: 'array',
+                                  items: {
+                                    properties: {
+                                      id: {
+                                        type: 'string', example: '1'
+                                      },
+                                      name: {
+                                        type: 'string', example: 'namePublicationType'
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -1096,6 +1452,18 @@ const options = {
                 type: 'string',
                 format: 'uuid'
               }
+            },
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
             }
           ],
           responses: {
@@ -1158,7 +1526,7 @@ const options = {
               }
             },
             400: {
-              description: 'Invalid ID supplied'
+              description: 'Error'
             }
           },
           security: [
@@ -1176,6 +1544,20 @@ const options = {
           summary: 'Get users',
           description: 'admin endpoint',
           operationId: 'getAllUsers',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -1229,7 +1611,7 @@ const options = {
               }
             },
             400: {
-              description: 'Invalid ID supplied'
+              description: 'Error'
             }
           },
           security: [
@@ -1247,6 +1629,20 @@ const options = {
           summary: 'get all states',
           description: 'search all users of the social network',
           operationId: 'getAllStates',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -1300,7 +1696,7 @@ const options = {
               }
             },
             400: {
-              description: 'Invalid ID supplied'
+              description: 'Error'
             }
           }
 
@@ -1314,6 +1710,20 @@ const options = {
           summary: 'get all cities',
           description: 'search all users of the social network',
           operationId: 'getAllCities',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -1367,7 +1777,7 @@ const options = {
               }
             },
             400: {
-              description: 'Invalid ID supplied'
+              description: 'Error'
             }
           }
 
@@ -1381,6 +1791,20 @@ const options = {
           summary: 'get all roles',
           description: 'search all users of the social network',
           operationId: 'getAllRoles',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
           responses: {
             200: {
               description: 'Successful operation',
@@ -1431,11 +1855,292 @@ const options = {
               }
             },
             400: {
-              description: 'Invalid ID supplied'
+              description: 'Error'
             }
           }
         }
       },
+      '/api/v1/tags': {
+        get: {
+          tags: [
+            'Tags'
+          ],
+          summary: 'Get all Tags types',
+          description: 'search all available Tags',
+          operationId: 'getTags',
+          parameters: [
+            {
+              name: 'size',
+              in: 'query',
+              description: 'Pagination | How many instances per request',
+              example: '10'
+            },
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Pagination | From which page will start counting to return instances | Starts from 1 by default',
+              example: '1'
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          count: {
+                            type: 'integer',
+                            example: '5'
+                          },
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          results: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                id: {
+                                  type: 'string', example: '1'
+                                },
+                                name: {
+                                  type: 'string', example: 'newTag'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            401: {
+              description: 'Error'
+            }
+          }
+        },
+        post: {
+          tags: [
+            'Tags'
+          ],
+          summary: 'Add Tag',
+          description: 'Add new Tag',
+          operationId: ' createTag ',
+          requestBody: {
+            description: 'tags post is for Admin',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                      example: 'newTag'
+                    }
+                  }
+                }
+              }
+            },
+            required: true
+          },
+          responses: {
+            201: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', example: '5'
+                          },
+                          name: {
+                            type: 'string', example: 'newTag'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
+        }
+      },
+      '/api/v1/tags/{TagId}': {
+        put: {
+          tags: [
+            'Tags'
+          ],
+          summary: 'Update my tag',
+          description: 'update my tag information',
+          operationId: 'putTag',
+          parameters: [
+            {
+              name: 'TagId',
+              in: 'path',
+              description: 'ID of Tag',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'integer'
+              }
+            }
+          ],
+          requestBody: {
+            description: 'Uddate your tag',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string', example: 'updatedTag'
+                    },
+                  }
+                }
+              }
+            },
+            required: true
+          },
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', example: '5'
+                          },
+                          name: {
+                            type: 'string', example: 'newTag'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error'
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
+        },
+        delete: {
+          tags: [
+            'Tags'
+          ],
+          summary: 'Delete Tag',
+          description: 'Delete avalible Tag',
+          operationId: 'removeTag',
+          parameters: [
+            {
+              name: 'TagId',
+              in: 'path',
+              description: 'ID of Tag',
+              required: true,
+              schema: {
+                type: 'string',
+                format: 'number'
+              }
+            }
+          ],
+          responses: {
+            200: {
+              description: 'Successful operation',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type: 'string', example: '5'
+                          },
+                          name: {
+                            type: 'string', example: 'newTag'
+                          },
+                          created_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          },
+                          updated_at: {
+                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          }
+                        }
+                      },
+                      message: {
+                        type: 'object',
+                        example: 'removed'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            400: {
+              description: 'Error',
+            }
+          },
+          security: [
+            {
+              jwtAuth: []
+            }
+          ]
+        }
+      }
     }
   },
   apis: ['src/users/users.router.js', 'src/follows/follows.router.js', 'src/posts/posts.router.js', 'src/auth/auth.router.js']

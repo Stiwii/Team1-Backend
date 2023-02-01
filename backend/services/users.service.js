@@ -73,13 +73,13 @@ class UsersService {
     return user
   }
 
-  async verifiedToken(id,token) {
+  async verifiedToken(id, token) {
     let user = await models.Users.findOne({
       where: {
-          id: id,
-          token: token
+        id: id,
+        token: token
       }
-  })
+    })
     return user
   }
 
@@ -127,7 +127,7 @@ class UsersService {
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
 
 
-      let restoreUser = await user.update({password:hashPassword(newPassword)}, { transaction })
+      let restoreUser = await user.update({ password: hashPassword(newPassword) }, { transaction })
 
       await transaction.commit()
 

@@ -19,15 +19,15 @@ const getRoles = async (request, response, next) => {
   }
 }
 
-// const addRole = async (request, response, next) => {
-//   try {
-//     let { body } = request
-//     let role = await rolesService.createRole(body)
-//     return response.status(201).json({ results: role })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
+const addRole = async (request, response, next) => {
+  try {
+    let { body } = request
+    let role = await rolesService.createRole(body)
+    return response.status(201).json({ results: role })
+  } catch (error) {
+    next(error)
+  }
+}
 
 const getRole = async (request, response, next) => {
   try {
@@ -62,5 +62,6 @@ const getRole = async (request, response, next) => {
 
 module.exports = {
   getRoles,
+  addRole,
   getRole
 }

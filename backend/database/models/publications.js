@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       Publications.belongsTo(models.Publications_types, { as: 'publication_type', foreignKey: 'publication_type_id' })
       Publications.belongsTo(models.Cities, { as: 'city', foreignKey: 'city_id' })
       Publications.hasMany(models.Votes, { as: 'votes', foreignKey: 'publication_id' })
+      Publications.belongsToMany(models.Tags, {as: 'tags', through: models.Publications_tags, foreignKey: 'publication_id'})
     }
   }
   Publications.init({
@@ -62,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
         attributes: ['id', 'profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id', 'image_url']
       },
       get_publication: {
-        attributes: ['id', 'profile_id', 'title', 'description', 'content', 'picture', 'image_url']
+        attributes: ['id', 'profile_id', 'title', 'description', 'content', 'picture', 'image_url','created_at', 'updated_at']
       },
       no_timestamps: {
         attributes: { exclude: ['created_at', 'updated_at'] }

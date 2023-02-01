@@ -10,8 +10,57 @@ class PublicationsService {
   }
 
   async findAndCount(query) {
+    const { limit, offset, tags } = query
+
+
+    // let tagsIDs = tags.split(',')
     const options = {
-      where: {},
+      include: [{
+        model: models.Cities.scope('get_city'),
+        as: 'city',
+        include: {
+          model: models.States.scope('get_state'),
+          as: 'state',
+          include: {
+            model: models.Countries.scope('public_view')
+          }
+        }
+      }, {
+        model: models.Publications_types.scope('public_view'),
+        as: 'publication_type',
+      }]
+    }
+
+
+    if (limit && offset) {
+      options.limit = limit
+      options.offset = offset
+    }
+
+    if (tags) {
+      let tagsIDs = tags.split(',')
+      options.include.push({ // El options que les di en el ejemplo 
+        model: models.Tags.scope('public_view'),
+        as: 'tags',
+        required: true,
+        where: { id: tagsIDs },
+        through: { attributes: [] }
+      })
+    }
+
+    //Necesario para el findAndCountAll de Sequelize
+    options.distinct = true
+
+    const publications = await models.Publications.scope('get_publication').findAndCountAll(options)
+    return publications
+  }
+
+  async findAndCount2(query, profileId) {
+    const options = {
+      where: { profile_id: profileId },
+      // include: [{
+      //   model: models.Publications.scope('public_view')
+      // }]
     }
 
     const { limit, offset } = query
@@ -20,19 +69,13 @@ class PublicationsService {
       options.offset = offset
     }
 
-    const { name } = query
-    if (name) {
-      options.where.name = { [Op.iLike]: `%${name}%` }
-    }
-
-    //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
-    const publications = await models.Publications.findAndCountAll(options)
-    return publications
+    const votes = await models.Publications.scope('public_view').findAndCountAll(options)
+    return votes
   }
 
-  async createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url }) {
+  async createPublication({ profile_id, publication_type_id, title, description, content, picture, city_id, image_url, tags }) {
     const transaction = await models.sequelize.transaction()
 
     try {
@@ -48,6 +91,10 @@ class PublicationsService {
         image_url: image_url
       }, { transaction })
 
+      let tags_ids = tags.split(',')
+      console.log(tags_ids)
+      await newPublication.setTags(tags_ids, { transaction })
+
       await transaction.commit()
       return newPublication
     } catch (error) {
@@ -59,7 +106,7 @@ class PublicationsService {
   async getPublicationOr404(id) {
     let publication = await models.Publications.findByPk(id)
 
-    if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
+    // if (!publication) throw new CustomError('Not found Publication', 404, 'Not Found')
 
     return publication
   }
@@ -98,6 +145,8 @@ class PublicationsService {
     })
     return publication
   }
+
+
 
   async updatePublication(id, obj) {
     const transaction = await models.sequelize.transaction()

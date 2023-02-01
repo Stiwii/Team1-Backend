@@ -10,11 +10,16 @@ const getVotes = async (request, response, next) => {
     const { limit, offset } = getPagination(page, size, '10')
     query.limit = limit
     query.offset = offset
-
-    let votes = await votesService.findAndCount(query)
-    const results = getPagingData(votes, page, limit)
-    return response.json({ results: results })
-
+    const { id } = request.params
+    const profileId = request.user.profileId
+    const userId = request.user.id
+    if (id == userId) {
+      let votes = await votesService.findAndCount(query, profileId)
+      const results = getPagingData(votes, page, limit)
+      return response.json({ results: results })
+    } else {
+      response.status(400).json({ msg: 'No puedes ver los votos de este usuario' })
+    }
   } catch (error) {
     next(error)
   }
@@ -23,9 +28,24 @@ const getVotes = async (request, response, next) => {
 const addVote = async (request, response, next) => {
   try {
     let profile_id = request.user.profileId
-    let publication_id = request.params.id 
+    let publication_id = request.params.id
+
     let vote = await votesService.createVote({ publication_id, profile_id })
-    return response.status(201).json({ results: vote })
+    console.log(vote)
+    if (vote == 1) {
+      return response.status(200).json({
+        results: 'Voto Eliminado'
+      })
+    } else {
+      return response.status(201).json({
+        results: {
+          profile_id: vote.profile_id,
+          publication_id: vote.publication_id,
+          updated_at: vote.updated_at,
+          created_at: vote.created_at
+        }
+      })
+    }
   } catch (error) {
     next(error)
   }
