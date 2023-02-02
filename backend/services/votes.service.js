@@ -27,14 +27,34 @@ class VotesService {
           as: 'publication_type',
         },
         {
+<<<<<<< HEAD
           model: models.Tags.scope('no_timestamps'),
           as: 'tags',
           through: {
             attributes: []
           }
+=======
+          model: models.Tags.scope('public_view'),
+          as: 'tags'
+>>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
         }]
       }],
     }
+
+    // include: [{
+    //   model: models.Cities.scope('get_city'),
+    //   as: 'city',
+    //   include: {
+    //     model: models.States.scope('get_state'),
+    //     as: 'state',
+    //     include: {
+    //       model: models.Countries.scope('public_view')
+    //     }
+    //   }
+    // }, {
+    //   model: models.Publications_types.scope('public_view'),
+    //   as: 'publication_type',
+    // }]
 
     const { limit, offset } = query
     if (limit && offset) {
@@ -50,8 +70,12 @@ class VotesService {
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
+<<<<<<< HEAD
     const votes = await models.Votes.findAndCountAll(options)
     // const votes = await models.Publications_tags.findAndCountAll(options)
+=======
+    const votes = await models.Votes.scope('my_votes').findAndCountAll(options)
+>>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
     return votes
   }
 

@@ -49,7 +49,10 @@ module.exports = {
           type: Sequelize.STRING
         },
         code_phone: {
+<<<<<<< HEAD
           defaultValue: null,
+=======
+>>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
           type: Sequelize.INTEGER
         },
         phone: {
