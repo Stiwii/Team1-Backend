@@ -35,12 +35,13 @@ module.exports = {
         },
         title: {
           type: Sequelize.STRING,
+          allowNull: false
         },
         description: {
-          type: Sequelize.TEXT
+          type: Sequelize.TEXT,
+          allowNull: false
         },
         content: {
-          allowNull: false,
           type: Sequelize.TEXT
         },
         picture: {

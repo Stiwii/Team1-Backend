@@ -27,16 +27,11 @@ class VotesService {
           as: 'publication_type',
         },
         {
-<<<<<<< HEAD
           model: models.Tags.scope('no_timestamps'),
           as: 'tags',
           through: {
             attributes: []
           }
-=======
-          model: models.Tags.scope('public_view'),
-          as: 'tags'
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
         }]
       }],
     }
@@ -70,12 +65,8 @@ class VotesService {
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
-<<<<<<< HEAD
     const votes = await models.Votes.findAndCountAll(options)
     // const votes = await models.Publications_tags.findAndCountAll(options)
-=======
-    const votes = await models.Votes.scope('my_votes').findAndCountAll(options)
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
     return votes
   }
 

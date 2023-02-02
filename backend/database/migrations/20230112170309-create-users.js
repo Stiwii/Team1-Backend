@@ -36,11 +36,9 @@ module.exports = {
           type: Sequelize.STRING
         },
         email_verified: {
-          defaultValue: null,
           type: Sequelize.DATE
         },
         token: {
-          defaultValue: null,
           type: Sequelize.TEXT
         },
         created_at: {

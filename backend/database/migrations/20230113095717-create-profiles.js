@@ -45,18 +45,12 @@ module.exports = {
           onDelete: 'RESTRICT' // Elijan como quieren que se comporte la DB
         },
         image_url: {
-          defaultValue: null,
           type: Sequelize.STRING
         },
         code_phone: {
-<<<<<<< HEAD
-          defaultValue: null,
-=======
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
           type: Sequelize.INTEGER
         },
         phone: {
-          defaultValue: null,
           type: Sequelize.INTEGER
         },
         created_at: {

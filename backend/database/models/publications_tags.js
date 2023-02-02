@@ -6,11 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
 
       // Relations - Publications_tags
-<<<<<<< HEAD
       Publications_tags.belongsTo(models.Publications, { as: 'publication' })
       Publications_tags.belongsTo(models.Tags, { as: 'tag'})
-=======
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
     }
   }
   Publications_tags.init({

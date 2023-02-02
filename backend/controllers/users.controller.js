@@ -36,28 +36,25 @@ const addUser = async (request, response, next) => {
 const registerUser = async (request, response, next) => {
   try {
     let { body } = request
+    let errorCounter = 0
+    let errorMessage = null
     let user = await usersService.setUser(body)
-    await mailer.sendMail({
-      from: process.env.MAIL_SEND,
-      to: user.email,
-      subject: `Verify account ${user.firstName} From Harmonyk`,
-      html: `<h1>Enter the following link to verify your account: ${process.env.HOST_CLOUD}/api/v1/auth/verify-user/${user.id}</h1> `,
-      text: 'Thanks you',
-    })
-    return response.status(201).json({ results: user })
+    try {
+      await mailer.sendMail({
+        from: process.env.MAIL_SEND,
+        to: user.email,
+        subject: `Verify account ${user.firstName} From Harmonyk`,
+        html: `<h1>Enter the following link to verify your account: ${process.env.HOST_CLOUD}/api/v1/auth/verify-user/${user.id}</h1> `,
+        text: 'Thanks you',
+      })
+    } catch (error) {
+      errorCounter += 1
+      errorMessage = 'Error to send email'
+    }
+
+    return response.status(201).json({ results: user, errors: { counter: errorCounter, message: errorMessage} })
   } catch (error) {
-    // response.status(400).json({
-    //   message: error.message, fields: {
-    //     firstName: 'String',
-    //     lastName: 'String',
-    //     username: 'String',
-    //     email: 'example@example.com',
-    //     password: 'String',
-    //     imageUrl: 'StringURL',
-    //     codePhone: 'number',
-    //     phone: 'number'
-    //   }
-    // })
+    // error principal 
     next(error)
   }
 }
@@ -66,11 +63,11 @@ const getUser = async (request, response, next) => {
   try {
     let { id } = request.params
     let userId = request.user.id
-    if(userId===id){
+    if (userId === id) {
       let users = await usersService.getMyUser(id)
       return response.json({ results: users })
-    }else{
-      return response.status(404).json({message: 'Invalid User'})
+    } else {
+      return response.status(404).json({ message: 'Invalid User' })
     }
   } catch (error) {
     next(error)

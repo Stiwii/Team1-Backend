@@ -314,11 +314,7 @@ const options = {
         }
       },
       '/api/v1/auth/forget-password': {
-<<<<<<< HEAD
         post: {
-=======
-        get: {
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
           tags: [
             'Auth'
           ],
@@ -667,11 +663,7 @@ const options = {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
                                 },
                                 City: {
-<<<<<<< HEAD
-                                  type: 'object', 
-=======
                                   type: 'object',
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
                                   properties: {
                                     id: {
                                       type: 'string', example: '1'
@@ -688,11 +680,7 @@ const options = {
                                         name: {
                                           type: 'string', example: 'nameState'
                                         },
-<<<<<<< HEAD
-                                        Country:{
-=======
                                         Country: {
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
                                           type: 'object',
                                           properties: {
                                             id: {
@@ -904,11 +892,7 @@ const options = {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
                                 },
                                 City: {
-<<<<<<< HEAD
-                                  type: 'object', 
-=======
                                   type: 'object',
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
                                   properties: {
                                     id: {
                                       type: 'string', example: '1'
@@ -925,11 +909,7 @@ const options = {
                                         name: {
                                           type: 'string', example: 'nameState'
                                         },
-<<<<<<< HEAD
-                                        Country:{
-=======
                                         Country: {
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
                                           type: 'object',
                                           properties: {
                                             id: {
@@ -1397,11 +1377,7 @@ const options = {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
                                 },
                                 City: {
-<<<<<<< HEAD
-                                  type: 'object', 
-=======
                                   type: 'object',
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
                                   properties: {
                                     id: {
                                       type: 'string', example: '1'
@@ -1418,11 +1394,7 @@ const options = {
                                         name: {
                                           type: 'string', example: 'nameState'
                                         },
-<<<<<<< HEAD
-                                        Country:{
-=======
                                         Country: {
->>>>>>> a4a828701e5bf66457bacca7d0aa70283861ae91
                                           type: 'object',
                                           properties: {
                                             id: {
