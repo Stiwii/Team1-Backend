@@ -4,7 +4,7 @@ const roleMiddleware = (request, response, next) => {
   if (request.user.role === 'admin') {
     next()
   } else {
-   throw new CustomError('This endpoit is only for admins', 403, 'Permission Denied')
+    throw new CustomError('This endpoit is only for admins', 403, 'Permission Denied')
   }
 }
 

@@ -12,10 +12,16 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     first_name: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate:{
+        notEmpty:true
+      }
     },
     last_name: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate:{
+        notEmpty:true
+      }
     },
     email: {
       type: DataTypes.STRING,
@@ -25,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     username: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      unique:true
     },
     password: {
       type: DataTypes.STRING

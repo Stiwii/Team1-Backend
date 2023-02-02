@@ -56,13 +56,16 @@ class UsersService {
     let user = await models.Users.scope('public_view').findOne({
       where: {
         id: id
-      },
-      include: [{
-        model: models.Profiles.scope('public_view'),
-        as: 'profile'
-      }]
+      }
+      // ,
+      // include: [{
+      //   model: models.Profiles.scope('public_view'),
+      //   as: 'profile'
+      // }]
     })
-    if (!user) throw new CustomError('Not found User', 404, 'Not Found')
+
+    // if (!user) throw new CustomError('Not found user', 404, 'Not Found')
+
 
     return user
   }
@@ -156,7 +159,7 @@ class UsersService {
 
 
 
-  async setUser({ firstName, lastName, email, username, password, imageUrl, codePhone, phone }) {
+  async setUser({ firstName, lastName, email, username, password }) {
     const transaction = await models.sequelize.transaction()
     try {
       let newUser = await models.Users.create({
@@ -169,10 +172,7 @@ class UsersService {
       }, { transaction })
       let newProfile = await models.Profiles.create({
         id: uuid.v4(),
-        user_id: newUser.id,
-        image_url: imageUrl,
-        code_phone: codePhone,
-        phone: phone
+        user_id: newUser.id
       }, { transaction })
 
       await transaction.commit()
@@ -182,10 +182,7 @@ class UsersService {
         lastName: newUser.last_name,
         email: newUser.email,
         username: newUser.username,
-        roleId: newProfile.role_id,
-        imageUrl: newProfile.image_url,
-        codePhone: newProfile.code_phone,
-        Phone: newProfile.phone
+        roleId: newProfile.role_id
       }
     } catch (error) {
       await transaction.rollback()

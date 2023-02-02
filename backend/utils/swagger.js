@@ -157,6 +157,106 @@ const options = {
               example: 'John'
             }
           }
+        },
+        Error: {
+          type: 'object',
+          properties: {
+            statusCode: { type: 'error', format: 'integer', example: '4XX' },
+            erroName: { type: 'string', example: 'SequelizeUniqueConstraintError' },
+            message: { type: 'string', example: 'llave duplicada viola restricción de unicidad «users_email_key»' }
+          }
+        },
+        Publication: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+            },
+            profile_id: {
+              type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+            },
+            title: {
+              type: 'string', example: 'newTitle'
+            },
+            description: {
+              type: 'string', example: 'newDescription'
+            },
+            content: {
+              type: 'string', example: 'newContent'
+            },
+            picture: {
+              type: 'string', format: 'url', example: 'www.picture.com'
+            },
+            image_url: {
+              type: 'string', format: 'url', example: 'www.image.com'
+            },
+            created_at: {
+              type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+            },
+            updated_at: {
+              type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+            },
+            City: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string', example: '1'
+                },
+                name: {
+                  type: 'string', example: 'nameCity'
+                },
+                State: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string', example: '1'
+                    },
+                    name: {
+                      type: 'string', example: 'nameState'
+                    },
+                    Country: {
+                      type: 'object',
+                      properties: {
+                        id: {
+                          type: 'string', example: '1'
+                        },
+                        name: {
+                          type: 'string', example: 'nameCountry'
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            publication_type_id: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string', example: '1'
+                },
+                name: {
+                  type: 'string', example: 'namePublicationType'
+                },
+                description: {
+                  type: 'string', example: 'info publication'
+                }
+              }
+            },
+            tags: {
+              type: 'array',
+              items: {
+                properties: {
+                  id: {
+                    type: 'string', example: '1'
+                  },
+                  name: {
+                    type: 'string', example: 'namePublicationType'
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -190,15 +290,6 @@ const options = {
                     },
                     password: {
                       type: 'string', example: 'pass1234'
-                    },
-                    imageUrl: {
-                      type: 'string', format: 'url', example: 'www.image.com'
-                    },
-                    codePhone: {
-                      type: 'string', format: 'integer', example: '51'
-                    },
-                    phone: {
-                      type: 'string', format: 'integer', example: '999888666'
                     }
 
                   }
@@ -235,16 +326,14 @@ const options = {
                           },
                           roleId: {
                             type: 'string', format: 'integer', example: '1'
-                          },
-                          imageUrl: {
-                            type: 'string', format: 'url', example: 'www.image.com'
-                          },
-                          codePhone: {
-                            type: 'string', format: 'integer', example: '51'
-                          },
-                          phone: {
-                            type: 'string', format: 'integer', example: '999888666'
                           }
+                        }
+                      },
+                      errors: {
+                        type: 'object',
+                        properties: {
+                          counter: { type: 'string', format: 'integer', example: '0' },
+                          message: { type: 'string', example: 'null' }
                         }
                       }
                     }
@@ -252,8 +341,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            '400?': {
+              description: 'Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           }
         }
@@ -375,10 +471,24 @@ const options = {
               required: true,
               schema: {
                 type: 'string',
-                example: 'pass1234'
+                example: 'asd123n123-123j12h31j2b1i23h.3123123-1231'
               }
             }
           ],
+          requestBody: {
+            description: 'After registering, a verification email will be sent to your email',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties:{
+                    password: {type: 'string', example: '123'} 
+                  }
+                }
+              }
+            },
+            required: true
+          },
           responses: {
             200: {
               description: 'Successful operation',
@@ -395,8 +505,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            '400?': {
+              description: 'Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           }
         }
@@ -516,8 +633,15 @@ const options = {
                 }
               }
             },
-            401: {
-              description: 'Error'
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           }
         }
@@ -574,8 +698,15 @@ const options = {
                 }
               }
             },
-            401: {
-              description: 'Error'
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           }
         }
@@ -732,8 +863,15 @@ const options = {
                 }
               }
             },
-            401: {
-              description: 'Error'
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           }
         },
@@ -764,51 +902,22 @@ const options = {
                     type: 'object',
                     properties: {
                       results: {
-                        type: 'object',
-                        properties: {
-                          id: {
-                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-                          },
-                          profile_id: {
-                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-                          },
-                          publication_type_id: {
-                            type: 'string', example: '1'
-                          },
-                          title: {
-                            type: 'string', example: 'newTitle'
-                          },
-                          description: {
-                            type: 'string', example: 'newDescription'
-                          },
-                          content: {
-                            type: 'string', example: 'newContent'
-                          },
-                          picture: {
-                            type: 'string', format: 'url', example: 'www.picture.com'
-                          },
-                          city_id: {
-                            type: 'string', example: '1'
-                          },
-                          image_url: {
-                            type: 'string', format: 'url', example: 'www.image.com'
-                          },
-                          created_at: {
-                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                          },
-                          updated_at: {
-                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                          }
-                        }
-
+                        '$ref': '#/components/schemas/Publication'
                       }
                     }
                   }
                 }
               }
             },
-            400: {
-              description: 'Error'
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -961,8 +1070,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
         },
@@ -1119,9 +1235,9 @@ const options = {
           tags: [
             'User'
           ],
-          summary: 'get my data',
-          description: 'find my user information',
-          operationId: 'getMyUser',
+          summary: 'get user data',
+          description: 'find user information',
+          operationId: 'getAUser',
           parameters: [
             {
               name: 'userId',
@@ -1135,7 +1251,7 @@ const options = {
             }
           ],
           responses: {
-            201: {
+            200: {
               description: 'Successful operation',
               content: {
                 'application/json': {
@@ -1159,21 +1275,6 @@ const options = {
                           },
                           username: {
                             type: 'string', example: 'jhdelacruz777'
-                          },
-                          profile: {
-                            type: 'object',
-                            properties: {
-                              image_url: {
-                                type: 'string', format: 'url', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-                              },
-                              code_phone: {
-                                type: 'integer', example: '55'
-                              },
-                              phone: {
-                                type: 'integer', example: '999888777'
-                              }
-                            }
-
                           }
                         }
 
@@ -1183,8 +1284,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -1324,7 +1432,7 @@ const options = {
           ],
           responses: {
             200: {
-              description: 'Successful operation',
+              description: 'Created Vote',
               content: {
                 'application/json': {
                   schema: {
@@ -1349,89 +1457,106 @@ const options = {
                             type: 'array',
                             items: {
                               properties: {
-                                id: {
+                                publication_id: {
                                   type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                 },
                                 profile_id: {
                                   type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-                                },
-                                title: {
-                                  type: 'string', example: 'newTitle'
-                                },
-                                description: {
-                                  type: 'string', example: 'newDescription'
-                                },
-                                content: {
-                                  type: 'string', example: 'newContent'
-                                },
-                                picture: {
-                                  type: 'string', format: 'url', example: 'www.picture.com'
-                                },
-                                image_url: {
-                                  type: 'string', format: 'url', example: 'www.image.com'
-                                },
-                                created_at: {
+                                }, created_at: {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
                                 },
                                 updated_at: {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
                                 },
-                                City: {
+                                Publication:
+                                {
                                   type: 'object',
                                   properties: {
                                     id: {
-                                      type: 'string', example: '1'
+                                      type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                     },
-                                    name: {
-                                      type: 'string', example: 'nameCity'
+                                    profile_id: {
+                                      type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                     },
-                                    State: {
+                                    title: {
+                                      type: 'string', example: 'newTitle'
+                                    },
+                                    description: {
+                                      type: 'string', example: 'newDescription'
+                                    },
+                                    content: {
+                                      type: 'string', example: 'newContent'
+                                    },
+                                    picture: {
+                                      type: 'string', format: 'url', example: 'www.picture.com'
+                                    },
+                                    image_url: {
+                                      type: 'string', format: 'url', example: 'www.image.com'
+                                    },
+                                    created_at: {
+                                      type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                    },
+                                    updated_at: {
+                                      type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                    },
+                                    City: {
                                       type: 'object',
                                       properties: {
                                         id: {
                                           type: 'string', example: '1'
                                         },
                                         name: {
-                                          type: 'string', example: 'nameState'
+                                          type: 'string', example: 'nameCity'
                                         },
-                                        Country: {
+                                        State: {
                                           type: 'object',
                                           properties: {
                                             id: {
                                               type: 'string', example: '1'
                                             },
                                             name: {
-                                              type: 'string', example: 'nameCountry'
+                                              type: 'string', example: 'nameState'
+                                            },
+                                            Country: {
+                                              type: 'object',
+                                              properties: {
+                                                id: {
+                                                  type: 'string', example: '1'
+                                                },
+                                                name: {
+                                                  type: 'string', example: 'nameCountry'
+                                                }
+                                              }
                                             }
                                           }
                                         }
                                       }
-                                    }
-                                  }
-                                },
-                                publication_type_id: {
-                                  type: 'object',
-                                  properties: {
-                                    id: {
-                                      type: 'string', example: '1'
                                     },
-                                    name: {
-                                      type: 'string', example: 'namePublicationType'
+                                    publication_type_id: {
+                                      type: 'object',
+                                      properties: {
+                                        id: {
+                                          type: 'string', example: '1'
+                                        },
+                                        name: {
+                                          type: 'string', example: 'namePublicationType'
+                                        },
+                                        description: {
+                                          type: 'string', example: 'info publication'
+                                        }
+                                      }
                                     },
-                                    description: {
-                                      type: 'string', example: 'info publication'
-                                    }
-                                  }
-                                },
-                                tags: {
-                                  type: 'array',
-                                  items: {
-                                    properties: {
-                                      id: {
-                                        type: 'string', example: '1'
-                                      },
-                                      name: {
-                                        type: 'string', example: 'namePublicationType'
+                                    tags: {
+                                      type: 'array',
+                                      items: {
+                                        properties: {
+                                          id: {
+                                            type: 'string', example: '1'
+                                          },
+                                          name: {
+                                            type: 'string', example: 'namePublicationType'
+                                          }
+                                        }
                                       }
                                     }
                                   }
@@ -1446,8 +1571,31 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            201: {
+              description: 'Deleted Vote',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      results: {
+                        type: 'string',
+                        extends: 'Voto eliminado'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -1877,8 +2025,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           }
         }
@@ -1954,8 +2109,15 @@ const options = {
                 }
               }
             },
-            401: {
-              description: 'Error'
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           }
         },
@@ -2013,8 +2175,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -2090,8 +2259,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -2153,8 +2329,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error',
+            'Error?': {
+              description: 'StatusCode muestra el tipo de error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [

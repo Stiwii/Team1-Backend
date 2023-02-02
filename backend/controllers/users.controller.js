@@ -52,7 +52,7 @@ const registerUser = async (request, response, next) => {
       errorMessage = 'Error to send email'
     }
 
-    return response.status(201).json({ results: user, errors: { counter: errorCounter, message: errorMessage} })
+    return response.status(201).json({ results: user, errors: { counter: errorCounter, message: errorMessage } })
   } catch (error) {
     // error principal 
     next(error)
@@ -62,13 +62,9 @@ const registerUser = async (request, response, next) => {
 const getUser = async (request, response, next) => {
   try {
     let { id } = request.params
-    let userId = request.user.id
-    if (userId === id) {
-      let users = await usersService.getMyUser(id)
-      return response.json({ results: users })
-    } else {
-      return response.status(404).json({ message: 'Invalid User' })
-    }
+    let users = await usersService.getMyUser(id)
+    return response.json({ results: users })
+
   } catch (error) {
     next(error)
   }

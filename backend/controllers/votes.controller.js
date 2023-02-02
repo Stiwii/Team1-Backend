@@ -1,4 +1,5 @@
 const VotesService = require('../services/votes.service')
+const CustomError = require('../utils/custom-error')
 const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 
 const votesService = new VotesService()
@@ -17,8 +18,8 @@ const getVotes = async (request, response, next) => {
       let votes = await votesService.findAndCount(query, profileId)
       const results = getPagingData(votes, page, limit)
       return response.json({ results: results })
-    } else {
-      response.status(400).json({ msg: 'No puedes ver los votos de este usuario' })
+    } else{
+      throw new CustomError('User not authorized', 401, 'Unauthorized')
     }
   } catch (error) {
     next(error)

@@ -49,10 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     // y minimizar que se nos escape algo
     scopes: {
       public_view: {
-        attributes: ['publication_id','profile_id']
-      },
-      new: {
-        attributes: ['email', 'token']
+        attributes: ['publication_id','profile_id','created_at', 'updated_at']
       },
       my_votes: {
         attributes: ['profile_id']

@@ -36,36 +36,16 @@ class VotesService {
       }],
     }
 
-    // include: [{
-    //   model: models.Cities.scope('get_city'),
-    //   as: 'city',
-    //   include: {
-    //     model: models.States.scope('get_state'),
-    //     as: 'state',
-    //     include: {
-    //       model: models.Countries.scope('public_view')
-    //     }
-    //   }
-    // }, {
-    //   model: models.Publications_types.scope('public_view'),
-    //   as: 'publication_type',
-    // }]
 
     const { limit, offset } = query
     if (limit && offset) {
       options.limit = limit
       options.offset = offset
     }
-
-    // const { name } = query
-    // if (name) {
-    //   options.where.name = { [Op.iLike]: `%${name}%` }
-    // }
-
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 
-    const votes = await models.Votes.findAndCountAll(options)
+    const votes = await models.Votes.scope('public_view').findAndCountAll(options)
     // const votes = await models.Publications_tags.findAndCountAll(options)
     return votes
   }

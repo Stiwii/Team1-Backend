@@ -28,7 +28,15 @@ class PublicationsService {
       }, {
         model: models.Publications_types.scope('public_view'),
         as: 'publication_type',
-      }]
+      },
+      {
+        model: models.Tags.scope('no_timestamps'),
+        as: 'tags',
+        through: {
+          attributes: []
+        }
+      }
+      ]
     }
 
 
@@ -131,6 +139,13 @@ class PublicationsService {
       }, {
         model: models.Publications_types.scope('public_view'),
         as: 'publication_type',
+      },
+      {
+        model: models.Tags.scope('no_timestamps'),
+        as: 'tags',
+        through: {
+          attributes: []
+        }
       }]
     })
     return publication
