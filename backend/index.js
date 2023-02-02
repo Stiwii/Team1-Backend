@@ -61,8 +61,8 @@ app.get('/', ({ res }) => {
 // thirdPartyServicesRouter(app)
 routerModels(app) //Here we can add others
 // errorHandlerRouter(app)
+V1SwaggerDocs(app, process.env.PORT)
 
 app.listen(PORT, () => {
   console.log(`Server : http://localhost:${PORT}`)
-  V1SwaggerDocs(app, process.env.PORT)
 })

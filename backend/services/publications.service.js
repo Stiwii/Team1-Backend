@@ -40,7 +40,7 @@ class PublicationsService {
     if (tags) {
       let tagsIDs = tags.split(',')
       options.include.push({ // El options que les di en el ejemplo 
-        model: models.Tags,
+        model: models.Tags.scope('public_view'),
         as: 'tags',
         required: true,
         where: { id: tagsIDs },
@@ -48,7 +48,6 @@ class PublicationsService {
       })
     }
 
-    // console.log(options)
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
 

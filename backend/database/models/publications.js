@@ -40,9 +40,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     picture: {
       type: DataTypes.STRING,
-      // validate: {
-      //   isUrl: true
-      // }
     },
     city_id: {
       type: DataTypes.BIGINT
@@ -63,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
         attributes: ['id', 'profile_id', 'publication_type_id', 'title', 'description', 'content', 'picture', 'city_id', 'image_url']
       },
       get_publication: {
-        attributes: ['id', 'profile_id', 'title', 'description', 'content', 'picture', 'image_url']
+        attributes: ['id', 'profile_id', 'title', 'description', 'content', 'picture', 'image_url','created_at', 'updated_at']
       },
       no_timestamps: {
         attributes: { exclude: ['created_at', 'updated_at'] }

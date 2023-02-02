@@ -291,7 +291,7 @@ const options = {
         }
       },
       '/api/v1/auth/forget-password': {
-        get: {
+        post: {
           tags: [
             'Auth'
           ],
@@ -618,9 +618,6 @@ const options = {
                                 profile_id: {
                                   type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                 },
-                                publication_type_id: {
-                                  type: 'string', example: '1'
-                                },
                                 title: {
                                   type: 'string', example: 'newTitle'
                                 },
@@ -633,9 +630,6 @@ const options = {
                                 picture: {
                                   type: 'string', format: 'url', example: 'www.picture.com'
                                 },
-                                city_id: {
-                                  type: 'string', example: '1'
-                                },
                                 image_url: {
                                   type: 'string', format: 'url', example: 'www.image.com'
                                 },
@@ -644,6 +638,66 @@ const options = {
                                 },
                                 updated_at: {
                                   type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                City: {
+                                  type: 'object', 
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'nameCity'
+                                    },
+                                    State: {
+                                      type: 'object',
+                                      properties: {
+                                        id: {
+                                          type: 'string', example: '1'
+                                        },
+                                        name: {
+                                          type: 'string', example: 'nameState'
+                                        },
+                                        Country:{
+                                          type: 'object',
+                                          properties: {
+                                            id: {
+                                              type: 'string', example: '1'
+                                            },
+                                            name: {
+                                              type: 'string', example: 'nameCountry'
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                publication_type_id: {
+                                  type: 'object',
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'namePublicationType'
+                                    },
+                                    description: {
+                                      type: 'string', example: 'info publication'
+                                    }
+                                  }
+                                },
+                                tags: {
+                                  type: 'array',
+                                  items: {
+                                    properties: {
+                                      id: {
+                                        type: 'string', example: '1'
+                                      },
+                                      name: {
+                                        type: 'string', example: 'namePublicationType'
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -771,41 +825,113 @@ const options = {
                       results: {
                         type: 'object',
                         properties: {
-                          id: {
-                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          count: {
+                            type: 'integer',
+                            example: '5'
                           },
-                          profile_id: {
-                            type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
                           },
-                          publication_type_id: {
-                            type: 'integer', example: '1'
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
                           },
-                          title: {
-                            type: 'string', example: 'newTitle'
-                          },
-                          description: {
-                            type: 'string', example: 'newDescription'
-                          },
-                          content: {
-                            type: 'string', example: 'newContent'
-                          },
-                          picture: {
-                            type: 'string', format: 'url', example: 'www.picture.com'
-                          },
-                          city_id: {
-                            type: 'integer', example: '1'
-                          },
-                          image_url: {
-                            type: 'string', format: 'url', example: 'www.image.com'
-                          },
-                          created_at: {
-                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
-                          },
-                          updated_at: {
-                            type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                          results: {
+                            type: 'array',
+                            items: {
+                              properties: {
+                                id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                profile_id: {
+                                  type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                title: {
+                                  type: 'string', example: 'newTitle'
+                                },
+                                description: {
+                                  type: 'string', example: 'newDescription'
+                                },
+                                content: {
+                                  type: 'string', example: 'newContent'
+                                },
+                                picture: {
+                                  type: 'string', format: 'url', example: 'www.picture.com'
+                                },
+                                image_url: {
+                                  type: 'string', format: 'url', example: 'www.image.com'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                City: {
+                                  type: 'object', 
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'nameCity'
+                                    },
+                                    State: {
+                                      type: 'object',
+                                      properties: {
+                                        id: {
+                                          type: 'string', example: '1'
+                                        },
+                                        name: {
+                                          type: 'string', example: 'nameState'
+                                        },
+                                        Country:{
+                                          type: 'object',
+                                          properties: {
+                                            id: {
+                                              type: 'string', example: '1'
+                                            },
+                                            name: {
+                                              type: 'string', example: 'nameCountry'
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                publication_type_id: {
+                                  type: 'object',
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'namePublicationType'
+                                    },
+                                    description: {
+                                      type: 'string', example: 'info publication'
+                                    }
+                                  }
+                                },
+                                tags: {
+                                  type: 'array',
+                                  items: {
+                                    properties: {
+                                      id: {
+                                        type: 'string', example: '1'
+                                      },
+                                      name: {
+                                        type: 'string', example: 'namePublicationType'
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
-
                       }
                     }
                   }
@@ -1188,15 +1314,104 @@ const options = {
                             type: 'integer',
                             example: '5'
                           },
-                          rows: {
+                          totalPages: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          CurrentPage: {
+                            type: 'integer',
+                            example: '1'
+                          },
+                          results: {
                             type: 'array',
                             items: {
                               properties: {
-                                publication_id: {
+                                id: {
                                   type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
                                 },
                                 profile_id: {
                                   type: 'string', format: 'uuid', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                title: {
+                                  type: 'string', example: 'newTitle'
+                                },
+                                description: {
+                                  type: 'string', example: 'newDescription'
+                                },
+                                content: {
+                                  type: 'string', example: 'newContent'
+                                },
+                                picture: {
+                                  type: 'string', format: 'url', example: 'www.picture.com'
+                                },
+                                image_url: {
+                                  type: 'string', format: 'url', example: 'www.image.com'
+                                },
+                                created_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                updated_at: {
+                                  type: 'string', format: 'date', example: '2050-01-26T14:31:49.555Z'
+                                },
+                                City: {
+                                  type: 'object', 
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'nameCity'
+                                    },
+                                    State: {
+                                      type: 'object',
+                                      properties: {
+                                        id: {
+                                          type: 'string', example: '1'
+                                        },
+                                        name: {
+                                          type: 'string', example: 'nameState'
+                                        },
+                                        Country:{
+                                          type: 'object',
+                                          properties: {
+                                            id: {
+                                              type: 'string', example: '1'
+                                            },
+                                            name: {
+                                              type: 'string', example: 'nameCountry'
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                publication_type_id: {
+                                  type: 'object',
+                                  properties: {
+                                    id: {
+                                      type: 'string', example: '1'
+                                    },
+                                    name: {
+                                      type: 'string', example: 'namePublicationType'
+                                    },
+                                    description: {
+                                      type: 'string', example: 'info publication'
+                                    }
+                                  }
+                                },
+                                tags: {
+                                  type: 'array',
+                                  items: {
+                                    properties: {
+                                      id: {
+                                        type: 'string', example: '1'
+                                      },
+                                      name: {
+                                        type: 'string', example: 'namePublicationType'
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }

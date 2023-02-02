@@ -20,7 +20,7 @@ module.exports = {
             key: 'id'
           },
           onUpdate: 'CASCADE',
-          onDelete: 'RESTRICT'
+          onDelete: 'CASCADE'
         },
         publication_type_id: {
           allowNull: false,
@@ -31,7 +31,7 @@ module.exports = {
             key: 'id'
           },
           onUpdate: 'CASCADE',
-          onDelete: 'RESTRICT'
+          onDelete: 'CASCADE'
         },
         title: {
           type: Sequelize.STRING,
@@ -58,11 +58,8 @@ module.exports = {
           onDelete: 'RESTRICT'
         },
         image_url: {
-          allowNull: false,
-          type: Sequelize.STRING,
-          validate: {
-            isUrl: true
-          }
+          defaultValue: null,
+          type: Sequelize.STRING
         },
         createdAt: {
           allowNull: false,

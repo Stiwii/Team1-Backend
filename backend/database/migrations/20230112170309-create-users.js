@@ -28,8 +28,7 @@ module.exports = {
           }
         },
         username: {
-          allowNull: false,
-          unique: true,
+          allowNull: true,
           type: Sequelize.STRING
         },
         password: {
@@ -42,7 +41,7 @@ module.exports = {
         },
         token: {
           defaultValue: null,
-          type: Sequelize.STRING
+          type: Sequelize.TEXT
         },
         created_at: {
           allowNull: false,

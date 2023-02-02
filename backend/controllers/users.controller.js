@@ -37,13 +37,13 @@ const registerUser = async (request, response, next) => {
   try {
     let { body } = request
     let user = await usersService.setUser(body)
-    // await mailer.sendMail({
-    //   from: process.env.MAIL_SEND,
-    //   to: user.email,
-    //   subject: `Verify account ${user.firstName} From Harmonyk`,
-    //   html: `<h1>Enter the following link to verify your account: ${process.env.HOST_CLOUD}/api/v1/auth/verify-user/${user.id}</h1> `,
-    //   text: 'Thanks you',
-    // })
+    await mailer.sendMail({
+      from: process.env.MAIL_SEND,
+      to: user.email,
+      subject: `Verify account ${user.firstName} From Harmonyk`,
+      html: `<h1>Enter the following link to verify your account: ${process.env.HOST_CLOUD}/api/v1/auth/verify-user/${user.id}</h1> `,
+      text: 'Thanks you',
+    })
     return response.status(201).json({ results: user })
   } catch (error) {
     // response.status(400).json({
