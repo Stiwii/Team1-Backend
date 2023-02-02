@@ -92,7 +92,6 @@ class PublicationsService {
       }, { transaction })
 
       let tags_ids = tags.split(',')
-      console.log(tags_ids)
       await newPublication.setTags(tags_ids, { transaction })
 
       await transaction.commit()

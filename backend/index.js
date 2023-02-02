@@ -5,6 +5,7 @@ const { swaggerDocs: V1SwaggerDocs } = require('./utils/swagger')
 require('dotenv').config()
 
 const routerModels = require('./routes/models.router')
+const errorHandlerRouter = require('./routes/errorhandler.router')
 
 const app = express()
 const PORT = process.env.PORT || 8000
@@ -50,7 +51,7 @@ Routes
 */
 app.get('/', ({ res }) => {
   res.json({
-    api: 'API Join Momentum',
+    api: 'API Para Cuando Team 1',
     state: 'Up and Running',
     version: '1.0.1'
   })
@@ -60,7 +61,7 @@ app.get('/', ({ res }) => {
 // docsRouter(app)
 // thirdPartyServicesRouter(app)
 routerModels(app) //Here we can add others
-// errorHandlerRouter(app)
+errorHandlerRouter(app)
 
 app.listen(PORT, () => {
   console.log(`Server : http://localhost:${PORT}`)

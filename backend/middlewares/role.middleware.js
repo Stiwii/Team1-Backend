@@ -1,9 +1,10 @@
+const CustomError = require("../utils/custom-error")
 
 const roleMiddleware = (request, response, next) => {
   if (request.user.role === 'admin') {
     next()
   } else {
-    response.status(401).json({ message: 'Permission Denied' })
+   throw new CustomError('This endpoit is only for admins', 403, 'Permission Denied')
   }
 }
 
