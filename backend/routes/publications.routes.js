@@ -6,14 +6,14 @@ const { getPublications, getPublication, addPublication, removePublication } = r
 const { addVote } = require('../controllers/votes.controller')
 
 router.route('/')
-  .get(getPublications)
-  .post(passportJWT.authenticate('jwt', { session: false }),addPublication)
+  .get(getPublications)//2
+  .post(passportJWT.authenticate('jwt', { session: false }),addPublication)//1
 
 router.route('/:id')
-  .get(getPublication)
-  .delete(passportJWT.authenticate('jwt', { session: false }),removePublication)
+  .get(getPublication)//2
+  .delete(passportJWT.authenticate('jwt', { session: false }),removePublication)//1
 
 router.route('/:id/votes')
-  .get(passportJWT.authenticate('jwt', { session: false }),addVote)
+  .get(passportJWT.authenticate('jwt', { session: false }),addVote)//2
 
 module.exports = router

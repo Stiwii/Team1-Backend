@@ -9,13 +9,13 @@ const { getTags, addTag, updateTag, removeTag } = require('../controllers/tags.c
 
 
 router.route('/')
-  .get(getTags) //? this route is piblic
-  .post(passportJWT.authenticate('jwt', { session: false }),roleMiddleware, addTag)//?this route is administrative
+  .get(getTags) //? this route is piblic  //2
+  .post(passportJWT.authenticate('jwt', { session: false }),roleMiddleware, addTag)//?this route is administrative  //1
 
 
 //? this route is administrative
 router.route('/:id')
-  .put(passportJWT.authenticate('jwt', { session: false }),roleMiddleware,updateTag)
-  .delete(passportJWT.authenticate('jwt', { session: false }),roleMiddleware,removeTag)
+  .put(passportJWT.authenticate('jwt', { session: false }),roleMiddleware,updateTag)// 2
+  .delete(passportJWT.authenticate('jwt', { session: false }),roleMiddleware,removeTag) //1
 
 module.exports = router

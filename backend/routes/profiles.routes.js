@@ -10,6 +10,6 @@ const { getProfiles } = require('../controllers/profiles.controller')
 // router.patch('/recovery-password/:id', authServices.patchPassword)
 // router.get('/verify-user/:id', authServices.verifyUser)
 
-router.get('/', getProfiles)
+// router.get('/', getProfiles)
 
 module.exports = router

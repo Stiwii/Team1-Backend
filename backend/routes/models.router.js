@@ -23,7 +23,7 @@ function routerModels(app) {
   // other models here
 
   // router.use('/users', routesUsers)
-  router.use('/profiles', routesProfiles)
+  // router.use('/profiles', routesProfiles)
   router.use('/publications-types', routesPublicationsTypes)
   router.use('/publications', routesPublications)
   router.use('/states', routesStates)

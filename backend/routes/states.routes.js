@@ -5,7 +5,7 @@ const { getStates } = require('../controllers/states.controller')
 
 
 router.route('/')
-  .get(getStates)
+  .get(getStates)//1
 
 
 module.exports = router
