@@ -10,7 +10,7 @@ const options = {
       description: 'Servidor de una facilitador de eventos',
       version: '1.0.0'
     },
-    servers: [{ url: process.env.HOST_CLOUD }],
+    servers: [{ url: process.env.DOMAIN }],
     tags: [{
       name: 'User',
       description: 'Operations about user'
@@ -360,7 +360,7 @@ const options = {
             'Auth'
           ],
           summary: 'Login to the page',
-          description: 'Login to the page Pa cuando',
+          description: 'The login returns the token of the registered user that is only public, in the case that it is admin it returns two tokens, a public token and an admin token',
           operationId: 'LogIn',
           requestBody: {
             description: 'After login you will receive a token',
@@ -382,7 +382,7 @@ const options = {
             required: true
           },
           responses: {
-            201: {
+            200: {
               description: 'Successful operation',
               content: {
                 'application/json': {
@@ -393,19 +393,88 @@ const options = {
                         type: 'string', example: 'Correct Credentials!'
                       },
                       token: {
-                        type: 'string', example: '3fed23.......434&ñ#+34-'
-                      },
-                      tokenAdmin: {
-                        type: 'string', example: '4fths2.......434&ñ#+79-'
+                        type: 'array', 
+                        items: { 
+                          properties: {
+                            public: {
+                              type: 'string', example: 'eyJhbGciOiJ......6yJV_adQssw5c'
+                            }
+                          }
+                        }
                       }
                     }
                   }
                 }
               }
             },
-            401: {
-              description: 'Error: Unauthorized'
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
+              content:{
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
+            // 401: {
+            //   description: 'Invalid Credentials!',
+            //   content: {
+            //     'application/json': {
+            //       schema: {
+            //         type: 'object',
+            //         properties: {
+            //           errorName: {
+            //             type: 'string', example: 'Invalid Credentials!'
+            //           },
+            //           message: {
+            //             type: 'array', example: 'The email or password are incorrect'
+                        
+            //           }
+            //         }
+            //       }
+            //     }
+            //   }
+            // },
+            // 400: {
+            //   description: 'Bad Request',
+            //   content: {
+            //     'application/json': {
+            //       schema: {
+            //         type: 'object',
+            //         properties: {
+            //           errorName: {
+            //             type: 'string', example: 'Bad Request'
+            //           },
+            //           message: {
+            //             type: 'array', example: 'Error Message'
+                        
+            //           }
+            //         }
+            //       }
+            //     }
+            //   }
+
+            // },
+            // 500: {
+            //   description: 'Internal Server Error',
+            //   content: {
+            //     'application/json': {
+            //       schema: {
+            //         type: 'object',
+            //         properties: {
+            //           errorName: {
+            //             type: 'string', example: 'Internal Server Error'
+            //           },
+            //           message: {
+            //             type: 'array', example: 'Error Message'
+                        
+            //           }
+            //         }
+            //       }
+            //     }
+            //   }
+            // }
           }
         }
       },
@@ -441,16 +510,42 @@ const options = {
                   schema: {
                     type: 'object',
                     properties: {
-                      message: {
-                        type: 'string', example: 'Email sended!, Check your inbox'
+                      results: {
+                        type: 'object',
+                        properties: {
+                          message: {
+                            type: 'string',
+                            example:'Email sended!, Check your inbox'
+                          },
+                          errors: {
+                            type: 'object',
+                            properties: {
+                              counter: {
+                                type: 'integer',
+                                example:'0'
+                              },
+                              message: {
+                                type: 'string',
+                                example:'null'
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
                 }
               }
             },
-            400: {
-              description: 'Error'
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
+              content:{
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           }
         }
@@ -534,22 +629,68 @@ const options = {
                   schema: {
                     type: 'object',
                     properties: {
-                      id: {
-                        type: 'string', example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-                      },
-                      email: {
-                        type: 'string', example: 'unknown@email.com'
-                      },
-                      username: {
-                        type: 'string', example: 'unknown'
+                      results: {
+                        type: 'object',
+                        properties: {
+                          id: {
+                            type:'string', format: 'uuid',example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                          },
+                          email: {
+                            type: 'string',format: 'email',example: 'random@mail.com'
+                          },
+                          username: {
+                            type: 'string',example: 'userName' 
+                          },
+                          profile: {
+                            type: 'array',
+                            items:{
+                              properties:{
+                                id: {
+                                  type:'string', format: 'uuid',example: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+                                },
+                                image_url: {
+                                  type: 'string',format: 'email',example: 'random@mail.com'
+                                },
+                                code_phone: {
+                                  type: 'string',example: 'userName' 
+                                },
+                                phone: {
+                                  type:'integer', example: '999888777'
+                                },
+                                role: {
+                                  type: 'object',
+                                  properties:{
+                                    id: {
+                                      type:'integer',example: '1'
+                                    },
+                                    name: {
+                                      type: 'string',example: 'public'
+                                    },
+                                  }
+                                },
+                                // username: {
+                                //   type: 'string',example: 'userName' 
+                                // },
+                              }
+                            }
+                          }
+                        }
+                        
                       }
                     }
                   }
                 }
               }
             },
-            '400': {
+            '400?': {
               description: 'Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -1157,8 +1298,15 @@ const options = {
                 }
               }
             },
-            400: {
+            '400?': {
               description: 'Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -1219,8 +1367,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            '400?': {
+              description: 'Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -1387,8 +1542,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            '400?': {
+              description: 'Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -1696,8 +1858,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            '400?': {
+              description: 'Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -1781,8 +1950,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            'Error?': {
+              description: 'The StatusCode shows HTTP response status code',
+              content:{
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           },
           security: [
@@ -1866,8 +2042,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            '400?': {
+              description: 'Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           }
 
@@ -1947,8 +2130,15 @@ const options = {
                 }
               }
             },
-            400: {
-              description: 'Error'
+            '400?': {
+              description: 'Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    '$ref': '#/components/schemas/Error'
+                  }
+                }
+              }
             }
           }
 

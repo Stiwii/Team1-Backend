@@ -9,8 +9,8 @@ function routerErrorHandler(app) {
   app.use(logErrors)
   app.use(handlerAuthError)
   app.use(ormErrorHandler)
-  // if (process.env.NODE_ENV === 'production') app.use(Sentry.Handlers.errorHandler());
   app.use(errorHandler)
+  // if (process.env.NODE_ENV === 'production') app.use(Sentry.Handlers.errorHandler());
 
   app.use('*', async (request, response) => {
     try {

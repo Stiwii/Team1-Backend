@@ -87,7 +87,19 @@ class UsersService {
   }
 
   async getInfo(id) {
-    let user = await models.Users.scope('user_info').findByPk(id, { raw: true })
+    let user = await models.Users.scope('user_info').findOne({
+      where: {
+        id: id
+      },
+      include: [{
+        model: models.Profiles.scope('new_profile'),
+        as: 'profile',
+        include: {
+          model: models.Roles.scope('public_view'),
+          as: 'role'
+        }
+      }]
+    })
     return user
   }
 
@@ -210,11 +222,8 @@ class UsersService {
     const transaction = await models.sequelize.transaction()
     try {
       let user = await models.Users.findByPk(id)
-
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
-
       await user.destroy({ transaction })
-
       await transaction.commit()
 
       return user

@@ -1,4 +1,4 @@
-const CustomError = require("../utils/custom-error")
+const CustomError = require('../utils/custom-error')
 
 const roleMiddleware = (request, response, next) => {
   if (request.user.role === 'admin') {

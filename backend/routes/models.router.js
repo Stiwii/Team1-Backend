@@ -3,10 +3,8 @@ const routesUsers = require('./users.routes')
 
 // const isAuthenticatedByPassportJwt = require('../libs/passport')
 
-const routesProfiles = require('./profiles.routes')
 const routesPublications = require('./publications.routes')
 const routesPublicationsTypes = require('./publicationsTypes.routes')
-// const routesCountries = require('./countries.routes')
 const routesCities = require('./cities.routes')
 const routesStates = require('./states.routes')
 const routesAuth = require('./auth.routes')

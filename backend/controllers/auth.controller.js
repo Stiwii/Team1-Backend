@@ -1,5 +1,6 @@
 const AuthService = require('../services/auth.service')
 const UsersService = require('../services/users.service')
+const CustomError = require('../utils/custom-error')
 const jwt = require('jsonwebtoken')
 const mailer = require('../utils/mailer')
 require('dotenv').config()
@@ -29,17 +30,16 @@ const logIn = async (request, response, next) => {
 
         response.status(200).json({
           message: 'Correct Credentials!',
-          token,
-          tokenAdmin
-        })
-      } else{
-        response.status(200).json({
-          message: 'Correct Credentials!',
-          token
+          token: [{ 'public': token, 'admin': tokenAdmin }]
         })
       }
+      response.status(200).json({
+        message: 'Correct Credentials!',
+        token: [{ 'public': token }]
+      })
+
     } else {
-      response.status(401).json({ message: 'Invalid Credentials' })
+      throw new CustomError('The email or password are incorrect', 401, 'Invalid Credentials')
     }
   } catch (error) {
     next(error)
@@ -63,19 +63,27 @@ const verifyUser = async (request, response, next) => {
 const forgetPassword = async (request, response, next) => {
   const { email } = request.body
   try {
+    let errorCounter = 0
+    let errorMessage = null
     if (email) {
       let data = await authService.createRecoveryToken(email)
       let user = await usersService.setTokenUser(data.user.id, data.token)
-      mailer.sendMail({
-        from: process.env.MAIL_SEND,
-        to: user.email,
-        subject: 'Restore Password ',
-        html: `<span>${process.env.HOST_CLOUD}api/v1/auth/change-password/${data.token}</span>`
-        // html: `<a href='${process.env.HOST_CLOUD}/api/v1/auth/change-password/${data.token}'>Restore password</a>`
-      })
-      response.status(200).json({ message: 'Email sended!, Check your inbox' })
-    } else {
-      response.status(400).json({ message: 'Invalid Email', fields: { email: 'example@example.com' } })
+      try {
+        mailer.sendMail({
+          from: process.env.MAIL_SEND,
+          to: user.email,
+          subject: 'Restore Password ',
+          html: `<span>${process.env.DOMAIN}api/v1/auth/change-password/${data.token}</span>`
+          // html: `<a href='${process.env.HOST_CLOUD}/api/v1/auth/change-password/${data.token}'>Restore password</a>`
+        })
+      } catch (error) {
+        errorCounter += 1
+        errorMessage = 'Error to send email'
+      }
+      return response.status(200).json({results: { message: 'Email sended!, Check your inbox',errors: { counter: errorCounter, message: errorMessage} }})
+    } 
+    else {
+      throw new CustomError('Cannot read properties of null (reading email)', 500, 'TypeError')
     }
   } catch (error) {
     next(error)
@@ -88,7 +96,7 @@ const restorePassword = async (request, response, next) => {
   const { password } = request.body
   try {
     if (data && password) {
-      await authService.changePassword(data,password,(request.params.token))
+      await authService.changePassword(data, password, (request.params.token))
       response.status(200).json({ message: 'update success' })
     } else {
       response.status(400).json({ message: 'Invalid Email', fields: { email: 'example@example.com' } })
