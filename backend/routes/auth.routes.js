@@ -5,10 +5,10 @@ const { logIn,forgetPassword,restorePassword } = require('../controllers/auth.co
 
 const { registerUser } = require('../controllers/users.controller')
 
-router.post('/login', logIn) //1
+router.post('/login', logIn) //1 complete
 router.post('/sign-up', registerUser) //2
 
-router.post('/forget-password', forgetPassword) //1
+router.post('/forget-password', forgetPassword) //1 complete
 
 router.post('/change-password/:token', restorePassword) //2
 // router.post('/update-password', authServices.postRecoveryToken)

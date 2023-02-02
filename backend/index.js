@@ -60,8 +60,8 @@ app.get('/', ({ res }) => {
 // publicRouter(app)
 // docsRouter(app)
 // thirdPartyServicesRouter(app)
-routerModels(app) //Here we can add others
 V1SwaggerDocs(app, process.env.PORT)
+routerModels(app) //Here we can add others
 errorHandlerRouter(app)
 
 app.listen(PORT, () => {

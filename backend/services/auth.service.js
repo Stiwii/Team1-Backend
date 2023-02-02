@@ -12,14 +12,13 @@ class AuthService {
   async checkUsersCredentials(email, password) {
     try {
       let user = await usersService.getUserByEmail(email)
-      const verifyPassword = comparePassword(password, user.password)
-      // console.log('FROM CHECKUSER: ',user.password)
+      let verifyPassword = comparePassword(password, user.password)
       if (verifyPassword) {
         return user
       }
       return null
     } catch (error) {
-      return null
+      return error
     }
   }
 

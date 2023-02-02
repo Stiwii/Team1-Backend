@@ -18,8 +18,8 @@ const {  getPublicationsofUser } = require('../controllers/publications.controll
 router.route('/')
   .get(passportJWT.authenticate('jwt', { session: false }),roleMiddleware,getUsers) //1
 
-router.get('/mail/', getEmail) //2
-router.get('/user-info', passportJWT.authenticate('jwt', { session: false }), getInfoUser) //1
+// router.get('/mail/', getEmail) //2
+router.get('/user-info', passportJWT.authenticate('jwt', { session: false }), getInfoUser) //1 COMPLETE
 
 //? this routes is for users loged
 router.route('/:id')
